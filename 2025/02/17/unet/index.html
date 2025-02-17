@@ -13,7 +13,7 @@
     
     <!--- Seo Part-->
     
-    <link rel="canonical" href="https://jachinzhang1.github.io/tags/经验分享/"/>
+    <link rel="canonical" href="https://jachinzhang1.github.io/2025/02/17/unet/"/>
     <meta name="robots" content="index,follow">
     <meta name="googlebot" content="index,follow">
     <meta name="revisit-after" content="1 days">
@@ -22,14 +22,17 @@
     
         
         <meta name="description" content="Hexo Theme Redefine, Redefine Your Hexo Journey.">
-<meta property="og:type" content="website">
-<meta property="og:title" content="Jachin&#39;s Blog">
-<meta property="og:url" content="https://jachinzhang1.github.io/tags/%E7%BB%8F%E9%AA%8C%E5%88%86%E4%BA%AB/index.html">
+<meta property="og:type" content="article">
+<meta property="og:title" content="UNet结构介绍">
+<meta property="og:url" content="https://jachinzhang1.github.io/2025/02/17/unet/index.html">
 <meta property="og:site_name" content="Jachin&#39;s Blog">
 <meta property="og:description" content="Hexo Theme Redefine, Redefine Your Hexo Journey.">
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://jachinzhang1.github.io/images/redefine-og.webp">
+<meta property="article:published_time" content="2025-02-17T11:48:58.000Z">
+<meta property="article:modified_time" content="2025-02-17T14:11:53.145Z">
 <meta property="article:author" content="Jachin Zhang">
+<meta property="article:tag" content="深度学习">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://jachinzhang1.github.io/images/redefine-og.webp">
     
@@ -43,7 +46,7 @@
     
     <title>
         
-            Tag: 经验分享 | Jachin&#39;s Blog
+            UNet结构介绍 | Jachin&#39;s Blog
         
     </title>
 
@@ -461,7 +464,7 @@ mjx-container[display="true"] + br {
 
                             <li class="navbar-item">
                                 <!-- Menu -->
-                                <a class="active"
+                                <a class=""
                                    href="/tags"
                                         >
                                     <i class="fa-regular fa-tags fa-fw"></i>
@@ -607,7 +610,7 @@ mjx-container[display="true"] + br {
 
                     <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
                         
-                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full active"
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
                            href="/tags"
                         >
                             <span>
@@ -698,82 +701,275 @@ mjx-container[display="true"] + br {
 			
 
 			<div class="main-content">
-				<div class="page-template-container">
-	
+				<div class="post-page-container flex relative justify-between box-border w-full h-full">
+	<div class="article-content-container">
 
-	
-	<div class="tag-name">
-    <i class="fa-solid fa-tag"></i>&nbsp;经验分享
-</div>
-<div class="tag-post-list">
+		<div class="article-title relative w-full">
+			
+			<div class="w-full flex items-center pt-6 justify-start">
+				<h1 class="article-title-regular text-second-text-color tracking-tight text-4xl md:text-6xl font-semibold px-2 sm:px-6 md:px-8 py-3">UNet结构介绍</h1>
+			</div>
+			
+		</div>
+
+		
+		<div class="article-header flex flex-row gap-2 items-center px-2 sm:px-6 md:px-8">
+			<div class="avatar w-[46px] h-[46px] flex-shrink-0 rounded-medium border border-border-color p-[1px]">
+				<img src="/images/luna_jp.png">
+			</div>
+			<div class="info flex flex-col justify-between">
+				<div class="author flex items-center">
+					<span class="name text-default-text-color text-lg font-semibold">Jachin Zhang</span>
+					
+				</div>
+				<div class="meta-info">
+					<div class="article-meta-info">
+    <span class="article-date article-meta-item">
+        <i class="fa-regular fa-pen-fancy"></i>&nbsp;
+        <span class="desktop">2025-02-17 19:48:58</span>
+        <span class="mobile">2025-02-17 19:48:58</span>
+        <span class="hover-info">Created</span>
+    </span>
     
-<div class="archive-list-container">
+        <span class="article-date article-meta-item">
+            <i class="fa-regular fa-wrench"></i>&nbsp;
+            <span class="desktop">2025-02-17 22:11:53</span>
+            <span class="mobile">2025-02-17 22:11:53</span>
+            <span class="hover-info">Updated</span>
+        </span>
     
-        <section class="archive-item mb-spacing-unit last:mb-0">
-            <div class="archive-item-header flex flex-row items-center mb-2">
-                <span class="archive-year font-semibold text-3xl mr-2">2025</span>
-                <span class="archive-year-post-count text-xs md:text-sm font-bold rounded-small bg-third-background-color py-[2px] px-[10px] border border-border-color">3</span>
-            </div>
-            
-            <ul class="article-list pl-0 md:pl-8 text-lg leading-[1.5]">
+
+    
+        <span class="article-categories article-meta-item">
+            <i class="fa-regular fa-folders"></i>&nbsp;
+            <ul>
                 
-                    
-                    
-                         <!-- Close the previous LI if not the first item -->
-                        <li class="article-item space-y-2 px-6 pt-10 pb-2 text-xl relative border-l-2 border-border-color" date-is='02-05'>
-                    
-                    <a href="/2025/02/05/hexo%E6%B8%B2%E6%9F%93%E6%95%B0%E5%AD%A6%E5%85%AC%E5%BC%8F%E9%97%AE%E9%A2%98%E8%A7%A3%E5%86%B3/" class="block w-fit">
-                        <span class="article-title my-0.5 text-2xl">hexo渲染数学公式问题解决</span>
-                    </a>
-                    
                 
-                    
                     
                         
-                            </li>
-                         <!-- Close the previous LI if not the first item -->
-                        <li class="article-item space-y-2 px-6 pt-10 pb-2 text-xl relative border-l-2 border-border-color" date-is='02-04'>
+                        <li>
+                            <a href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">学习笔记</a>&nbsp;
+                        </li>
                     
-                    <a href="/2025/02/04/hexo%E5%8D%9A%E5%AE%A2%E6%B7%BB%E5%8A%A0%E8%AF%84%E8%AE%BA%E7%B3%BB%E7%BB%9F/" class="block w-fit">
-                        <span class="article-title my-0.5 text-2xl">hexo博客添加评论系统</span>
-                    </a>
                     
                 
-                    
-                    
-                        
-                            </li>
-                         <!-- Close the previous LI if not the first item -->
-                        <li class="article-item space-y-2 px-6 pt-10 pb-2 text-xl relative border-l-2 border-border-color" date-is='02-03'>
-                    
-                    <a href="/2025/02/03/%E5%8D%9A%E5%AE%A2%E5%BB%BA%E7%AB%8B%E7%BB%8F%E9%AA%8C%E5%88%86%E4%BA%AB/" class="block w-fit">
-                        <span class="article-title my-0.5 text-2xl">博客建立经验分享</span>
-                    </a>
-                    
-                
-                </li> <!-- Ensure the last item is properly closed -->
             </ul>
-        </section>
+        </span>
+    
+    
+        <span class="article-tags article-meta-item">
+            <i class="fa-regular fa-tags"></i>&nbsp;
+            <ul>
+                
+                    <li>
+                        <a href="/tags/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/">深度学习</a>&nbsp;
+                    </li>
+                
+            </ul>
+        </span>
+    
+
+    
+    
+        <span class="article-wordcount article-meta-item">
+            <i class="fa-regular fa-typewriter"></i>&nbsp;<span>1.6k Words</span>
+        </span>
+    
+    
+        <span class="article-min2read article-meta-item">
+            <i class="fa-regular fa-clock"></i>&nbsp;<span>7 Mins</span>
+        </span>
+    
+    
+        <span class="article-pv article-meta-item">
+            <i class="fa-regular fa-eye"></i>&nbsp;<span id="busuanzi_value_page_pv"></span>
+        </span>
     
 </div>
+
+				</div>
+			</div>
+		</div>
+		
+
+		
+
+
+		<div class="article-content markdown-body px-2 sm:px-6 md:px-8 pb-8">
+			<h2 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h2><p>UNet实际上是一种比较老的架构，最初于2015年的论文<a class="link" target="_blank" rel="noopener" href="https://arxiv.org/abs/1505.04597">U-Net: Convolutional Networks for Biomedical Image Segmentation<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a>中提出，主要用于医学图像分割。但近年来随着AIGC的兴起，UNet也逐渐被用于其他领域，如图像生成、图像修复等。Unet的结构并不复杂，但效果不错。对于扩散模型来说，UNet结构几乎是标配，仅使用残差网络的效果远不及它。</p>
+<p>下面对这个网络结构作简要介绍，并在后面给出Pytorch实现。</p>
+<h2 id="UNet结构"><a href="#UNet结构" class="headerlink" title="UNet结构"></a>UNet结构</h2><p><figure class="image-caption"><img lazyload="" src="/images/loading.svg" data-src="/images/posts/unet/architecture.png" alt="网络结构示意图"><figcaption>网络结构示意图</figcaption></figure></p>
+<p>UNet结构如上图所示，它的主体是一个Encoder-Decoder的结构。其中，编码器由多个下采样层组成，解码器由多个上采样层组成。编码器和解码器之间通过跳跃连接连接，以保留更多的特征信息。因其结构类似于字母U，故得名UNet。除此之外，它的最大的特点来自于其跳层连接（copy and crop）。</p>
+<ul>
+<li><code>conv 3x3, ReLU</code><br>卷积层，卷积核大小为3x3，激活函数为ReLU。</li>
+<li><code>max pool 2x2</code><br>最大池化层，池化核大小为2x2。</li>
+<li><code>up-conv 2x2</code><br>这里是用于图像<b>上采样</b>的反卷积层，卷积核大小为2x2。</li>
+<li><code>conv 1x1</code><br>1*1的卷积层，可以调整通道数而不改变图像尺寸。</li>
+</ul>
+<h2 id="Pytorch实现"><a href="#Pytorch实现" class="headerlink" title="Pytorch实现"></a>Pytorch实现</h2><p>本文对UNet结构进行简要的代码实现。（叠甲：写的比较简陋，图像尺寸设的不好可能还会出现报错。此外，该网络可以结合时间步编码和注意力机制等，这里暂未体现。）</p>
+<p>首先导入必要的库：</p>
+<div class="code-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> torch</span><br><span class="line"><span class="keyword">import</span> torch.nn <span class="keyword">as</span> nn</span><br></pre></td></tr></table></figure></div>
+<p>UNet类的初始化：</p>
+<div class="code-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">UNet</span>(nn.Module):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, in_channels, out_channels, device, layers=<span class="number">4</span></span>):</span><br><span class="line">        <span class="built_in">super</span>(UNet, <span class="variable language_">self</span>).__init__()</span><br><span class="line">        <span class="variable language_">self</span>.layers = layers</span><br><span class="line">        <span class="variable language_">self</span>.device = device</span><br><span class="line">        <span class="variable language_">self</span>.to_be_cropped_list = []</span><br><span class="line"></span><br><span class="line">        <span class="variable language_">self</span>.input_encoder = nn.Conv2d(in_channels, <span class="number">64</span>, kernel_size=<span class="number">3</span>, stride=<span class="number">1</span>, padding=<span class="number">1</span>)</span><br><span class="line">        <span class="variable language_">self</span>.output_decoder = nn.Conv2d(<span class="number">64</span>, out_channels, kernel_size=<span class="number">3</span>, stride=<span class="number">1</span>, padding=<span class="number">1</span>)</span><br><span class="line"></span><br><span class="line">        <span class="variable language_">self</span>.downs = nn.ModuleList([])</span><br><span class="line">        <span class="variable language_">self</span>.ups = nn.ModuleList([])</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(layers):</span><br><span class="line">            <span class="variable language_">self</span>.downs.append(nn.Sequential(</span><br><span class="line">                nn.Conv2d(<span class="number">64</span> * (<span class="number">2</span> ** i), <span class="number">64</span> * (<span class="number">2</span> ** (i + <span class="number">1</span>)), kernel_size=<span class="number">3</span>, stride=<span class="number">1</span>, padding=<span class="number">1</span>),</span><br><span class="line">                nn.ReLU(inplace=<span class="literal">True</span>),</span><br><span class="line">                nn.Conv2d(<span class="number">64</span> * (<span class="number">2</span> ** (i + <span class="number">1</span>)), <span class="number">64</span> * (<span class="number">2</span> ** (i + <span class="number">1</span>)), kernel_size=<span class="number">3</span>, stride=<span class="number">1</span>, padding=<span class="number">1</span>),</span><br><span class="line">                nn.ReLU(inplace=<span class="literal">True</span>),</span><br><span class="line">            ))</span><br><span class="line">            <span class="variable language_">self</span>.ups.insert(<span class="number">0</span>, nn.Sequential(</span><br><span class="line">                nn.Conv2d(<span class="number">64</span> * (<span class="number">2</span> ** (i + <span class="number">1</span>)), <span class="number">64</span> * (<span class="number">2</span> ** i), kernel_size=<span class="number">3</span>, stride=<span class="number">1</span>, padding=<span class="number">1</span>),</span><br><span class="line">                nn.ReLU(inplace=<span class="literal">True</span>),</span><br><span class="line">                nn.Conv2d(<span class="number">64</span> * (<span class="number">2</span> ** i), <span class="number">64</span> * (<span class="number">2</span> ** i), kernel_size=<span class="number">3</span>, stride=<span class="number">1</span>, padding=<span class="number">1</span>),</span><br><span class="line">                nn.ReLU(inplace=<span class="literal">True</span>),</span><br><span class="line">            ))</span><br></pre></td></tr></table></figure></div>
+<p>参数：</p>
+<ul>
+<li><code>in_channels</code>：输入通道数</li>
+<li><code>out_channels</code>：输出通道数</li>
+<li><code>device</code>：设备（cpu或cuda）</li>
+<li><code>layers</code>：UNet的层数</li>
+</ul>
+<p><code>input_encoder</code>和<code>output_decoder</code>用于改变图像的通道数，而<code>downs</code>和<code>ups</code>分别对应模型主体的编码器和解码器。这里为了方便，使用循环将编码器和解码器的采样层使用<code>ModuleList</code>存储，并且每轮循环（每层）对称地加入采样层。</p>
+<p>注意到在这段代码中，我们并没有将池化和反卷积（即<b>改变图像尺寸大小</b>）的操作加入到<code>downs</code>和<code>ups</code>中，而是只有卷积的<b>改变图像通道数</b>的操作。这是因为该网络还需要实现“跳层连接”，即需要将最大池化之前的张量经过裁剪之后和上采样之后的张量进行拼接。如果将池化和反卷积的操作放在<code>Sequential</code>里面，拼接操作所需要的张量无法提取出来。</p>
+<p>（事实上代码的写法可以改进，比如将上采样层和下采样层分别封装成类<code>UpBlock</code>和<code>DownBlock</code>，这样可以将反卷积和池化操作包含其中，并提取出跳层连接所需的张量。但是我懒得改了QAQ）</p>
+<p>将在图像编码过程中提取的张量经过裁剪操作后与解码过程中对应的张量拼接，其中的裁剪操作实现如下：</p>
+<div class="code-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">crop_tensor</span>(<span class="params">self, x: torch.Tensor, target: torch.Tensor</span>) -&gt; torch.Tensor:</span><br><span class="line">    target_size = target.shape[<span class="number">2</span>]</span><br><span class="line">    x_size = x.shape[<span class="number">2</span>]</span><br><span class="line">    delta = (x_size - target_size) // <span class="number">2</span></span><br><span class="line">    <span class="keyword">return</span> x[:, :, delta:x_size - delta, delta:x_size - delta]</span><br></pre></td></tr></table></figure></div>
+<p>注意：这个函数输入的两个张量的通道数最好为偶数，否则后续的张量拼接可能会因为通道数不匹配出现报错。因此输入的图像尺寸（张量[Batch_size, Channels, Height, Width]中的后两个）最好为2的整数次幂。</p>
+<p>图像编码和解码操作的实现如下：</p>
+<div class="code-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">encode</span>(<span class="params">self, x: torch.Tensor</span>) -&gt; torch.Tensor:</span><br><span class="line">    <span class="keyword">for</span> idx, down <span class="keyword">in</span> <span class="built_in">enumerate</span>(<span class="variable language_">self</span>.downs):</span><br><span class="line">        <span class="comment"># print(f'Down {idx + 1}.1\t', x.shape)</span></span><br><span class="line">        x = down(x)  <span class="comment"># conv</span></span><br><span class="line">        <span class="comment"># print(f'Down {idx + 1}.2\t', x.shape)</span></span><br><span class="line">        <span class="variable language_">self</span>.to_be_cropped_list.insert(<span class="number">0</span>, x) <span class="keyword">if</span> idx &lt; <span class="variable language_">self</span>.layers - <span class="number">1</span> <span class="keyword">else</span> <span class="literal">None</span></span><br><span class="line">        x = nn.MaxPool2d(kernel_size=<span class="number">2</span>, stride=<span class="number">2</span>)(x)</span><br><span class="line">        <span class="comment"># print(f'Down {idx + 1}.3\t', x.shape) if not idx &lt; self.layers - 1 else None</span></span><br><span class="line">    <span class="keyword">return</span> x</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">decode</span>(<span class="params">self, x: torch.Tensor</span>) -&gt; torch.Tensor:</span><br><span class="line">    <span class="keyword">for</span> idx, up <span class="keyword">in</span> <span class="built_in">enumerate</span>(<span class="variable language_">self</span>.ups):</span><br><span class="line">        <span class="comment"># print(f'Up {idx + 1}.1\t\t', x.shape)</span></span><br><span class="line">        conv_trans = nn.ConvTranspose2d(</span><br><span class="line">            <span class="number">64</span> * (<span class="number">2</span> ** (<span class="variable language_">self</span>.layers - idx)), </span><br><span class="line">            <span class="number">64</span> * (<span class="number">2</span> ** (<span class="variable language_">self</span>.layers - idx - <span class="number">1</span>)), </span><br><span class="line">            kernel_size=<span class="number">2</span>, </span><br><span class="line">            stride=<span class="number">2</span>, </span><br><span class="line">            padding=<span class="number">0</span></span><br><span class="line">        ).to(<span class="variable language_">self</span>.device)</span><br><span class="line">        x = conv_trans(x)</span><br><span class="line">        <span class="comment"># print(f'Up {idx + 1}.2\t\t', x.shape)</span></span><br><span class="line">        cropped = <span class="variable language_">self</span>.crop_tensor(<span class="variable language_">self</span>.to_be_cropped_list[idx], x)</span><br><span class="line">        x = torch.cat([x, cropped], dim=<span class="number">1</span>)</span><br><span class="line">        <span class="comment"># print(f'Up {idx + 1}.3\t\t', x.shape)</span></span><br><span class="line">        x = up(x)  <span class="comment"># conv</span></span><br><span class="line">        <span class="comment"># print(f'Up {idx + 1}.4\t\t', x.shape) if not idx &lt; self.layers - 1 else None</span></span><br><span class="line">    <span class="keyword">return</span> x</span><br></pre></td></tr></table></figure></div>
+<p>前向传播函数的实现如下：</p>
+<div class="code-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">forward</span>(<span class="params">self, x: torch.Tensor</span>) -&gt; torch.Tensor:</span><br><span class="line">    <span class="comment"># print('Input Size\t', x.shape)</span></span><br><span class="line">    x = <span class="variable language_">self</span>.input_encoder(x)</span><br><span class="line">    <span class="variable language_">self</span>.to_be_cropped_list.insert(<span class="number">0</span>, x)</span><br><span class="line">    <span class="comment"># print('Encoded Input\t', x.shape)</span></span><br><span class="line">    x = <span class="variable language_">self</span>.encode(x)</span><br><span class="line">    x = <span class="variable language_">self</span>.decode(x)</span><br><span class="line">    x = <span class="variable language_">self</span>.output_decoder(x)</span><br><span class="line">    <span class="comment"># print('Output Size\t', x.shape)</span></span><br><span class="line">    <span class="keyword">return</span> x</span><br></pre></td></tr></table></figure></div>
+<p>主函数：</p>
+<div class="code-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">main</span>():</span><br><span class="line">    device = torch.device(<span class="string">"cuda"</span> <span class="keyword">if</span> torch.cuda.is_available() <span class="keyword">else</span> <span class="string">"cpu"</span>)</span><br><span class="line">    model = UNet(in_channels=<span class="number">1</span>, out_channels=<span class="number">1</span>, device=device, layers=<span class="number">4</span>).to(device)</span><br><span class="line">    model.<span class="built_in">eval</span>()</span><br><span class="line">    H = <span class="number">512</span></span><br><span class="line">    W = <span class="number">512</span></span><br><span class="line">    input_tensor = torch.randn(<span class="number">1</span>, <span class="number">1</span>, H, W).to(device)</span><br><span class="line">    output_tensor = model.forward(input_tensor)</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">"__main__"</span>:</span><br><span class="line">    main()</span><br></pre></td></tr></table></figure></div>
+<p>注意到这里的代码将打印张量维度的语句都注释掉了。运行这些语句可以方便地查看张量的维度变化情况（#处为本文中手动添加的注释）：</p>
+<div class="code-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line">Input Size       torch.Size([1, 1, 512, 512])</span><br><span class="line">Encoded Input    torch.Size([1, 64, 512, 512])</span><br><span class="line">Down 1.1         torch.Size([1, 64, 512, 512])</span><br><span class="line"># conv</span><br><span class="line">Down 1.2         torch.Size([1, 128, 512, 512])</span><br><span class="line"># maxpool</span><br><span class="line">Down 2.1         torch.Size([1, 128, 256, 256])</span><br><span class="line"># conv</span><br><span class="line">Down 2.2         torch.Size([1, 256, 256, 256])</span><br><span class="line"># maxpool</span><br><span class="line">Down 3.1         torch.Size([1, 256, 128, 128])</span><br><span class="line"># conv</span><br><span class="line">Down 3.2         torch.Size([1, 512, 128, 128])</span><br><span class="line"># maxpool</span><br><span class="line">Down 4.1         torch.Size([1, 512, 64, 64])</span><br><span class="line"># conv</span><br><span class="line">Down 4.2         torch.Size([1, 1024, 64, 64])</span><br><span class="line"># maxpool</span><br><span class="line">Down 4.3         torch.Size([1, 1024, 32, 32])</span><br><span class="line">Up 1.1           torch.Size([1, 1024, 32, 32])</span><br><span class="line"># conv_trans</span><br><span class="line">Up 1.2           torch.Size([1, 512, 64, 64])</span><br><span class="line"># crop and cat</span><br><span class="line">Up 1.3           torch.Size([1, 1024, 64, 64])</span><br><span class="line"># conv</span><br><span class="line">Up 2.1           torch.Size([1, 512, 64, 64])</span><br><span class="line"># conv_trans</span><br><span class="line">Up 2.2           torch.Size([1, 256, 128, 128])</span><br><span class="line"># crop and cat</span><br><span class="line">Up 2.3           torch.Size([1, 512, 128, 128])</span><br><span class="line"># conv</span><br><span class="line">Up 3.1           torch.Size([1, 256, 128, 128])</span><br><span class="line"># conv_trans</span><br><span class="line">Up 3.2           torch.Size([1, 128, 256, 256])</span><br><span class="line"># crop and cat</span><br><span class="line">Up 3.3           torch.Size([1, 256, 256, 256])</span><br><span class="line"># conv</span><br><span class="line">Up 4.1           torch.Size([1, 128, 256, 256])</span><br><span class="line"># conv_trans</span><br><span class="line">Up 4.2           torch.Size([1, 64, 512, 512])</span><br><span class="line"># crop and cat</span><br><span class="line">Up 4.3           torch.Size([1, 128, 512, 512])</span><br><span class="line"># conv</span><br><span class="line">Up 4.4           torch.Size([1, 64, 512, 512])</span><br><span class="line">Output Size      torch.Size([1, 1, 512, 512])</span><br></pre></td></tr></table></figure></div>
+
+		</div>
+
+		
+		<div class="post-copyright-info w-full my-8 px-2 sm:px-6 md:px-8">
+			<div class="article-copyright-info-container">
+    <ul>
+        <li><strong>Title:</strong> UNet结构介绍</li>
+        <li><strong>Author:</strong> Jachin Zhang</li>
+        <li><strong>Created at
+                :</strong> 2025-02-17 19:48:58</li>
+        
+            <li>
+                <strong>Updated at
+                    :</strong> 2025-02-17 22:11:53
+            </li>
+        
+        <li>
+            <strong>Link:</strong> https://jachinzhang1.github.io/2025/02/17/unet/
+        </li>
+        <li>
+            <strong>
+                License:
+            </strong>
+            
+
+            
+                This work is licensed under <a class="license" target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0">CC BY-NC-SA 4.0</a>.
+            
+        </li>
+    </ul>
 </div>
+
+		</div>
+		
+
+		
+		<ul class="post-tags-box text-lg mt-1.5 flex-wrap justify-center flex md:hidden">
+			
+			<li class="tag-item mx-0.5">
+				<a href="/tags/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/">#深度学习</a>&nbsp;
+			</li>
+			
+		</ul>
+		
+
+		
+
+		
+		<div class="article-nav my-8 flex justify-between items-center px-2 sm:px-6 md:px-8">
+			
+			
+			<div class="article-next border-border-color shadow-redefine-flat shadow-shadow-color-2 rounded-medium px-4 py-2 hover:shadow-redefine-flat-hover hover:shadow-shadow-color-2">
+				<a class="next" rel="next" href="/2025/02/07/ArcCh1Interpretation/">
+					<span class="title flex justify-center items-center">
+						<span class="post-nav-title-item">Arcaea第1章主线剧情解读</span>
+						<span class="post-nav-item">Next posts</span>
+					</span>
+					<span class="right arrow-icon flex justify-center items-center">
+						<i class="fa-solid fa-chevron-right"></i>
+					</span>
+				</a>
+			</div>
+			
+		</div>
+		
+
+
+		
+		<div class="comment-container px-2 sm:px-6 md:px-8 pb-8">
+			<div class="comments-container mt-10 w-full ">
+    <div id="comment-anchor" class="w-full h-2.5"></div>
+    <div class="comment-area-title w-full my-1.5 md:my-2.5 text-xl md:text-3xl font-bold">
+        Comments
+    </div>
+    
+
+        
+            
+    <div id="giscus-container"></div>
+    <script data-swup-reload-script defer>
+        async function loadGiscus() {
+            const giscusConfig = {
+                'src': 'https://giscus.app/client.js',
+                'data-repo': 'jachinzhang1/jachinzhang1.github.io',
+                'data-repo-id': 'R_kgDONy_q0w',
+                'data-category': 'Announcements',
+                'data-category-id': 'DIC_kwDONy_q084Cmo0P',
+                'data-mapping': 'title',
+                'data-strict': '0',
+                'data-reactions-enabled': '1',
+                'data-emit-metadata': '1',
+                'data-theme': 'preferred_color_scheme',
+                'data-lang': 'zh-CN',
+                'data-input-position': 'top',
+                'data-loading': 'lazy',
+                'crossorigin': 'anonymous',
+                'async': true
+            }
+            const giscusScript = document.createElement('script');
+            for (const key in giscusConfig) {
+                giscusScript.setAttribute(key, giscusConfig[key]);
+            }
+            document.getElementById('giscus-container').appendChild(giscusScript);
+        }
+        if ('true') {
+            let loadGiscusTimeout = setTimeout(() => {
+                loadGiscus();
+                clearTimeout(loadGiscusTimeout);
+            }, 1000);
+        } else {
+            document.addEventListener('DOMContentLoaded', loadGiscus);
+        }
+    </script>
+
+
+        
+        
+    
+</div>
+
+		</div>
+		
+	</div>
+
 	
+	<div class="toc-content-container">
+		<div class="post-toc-wrap">
+	<div class="post-toc">
+		<div class="toc-title">On this page</div>
+		<div class="page-title">UNet结构介绍</div>
+		<ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BC%95%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text">引言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#UNet%E7%BB%93%E6%9E%84"><span class="nav-number">2.</span> <span class="nav-text">UNet结构</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Pytorch%E5%AE%9E%E7%8E%B0"><span class="nav-number">3.</span> <span class="nav-text">Pytorch实现</span></a></li></ol>
 
-	<div class="page-template-content markdown-body">
-		
-
-		
-	</div>
-
-	<div class="page-template-comments">
-		
 	</div>
 </div>
-
-<div class="paginator">
-	<span class="page-number current">1</span>
+	</div>
+	
 </div>
-  
 			</div>
 
 			
@@ -843,6 +1039,26 @@ mjx-container[display="true"] + br {
 		</div>
 	</div>
 
+	
+	<div class="post-tools">
+		<div class="post-tools-container">
+	<ul class="article-tools-list">
+		<!-- TOC aside toggle -->
+		
+		<li class="right-bottom-tools page-aside-toggle">
+			<i class="fa-regular fa-outdent"></i>
+		</li>
+		
+
+		<!-- go comment -->
+		
+		<li class="go-comment">
+			<i class="fa-regular fa-comments"></i>
+		</li>
+		
+	</ul>
+</div>
+	</div>
 	
 
 	<div class="right-side-tools-container">
@@ -948,6 +1164,30 @@ mjx-container[display="true"] + br {
 </script>
 
 
+
+
+
+    
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/mathjax@2.7.8/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+
+  
+  
 
 	
 <script src="/js/build/tools/imageViewer.js" type="module"></script>
