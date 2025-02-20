@@ -680,11 +680,11 @@ mjx-container[display="true"] + br {
         <div class="label text-third-text-color text-sm">Tags</div>
     </a>
     <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/categories">
-        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">3</div>
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">4</div>
         <div class="label text-third-text-color text-sm">Categories</div>
     </a>
     <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/archives">
-        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">10</div>
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">11</div>
         <div class="label text-third-text-color text-sm">Posts</div>
     </a>
 </div>
@@ -796,24 +796,17 @@ mjx-container[display="true"] + br {
 
 
 		<div class="article-content markdown-body px-2 sm:px-6 md:px-8 pb-8">
-			<h2 id="引言">引言</h2>
-<p>UNet实际上是一种比较老的架构，最初于2015年的论文<a class="link" target="_blank" rel="noopener" href="https://arxiv.org/abs/1505.04597">U-Net: Convolutional Networks for Biomedical Image Segmentation<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a>中提出，主要用于医学图像分割。但近年来随着AIGC的兴起，UNet也逐渐被用于其他领域，如图像生成、图像修复等。Unet的结构并不复杂，但效果不错。对于扩散模型来说，UNet结构几乎是标配，仅使用残差网络的效果远不及它。</p>
+			<h2 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h2><p>UNet实际上是一种比较老的架构，最初于2015年的论文<a class="link" target="_blank" rel="noopener" href="https://arxiv.org/abs/1505.04597">U-Net: Convolutional Networks for Biomedical Image Segmentation<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a>中提出，主要用于医学图像分割。但近年来随着AIGC的兴起，UNet也逐渐被用于其他领域，如图像生成、图像修复等。Unet的结构并不复杂，但效果不错。对于扩散模型来说，UNet结构几乎是标配，仅使用残差网络的效果远不及它。</p>
 <p>下面对这个网络结构作简要介绍，并在后面给出Pytorch实现。</p>
-<h2 id="UNet结构">UNet结构</h2>
-<p><figure class="image-caption"><img lazyload="" src="/images/loading.svg" data-src="/images/posts/unet/architecture.png" alt="网络结构示意图"><figcaption>网络结构示意图</figcaption></figure></p>
+<h2 id="UNet结构"><a href="#UNet结构" class="headerlink" title="UNet结构"></a>UNet结构</h2><p><figure class="image-caption"><img lazyload="" src="/images/loading.svg" data-src="/images/posts/unet/architecture.png" alt="网络结构示意图"><figcaption>网络结构示意图</figcaption></figure></p>
 <p>UNet结构如上图所示，它的主体是一个Encoder-Decoder的结构。其中，编码器由多个下采样层组成，解码器由多个上采样层组成。编码器和解码器之间通过跳跃连接连接，以保留更多的特征信息。因其结构类似于字母U，故得名UNet。除此之外，它的最大的特点来自于其跳层连接（copy and crop）。</p>
 <ul>
-<li><code>conv 3x3, ReLU</code><br>
-卷积层，卷积核大小为3x3，激活函数为ReLU。</li>
-<li><code>max pool 2x2</code><br>
-最大池化层，池化核大小为2x2。</li>
-<li><code>up-conv 2x2</code><br>
-这里是用于图像<b>上采样</b>的反卷积层，卷积核大小为2x2。</li>
-<li><code>conv 1x1</code><br>
-1*1的卷积层，可以调整通道数而不改变图像尺寸。</li>
+<li><code>conv 3x3, ReLU</code><br>卷积层，卷积核大小为3x3，激活函数为ReLU。</li>
+<li><code>max pool 2x2</code><br>最大池化层，池化核大小为2x2。</li>
+<li><code>up-conv 2x2</code><br>这里是用于图像<b>上采样</b>的反卷积层，卷积核大小为2x2。</li>
+<li><code>conv 1x1</code><br>1*1的卷积层，可以调整通道数而不改变图像尺寸。</li>
 </ul>
-<h2 id="Pytorch实现">Pytorch实现</h2>
-<p>本文对UNet结构进行简要的代码实现。（叠甲：写的比较简陋，图像尺寸设的不好可能还会出现报错。此外，该网络可以结合时间步编码和注意力机制等，这里暂未体现。）</p>
+<h2 id="Pytorch实现"><a href="#Pytorch实现" class="headerlink" title="Pytorch实现"></a>Pytorch实现</h2><p>本文对UNet结构进行简要的代码实现。（叠甲：写的比较简陋，图像尺寸设的不好可能还会出现报错。此外，该网络可以结合时间步编码和注意力机制等，这里暂未体现。）</p>
 <p>首先导入必要的库：</p>
 <div class="code-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> torch</span><br><span class="line"><span class="keyword">import</span> torch.nn <span class="keyword">as</span> nn</span><br></pre></td></tr></table></figure></div>
 <p>UNet类的初始化：</p>
