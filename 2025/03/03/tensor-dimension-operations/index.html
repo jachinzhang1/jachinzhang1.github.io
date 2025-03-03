@@ -1,0 +1,1367 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="keywords" content="Hexo Theme Redefine">
+    
+    <meta name="author" content="Jachin Zhang">
+    <!-- preconnect -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    
+    <!--- Seo Part-->
+    
+    <link rel="canonical" href="https://jachinzhang1.github.io/2025/03/03/tensor-dimension-operations/"/>
+    <meta name="robots" content="index,follow">
+    <meta name="googlebot" content="index,follow">
+    <meta name="revisit-after" content="1 days">
+    
+    
+    
+        
+        <meta name="description" content="Hexo Theme Redefine, Redefine Your Hexo Journey.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="pytorch中张量的维度操作">
+<meta property="og:url" content="https://jachinzhang1.github.io/2025/03/03/tensor-dimension-operations/index.html">
+<meta property="og:site_name" content="Jachin&#39;s Blog">
+<meta property="og:description" content="Hexo Theme Redefine, Redefine Your Hexo Journey.">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://jachinzhang1.github.io/images/redefine-og.webp">
+<meta property="article:published_time" content="2025-03-03T08:50:07.000Z">
+<meta property="article:modified_time" content="2025-03-03T13:22:20.734Z">
+<meta property="article:author" content="Jachin Zhang">
+<meta property="article:tag" content="深度学习">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://jachinzhang1.github.io/images/redefine-og.webp">
+    
+    
+    <!--- Icon Part-->
+    <link rel="icon" type="image/png" href="/images/my-favicon-universe.svg" sizes="192x192">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/my-favicon-universe.svg">
+    <meta name="theme-color" content="#0098d7">
+    <link rel="shortcut icon" href="/images/my-favicon-universe.svg">
+    <!--- Page Info-->
+    
+    <title>
+        
+            pytorch中张量的维度操作 | Jachin&#39;s Blog
+        
+    </title>
+
+    
+<link rel="stylesheet" href="/fonts/Chillax/chillax.css">
+
+
+    <!--- Inject Part-->
+    
+
+    
+<link rel="stylesheet" href="/css/style.css">
+
+
+    
+        
+<link rel="stylesheet" href="/css/build/tailwind.css">
+
+    
+
+    
+<link rel="stylesheet" href="/fonts/GeistMono/geist-mono.css">
+
+    
+<link rel="stylesheet" href="/fonts/Geist/geist.css">
+
+    <!--- Font Part-->
+    
+    
+    
+    
+    
+    
+        
+<script src="/js/build/libs/anime.min.js"></script>
+
+    
+
+    <script id="hexo-configurations">
+    window.config = {"hostname":"jachinzhang1.github.io","root":"/","language":"en","path":"search.xml"};
+    window.theme = {"articles":{"style":{"font_size":"16px","line_height":1.5,"image_border_radius":"14px","image_alignment":"center","image_caption":true,"link_icon":true,"delete_mask":true,"title_alignment":"left","headings_top_spacing":{"h1":"2.5rem","h2":"2.0rem","h3":"1.7rem","h4":"1.3rem","h5":"1.1rem","h6":"1.0rem"}},"word_count":{"enable":true,"count":true,"min2read":true},"author_label":{"enable":false,"auto":false,"list":[]},"code_block":{"copy":true,"style":"simple","highlight_theme":{"light":"github","dark":"vs2015"},"font":{"enable":false,"family":null,"url":null}},"toc":{"enable":true,"max_depth":3,"number":true,"expand":true,"init_open":true},"copyright":{"enable":true,"default":"cc_by_nc_sa"},"lazyload":true,"pangu_js":false,"recommendation":{"enable":false,"title":"推荐阅读","limit":3,"mobile_limit":2,"placeholder":"/images/wallhaven-wqery6-light.webp","skip_dirs":[]}},"colors":{"primary":"#0098d7","secondary":null,"default_mode":"light"},"global":{"fonts":{"chinese":{"enable":false,"family":null,"url":null},"english":{"enable":false,"family":null,"url":null},"title":{"enable":false,"family":null,"url":null}},"content_max_width":"1000px","sidebar_width":"210px","hover":{"shadow":true,"scale":false},"scroll_progress":{"bar":true,"percentage":true},"website_counter":{"url":"https://cn.vercount.one/js","enable":true,"site_pv":true,"site_uv":true,"post_pv":true},"single_page":true,"preloader":{"enable":true,"custom_message":null},"open_graph":{"enable":true,"image":"/images/redefine-og.webp","description":"Hexo Theme Redefine, Redefine Your Hexo Journey."},"google_analytics":{"enable":false,"id":null}},"home_banner":{"enable":true,"style":"fixed","image":{"light":"/images/day.png","dark":"/images/night.png"},"title":"Welcome to my sekai.","subtitle":{"text":["Stay hungry, stay foolish.","(๑＞ڡ＜)☆"],"hitokoto":{"enable":false,"show_author":false,"api":"https://v1.hitokoto.cn"},"typing_speed":100,"backing_speed":80,"starting_delay":500,"backing_delay":1500,"loop":true,"smart_backspace":true},"text_color":{"light":"#000","dark":"#fff"},"text_style":{"title_size":"2.8rem","subtitle_size":"1.5rem","line_height":1.2},"custom_font":{"enable":false,"family":null,"url":null},"social_links":{"enable":true,"style":"default","links":{"github":"https://github.com/jachinzhang1","instagram":null,"zhihu":null,"twitter":null,"email":"3023518860@qq.com","bilibili":"https://space.bilibili.com/518197475?spm_id_from=333.1007.0.0"},"qrs":{"weixin":"/images/qrs/weixin.png","qq":"/images/qrs/qq.png"}}},"plugins":{"feed":{"enable":false},"aplayer":{"enable":false,"type":"fixed","audios":[{"name":null,"artist":null,"url":null,"cover":null,"lrc":null}]},"mermaid":{"enable":true,"version":"11.4.1"},"markdown-it-emoji":{"enable":true}},"version":"2.8.2","navbar":{"auto_hide":false,"color":{"left":"#f78736","right":"#367df7","transparency":35},"width":{"home":"1200px","pages":"1000px"},"links":{"Home":{"path":"/","icon":"fa-regular fa-house"},"文章":{"path":"/archives","icon":"fa-regular fa-archive"},"分类":{"path":"/categories","icon":"fa-regular fa-list"},"标签":{"path":"/tags","icon":"fa-regular fa-tags"},"Links":{"icon":"fa-regular fa-link","submenus":{"GITHUB":"https://github.com/jachinzhang1","BiliBili":"https://space.bilibili.com/518197475?spm_id_from=333.1007.0.0","资源分享":"/links/","相册":"/masonry/"}}},"search":{"enable":true,"preload":true}},"page_templates":{"friends_column":2,"tags_style":"blur"},"home":{"sidebar":{"enable":true,"position":"left","first_item":"menu","announcement":null,"show_on_mobile":true,"links":null},"article_date_format":"auto","excerpt_length":200,"categories":{"enable":true,"limit":3},"tags":{"enable":true,"limit":3}},"footerStart":"2025/2/2 00:00:00"};
+    window.lang_ago = {"second":"%s seconds ago","minute":"%s minutes ago","hour":"%s hours ago","day":"%s days ago","week":"%s weeks ago","month":"%s months ago","year":"%s years ago"};
+    window.data = {"masonry":true};
+  </script>
+    
+    <!--- Fontawesome Part-->
+    
+<link rel="stylesheet" href="/fontawesome/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/brands.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/solid.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/regular.min.css">
+
+    
+    
+    
+    
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+
+<body>
+	<div class="progress-bar-container">
+	
+	<span class="scroll-progress-bar"></span>
+	
+
+	
+	<span class="pjax-progress-bar"></span>
+	<!--        <span class="swup-progress-icon">-->
+	<!--            <i class="fa-solid fa-circle-notch fa-spin"></i>-->
+	<!--        </span>-->
+	
+</div>
+
+<style>
+    :root {
+        --preloader-background-color: #fff;
+        --preloader-text-color: #000;
+    }
+
+    @media (prefers-color-scheme: dark) {
+        :root {
+            --preloader-background-color: #202124;
+            --preloader-text-color: #fff;
+        }
+    }
+
+    @media (prefers-color-scheme: light) {
+        :root {
+            --preloader-background-color: #fff;
+            --preloader-text-color: #000;
+        }
+    }
+
+    @media (max-width: 600px) {
+        .ml13 {
+            font-size: 2.6rem !important; /* Adjust this value as needed */
+        }
+    }
+
+    .preloader {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem; /* Tailwind 'gap-4' is 1rem */
+        align-items: center;
+        justify-content: center;
+        position: fixed;
+        padding: 12px;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh; /* 'h-screen' is 100% of the viewport height */
+        background-color: var(--preloader-background-color);
+        z-index: 1100; /* 'z-[1100]' sets the z-index */
+        transition: opacity 0.2s ease-in-out;
+    }
+
+    .ml13 {
+        font-size: 3.2rem;
+        /* text-transform: uppercase; */
+        color: var(--preloader-text-color);
+        letter-spacing: -1px;
+        font-weight: 500;
+        font-family: 'Chillax-Variable', sans-serif;
+        text-align: center;
+    }
+
+    .ml13 .word {
+        display: inline-flex;
+        flex-wrap: wrap;
+        white-space: nowrap;
+    }
+
+    .ml13 .letter {
+        display: inline-block;
+        line-height: 1em;
+    }
+</style>
+
+<div class="preloader">
+    <h2 class="ml13">
+        Jachin&#39;s Blog
+    </h2>
+    <script>
+        var textWrapper = document.querySelector('.ml13');
+        // Split text into words
+        var words = textWrapper.textContent.trim().split(' ');
+
+        // Clear the existing content
+        textWrapper.innerHTML = '';
+
+        // Wrap each word and its letters in spans
+        words.forEach(function(word) {
+            var wordSpan = document.createElement('span');
+            wordSpan.classList.add('word');
+            wordSpan.innerHTML = word.replace(/\S/g, "<span class='letter'>$&</span>");
+            textWrapper.appendChild(wordSpan);
+            textWrapper.appendChild(document.createTextNode(' ')); // Add space between words
+        });
+
+        var animation = anime.timeline({ loop: true })
+            .add({
+                targets: '.ml13 .letter',
+                translateY: [20, 0],
+                translateZ: 0,
+                opacity: [0, 1],
+                filter: ['blur(5px)', 'blur(0px)'],
+                easing: "easeOutExpo",
+                duration: 1200,
+                delay: (el, i) => 300 + 20 * i,
+            })
+            .add({
+                targets: '.ml13 .letter',
+                translateY: [0, -20],
+                opacity: [1, 0],
+                filter: ['blur(0px)', 'blur(5px)'],
+                easing: "easeInExpo",
+                duration: 1000,
+                delay: (el, i) => 15 * i,
+                complete: function() {
+                    hidePreloader();
+                }
+            }, '-=700');
+
+
+        let themeStatus = JSON.parse(localStorage.getItem('REDEFINE-THEME-STATUS'))?.isDark;
+
+        // If the theme status is not found in local storage, check the preferred color scheme
+        if (themeStatus === undefined || themeStatus === null) {
+            if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+                themeStatus = 'dark';
+            } else {
+                themeStatus = 'light';
+            }
+        }
+
+        // Now you can use the themeStatus variable in your code
+        if (themeStatus) {
+            document.documentElement.style.setProperty('--preloader-background-color', '#202124');
+            document.documentElement.style.setProperty('--preloader-text-color', '#fff');
+        } else {
+            document.documentElement.style.setProperty('--preloader-background-color', '#fff');
+            document.documentElement.style.setProperty('--preloader-text-color', '#000');
+        }
+
+        window.addEventListener('load', function () {
+            setTimeout(hidePreloader, 5000); // Call hidePreloader after 5000 milliseconds if not already called by animation
+        });
+
+        function hidePreloader() {
+            var preloader = document.querySelector('.preloader');
+            preloader.style.opacity = '0';
+            setTimeout(function () {
+                preloader.style.display = 'none';
+            }, 200);
+        }
+    </script>
+</div>
+
+<main class="page-container" id="swup">
+
+	
+
+	<div class="main-content-container flex flex-col justify-between min-h-dvh">
+		<div class="main-content-header">
+			<header class="navbar-container px-6 md:px-12">
+    <div class="navbar-content transition-navbar ">
+        <div class="left">
+            
+            <a class="logo-title" href="/">
+                
+                Jachin&#39;s Blog
+                
+            </a>
+        </div>
+
+        <div class="right">
+            <!-- PC -->
+            <div class="desktop">
+                <ul class="navbar-list">
+                    
+                        
+                            
+
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class=""
+                                   href="/"
+                                        >
+                                    <i class="fa-regular fa-house fa-fw"></i>
+                                    HOME
+                                    
+                                </a>
+
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            
+
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class=""
+                                   href="/archives"
+                                        >
+                                    <i class="fa-regular fa-archive fa-fw"></i>
+                                    文章
+                                    
+                                </a>
+
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            
+
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class=""
+                                   href="/categories"
+                                        >
+                                    <i class="fa-regular fa-list fa-fw"></i>
+                                    分类
+                                    
+                                </a>
+
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            
+
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class=""
+                                   href="/tags"
+                                        >
+                                    <i class="fa-regular fa-tags fa-fw"></i>
+                                    标签
+                                    
+                                </a>
+
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            
+
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="has-dropdown"
+                                   href="#"
+                                        onClick=&#34;return false;&#34;>
+                                    <i class="fa-regular fa-link fa-fw"></i>
+                                    LINKS
+                                    <i class="fa-solid fa-chevron-down fa-fw"></i>
+                                </a>
+
+                                <!-- Submenu -->
+                                
+                                    <ul class="sub-menu">
+                                        
+                                            <li>
+                                                <a target="_blank" rel="noopener" href="https://github.com/jachinzhang1">
+                                                    GITHUB
+                                                </a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a target="_blank" rel="noopener" href="https://space.bilibili.com/518197475?spm_id_from=333.1007.0.0">
+                                                    BILIBILI
+                                                </a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="/links/">
+                                                    资源分享
+                                                </a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="/masonry/">
+                                                    相册
+                                                </a>
+                                            </li>
+                                        
+                                    </ul>
+                                
+                            </li>
+                    
+                    
+                        <li class="navbar-item search search-popup-trigger">
+                            <i class="fa-solid fa-magnifying-glass"></i>
+                        </li>
+                    
+                </ul>
+            </div>
+            <!-- Mobile -->
+            <div class="mobile">
+                
+                    <div class="icon-item search search-popup-trigger"><i class="fa-solid fa-magnifying-glass"></i>
+                    </div>
+                
+                <div class="icon-item navbar-bar">
+                    <div class="navbar-bar-middle"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile sheet -->
+    <div class="navbar-drawer h-dvh w-full absolute top-0 left-0 bg-background-color flex flex-col justify-between">
+        <ul class="drawer-navbar-list flex flex-col px-4 justify-center items-start">
+            
+                
+                    
+
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                           href="/"
+                        >
+                            <span>
+                                HOME
+                            </span>
+                            
+                                <i class="fa-regular fa-house fa-sm fa-fw"></i>
+                            
+                        </a>
+                        
+
+                        
+                    </li>
+            
+                
+                    
+
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                           href="/archives"
+                        >
+                            <span>
+                                文章
+                            </span>
+                            
+                                <i class="fa-regular fa-archive fa-sm fa-fw"></i>
+                            
+                        </a>
+                        
+
+                        
+                    </li>
+            
+                
+                    
+
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                           href="/categories"
+                        >
+                            <span>
+                                分类
+                            </span>
+                            
+                                <i class="fa-regular fa-list fa-sm fa-fw"></i>
+                            
+                        </a>
+                        
+
+                        
+                    </li>
+            
+                
+                    
+
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                           href="/tags"
+                        >
+                            <span>
+                                标签
+                            </span>
+                            
+                                <i class="fa-regular fa-tags fa-sm fa-fw"></i>
+                            
+                        </a>
+                        
+
+                        
+                    </li>
+            
+                
+                    
+
+                    <li class="drawer-navbar-item-sub text-base my-1.5 flex flex-col w-full">
+                        
+                        <div class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary cursor-pointer text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                             navbar-data-toggle="submenu-Links"
+                        >
+                            <span>
+                                LINKS
+                            </span>
+                            
+                                <i class="fa-solid fa-chevron-right fa-sm fa-fw transition-all"></i>
+                            
+                        </div>
+                        
+
+                        
+                            <div class="flex-col items-start px-2 py-2 hidden" data-target="submenu-Links">
+                                
+                                    <div class="drawer-navbar-item text-base flex flex-col justify-center items-start hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                        <a class=" text-third-text-color text-xl"
+                                           target="_blank" rel="noopener" href="https://github.com/jachinzhang1">GITHUB</a>
+                                    </div>
+                                
+                                    <div class="drawer-navbar-item text-base flex flex-col justify-center items-start hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                        <a class=" text-third-text-color text-xl"
+                                           target="_blank" rel="noopener" href="https://space.bilibili.com/518197475?spm_id_from=333.1007.0.0">BILIBILI</a>
+                                    </div>
+                                
+                                    <div class="drawer-navbar-item text-base flex flex-col justify-center items-start hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                        <a class=" text-third-text-color text-xl"
+                                           href="/links/">资源分享</a>
+                                    </div>
+                                
+                                    <div class="drawer-navbar-item text-base flex flex-col justify-center items-start hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                        <a class=" text-third-text-color text-xl"
+                                           href="/masonry/">相册</a>
+                                    </div>
+                                
+                            </div>
+                        
+                    </li>
+            
+
+            
+            
+        </ul>
+
+        <div class="statistics flex justify-around my-2.5">
+    <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/tags">
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">7</div>
+        <div class="label text-third-text-color text-sm">Tags</div>
+    </a>
+    <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/categories">
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">4</div>
+        <div class="label text-third-text-color text-sm">Categories</div>
+    </a>
+    <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/archives">
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">13</div>
+        <div class="label text-third-text-color text-sm">Posts</div>
+    </a>
+</div>
+    </div>
+
+    <div class="window-mask"></div>
+
+</header>
+
+
+		</div>
+
+		<div class="main-content-body transition-fade-up">
+			
+
+			<div class="main-content">
+				<div class="post-page-container flex relative justify-between box-border w-full h-full">
+	<div class="article-content-container">
+
+		<div class="article-title relative w-full">
+			
+			<div class="w-full flex items-center pt-6 justify-start">
+				<h1 class="article-title-regular text-second-text-color tracking-tight text-4xl md:text-6xl font-semibold px-2 sm:px-6 md:px-8 py-3">pytorch中张量的维度操作</h1>
+			</div>
+			
+		</div>
+
+		
+		<div class="article-header flex flex-row gap-2 items-center px-2 sm:px-6 md:px-8">
+			<div class="avatar w-[46px] h-[46px] flex-shrink-0 rounded-medium border border-border-color p-[1px]">
+				<img src="/images/luna_jp.png">
+			</div>
+			<div class="info flex flex-col justify-between">
+				<div class="author flex items-center">
+					<span class="name text-default-text-color text-lg font-semibold">Jachin Zhang</span>
+					
+				</div>
+				<div class="meta-info">
+					<div class="article-meta-info">
+    <span class="article-date article-meta-item">
+        <i class="fa-regular fa-pen-fancy"></i>&nbsp;
+        <span class="desktop">2025-03-03 16:50:07</span>
+        <span class="mobile">2025-03-03 16:50:07</span>
+        <span class="hover-info">Created</span>
+    </span>
+    
+        <span class="article-date article-meta-item">
+            <i class="fa-regular fa-wrench"></i>&nbsp;
+            <span class="desktop">2025-03-03 21:22:20</span>
+            <span class="mobile">2025-03-03 21:22:20</span>
+            <span class="hover-info">Updated</span>
+        </span>
+    
+
+    
+        <span class="article-categories article-meta-item">
+            <i class="fa-regular fa-folders"></i>&nbsp;
+            <ul>
+                
+                
+                    
+                        
+                        <li>
+                            <a href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">学习笔记</a>&nbsp;
+                        </li>
+                    
+                    
+                
+            </ul>
+        </span>
+    
+    
+        <span class="article-tags article-meta-item">
+            <i class="fa-regular fa-tags"></i>&nbsp;
+            <ul>
+                
+                    <li>
+                        <a href="/tags/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/">深度学习</a>&nbsp;
+                    </li>
+                
+            </ul>
+        </span>
+    
+
+    
+    
+        <span class="article-wordcount article-meta-item">
+            <i class="fa-regular fa-typewriter"></i>&nbsp;<span>2.2k Words</span>
+        </span>
+    
+    
+        <span class="article-min2read article-meta-item">
+            <i class="fa-regular fa-clock"></i>&nbsp;<span>9 Mins</span>
+        </span>
+    
+    
+        <span class="article-pv article-meta-item">
+            <i class="fa-regular fa-eye"></i>&nbsp;<span id="busuanzi_value_page_pv"></span>
+        </span>
+    
+</div>
+
+				</div>
+			</div>
+		</div>
+		
+
+		
+
+
+		<div class="article-content markdown-body px-2 sm:px-6 md:px-8 pb-8">
+			<h2 id="引言">引言</h2>
+<p>对于我本人来说，在阅读深度学习项目的源码时，分析张量的维度是一件让我十分头疼的事情。在我自己写程序时也会遇到因为张量维度不匹配而报错的问题，这时的我总会一头雾水，对于如何debug无从下手。更令人悲痛的是，当你把维度不匹配的报错交给AI企图让它来解决问题时，AI往往会一通维度操作猛如虎，最后运行一看还是跟之前相同的报错。</p>
+<p>之前我零零散散地查阅过一些关于操作维度的函数的用法，但没系统地整理过，所以今天在这里整理一下。当然，如果真的遇到了维度不匹配的报错，那还是得从头一点点排查。只不过，熟记了这些张量操作的函数产生的效果后，也许debug会比之前顺利许多。</p>
+
+  <div class="note p-4 mb-4 rounded-small blue">
+    <p>在计算机视觉领域，图像张量常设为四维，即</p>
+<div class="code-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[B, C, H, W]</span><br></pre></td></tr></table></figure></div>
+<ul>
+<li><code>B</code>即<code>batch_size</code>，是一次批量处理图像的数量</li>
+<li><code>C</code>即<code>channels</code>，为图像通道数。RGB图像的通道数为3，经过某些操作（如卷积）通道数会发生改变</li>
+<li><code>H</code>即<code>height</code>，为一张图像的高</li>
+<li><code>W</code>即<code>width</code>，为一张图像的宽</li>
+</ul>
+
+  </div>
+<h2 id="维度操作">维度操作</h2>
+<h3 id="调整形状">调整形状</h3>
+<ul>
+<li>
+<p><code>tensor.view()</code></p>
+<p>返回一个具有相同数据但不同形状的新张量，要求<b>内存必须是连续的</b>。</p>
+</li>
+<li>
+<p><code>tensor.reshape()</code></p>
+<p>效果类似于<code>view()</code>，但<b>不要求数据连续</b>，因此更推荐使用。</p>
+</li>
+</ul>
+<div class="code-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">x = torch.randn((<span class="number">2</span>, <span class="number">3</span>, <span class="number">5</span>, <span class="number">7</span>))</span><br><span class="line"><span class="built_in">print</span>(x.shape)              <span class="comment"># torch.Size([2, 3, 5, 7])</span></span><br><span class="line">y = x.view(<span class="number">6</span>, <span class="number">5</span>, <span class="number">7</span>)</span><br><span class="line"><span class="built_in">print</span>(y.shape)              <span class="comment"># torch.Size([6, 5, 7])</span></span><br><span class="line">z = x.reshape(<span class="number">6</span>, <span class="number">5</span>, <span class="number">7</span>)</span><br><span class="line"><span class="built_in">print</span>(z.shape)              <span class="comment"># torch.Size([6, 5, 7])</span></span><br></pre></td></tr></table></figure></div>
+<h3 id="增减维度">增减维度</h3>
+<ul>
+<li>
+<p><code>tensor.unsqueeze(dim)</code></p>
+<p>在<code>dim</code>位置增加一个维度，大小为1。（squeeze的意思为“压缩”，unsqueeze顾名思义就是伸展一个维度）</p>
+<div class="code-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">print</span>(x.shape)                <span class="comment"># torch.Size([2, 3, 5, 7])</span></span><br><span class="line">x_prime = x.unsqueeze(<span class="number">0</span>)</span><br><span class="line"><span class="built_in">print</span>(x_prime.shape)          <span class="comment"># torch.Size([1, 2, 3, 5, 7])</span></span><br><span class="line">x_prime = x_prime.unsqueeze(<span class="number">2</span>)</span><br><span class="line"><span class="built_in">print</span>(x_prime.shape)          <span class="comment"># torch.Size([1, 2, 1, 3, 5, 7])</span></span><br></pre></td></tr></table></figure></div>
+</li>
+<li>
+<p><code>tensor.squeeze(dim=None)</code></p>
+<p>当<code>dim</code>参数缺省时，默认移除所有大小为1的维度。指定维度时，若该维度大小为1则将其移除，否则无影响。</p>
+<div class="code-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">print</span>(x_prime.shape)      <span class="comment"># torch.Size([1, 2, 1, 3, 5, 7])</span></span><br><span class="line">y_prime = x_prime.squeeze()</span><br><span class="line">z1_prime = x_prime.squeeze(<span class="number">0</span>)</span><br><span class="line">z2_prime = x_prime.squeeze(<span class="number">1</span>)</span><br><span class="line">z3_prime = x_prime.squeeze(<span class="number">2</span>)</span><br><span class="line"><span class="built_in">print</span>(y_prime.shape)      <span class="comment"># torch.Size([2, 3, 5, 7])</span></span><br><span class="line"><span class="built_in">print</span>(z1_prime.shape, z2_prime.shape, z3_prime.shape)</span><br><span class="line"><span class="comment"># torch.Size([2, 1, 3, 5, 7]) torch.Size([1, 2, 1, 3, 5, 7]) torch.Size([1, 2, 3, 5, 7])</span></span><br></pre></td></tr></table></figure></div>
+</li>
+</ul>
+<h3 id="交换维度">交换维度</h3>
+<ul>
+<li>
+<p><code>tensor.permute(dims)</code></p>
+<p><b>交换</b>多个维度并返回新张量（不修改原始数据）。</p>
+</li>
+<li>
+<p><code>tensor.transpose(dim0, dim1)</code></p>
+<p>交换传入的两个<b>特定</b>的维度。</p>
+</li>
+</ul>
+<div class="code-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">print</span>(y.shape)              <span class="comment"># torch.Size([6, 5, 7])</span></span><br><span class="line">y_prime = y.permute(<span class="number">1</span>, <span class="number">2</span>, <span class="number">0</span>)</span><br><span class="line"><span class="built_in">print</span>(y_prime.shape)        <span class="comment"># torch.Size([5, 7, 6])</span></span><br><span class="line">y_prime = y.transpose(<span class="number">1</span>, <span class="number">2</span>)</span><br><span class="line"><span class="built_in">print</span>(y_prime.shape)        <span class="comment"># torch.Size([6, 7, 5])</span></span><br></pre></td></tr></table></figure></div>
+<h3 id="维度展开与合并">维度展开与合并</h3>
+<ul>
+<li>
+<p><code>tensor.flatten(start_dim=0. end_dim=-1)</code></p>
+<p>将<code>start_dim</code>和<code>end_dim</code>之间的维度合并为一个。参数缺省时分别默认为第一个和最后一个维度。</p>
+<div class="code-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">print</span>(z.shape)            <span class="comment"># torch.Size([6, 5, 7])</span></span><br><span class="line">z_flatten = z.flatten()</span><br><span class="line"><span class="built_in">print</span>(z_flatten.shape)    <span class="comment"># torch.Size([210])</span></span><br><span class="line">z_flatten = z.flatten(<span class="number">0</span>, <span class="number">1</span>)</span><br><span class="line"><span class="built_in">print</span>(z_flatten.shape)    <span class="comment"># torch.Size([30, 7])</span></span><br></pre></td></tr></table></figure></div>
+</li>
+<li>
+<p><code>tensor.unflatten(dim, sizes)</code></p>
+<p>将<code>dim</code>维度拆分成<code>sizes</code>指定的多个维度。</p>
+<div class="code-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">print</span>(z_flatten.shape)    <span class="comment"># torch.Size([30, 7])</span></span><br><span class="line">z_unflatten = z_flatten.unflatten(<span class="number">0</span>, (<span class="number">3</span>, <span class="number">10</span>))</span><br><span class="line"><span class="built_in">print</span>(z_unflatten.shape)  <span class="comment"># torch.Size([3, 10, 7])</span></span><br></pre></td></tr></table></figure></div>
+</li>
+</ul>
+<h3 id="张量扩展">张量扩展</h3>
+<ul>
+<li>
+<p><code>tensor.repeat(*sizes)</code></p>
+<p>沿指定维度重复张量，传入函数的<b>参数数量</b>要和<b>张量的维数</b>一样。作用于每个维度，独立复制元素。</p>
+<div class="code-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">print</span>(x.shape)            <span class="comment"># torch.Size([2, 3, 5, 7])</span></span><br><span class="line">x_repeat = x.repeat(<span class="number">4</span>, <span class="number">2</span>, <span class="number">1</span>, <span class="number">1</span>)</span><br><span class="line"><span class="built_in">print</span>(x_repeat.shape)     <span class="comment"># torch.Size([8, 6, 5, 7])</span></span><br></pre></td></tr></table></figure></div>
+</li>
+<li>
+<p><code>tensor.tiles(sizes)</code></p>
+<p>功能类似<code>repeat()</code>，作用于整个张量，复制整个块。</p>
+<div class="code-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">print</span>(x.shape)            <span class="comment"># torch.Size([2, 3, 5, 7])</span></span><br><span class="line">x_tile = x.tile(<span class="number">5</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">1</span>)</span><br><span class="line"><span class="built_in">print</span>(x_tile.shape)       <span class="comment"># torch.Size([10, 9, 20, 7])</span></span><br></pre></td></tr></table></figure></div>
+</li>
+<li>
+<p><code>tensor.expand(*sizes)</code></p>
+<p>主要用于<b>无额外内存开销地扩展张量</b>，可以让一个张量沿着指定的维度进行广播，但不会实际复制数据。通常用于在计算时匹配张量的形状，而不增加额外的内存消耗，只是改变张量的视图。传入的<code>*sizes</code>相当于想要的形状。</p>
+<p><b>注意：<code>expand()</code>只能扩展大小为1的维度，否则会报错。</b></p>
+<div class="code-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">x = torch.randn(<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>)</span><br><span class="line">x_expanded = x.expand(<span class="number">4</span>, <span class="number">2</span>, <span class="number">3</span>)</span><br><span class="line"><span class="built_in">print</span>(x_expanded.shape)   <span class="comment"># torch.Size([4, 2, 3])</span></span><br></pre></td></tr></table></figure></div>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>函数</th>
+<th>是否额外占用内存</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>expand()</code></td>
+<td>否</td>
+<td>仅改变张量视图，广播显示</td>
+</tr>
+<tr>
+<td><code>repeat()</code></td>
+<td>是</td>
+<td>按元素复制张量</td>
+</tr>
+<tr>
+<td><code>tile()</code></td>
+<td>是</td>
+<td>按整体块复制张量</td>
+</tr>
+</tbody>
+</table>
+<h3 id="张量拼接">张量拼接</h3>
+<ul>
+<li>
+<p><code>torch.cat(tensors, dim=0)</code></p>
+<p>沿<code>dim</code>维度拼接多个张量，这些张量在除了<code>dim</code>以外的其他维度形状必须一致。所得的新张量维数和它们相同。</p>
+<div class="code-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">x = torch.randn(<span class="number">2</span>, <span class="number">3</span>, <span class="number">5</span>)</span><br><span class="line">y = torch.randn(<span class="number">2</span>, <span class="number">3</span>, <span class="number">5</span>)</span><br><span class="line">z1 = torch.cat((x, y), dim=<span class="number">0</span>)</span><br><span class="line">z2 = torch.cat((x, y), dim=<span class="number">1</span>)</span><br><span class="line">z3 = torch.cat((x, y), dim=<span class="number">2</span>)</span><br><span class="line"><span class="built_in">print</span>(z1.shape, z2.shape, z3.shape)</span><br><span class="line"><span class="comment"># torch.Size([4, 3, 5]) torch.Size([2, 6, 5]) torch.Size([2, 3, 10])</span></span><br></pre></td></tr></table></figure></div>
+</li>
+<li>
+<p><code>torch.stack(tensors, dim=0)</code></p>
+<p>在指定<code>dim</code>维度上新增一个维度，然后在该维度上堆叠张量。所有被堆叠的张量的所有维度形状都必须相同。</p>
+<p>可以理解为<code>stack = unsqueeze + cat</code>，即对所有张量先在<code>dim</code>处新增一个维度，再在该维度上进行<code>cat</code>操作。</p>
+<div class="code-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">print</span>(x.shape)            <span class="comment"># torch.Size([2, 3, 5])</span></span><br><span class="line"><span class="built_in">print</span>(y.shape)            <span class="comment"># torch.Size([2, 3, 5])</span></span><br><span class="line">z4 = torch.stack((x, y), dim=<span class="number">0</span>)</span><br><span class="line">z5 = torch.stack((x, y), dim=<span class="number">1</span>)</span><br><span class="line">z6 = torch.stack((x, y), dim=<span class="number">2</span>)</span><br><span class="line"><span class="built_in">print</span>(z4.shape, z5.shape, z6.shape)</span><br><span class="line"><span class="comment"># torch.Size([2, 2, 3, 5]) torch.Size([2, 2, 3, 5]) torch.Size([2, 3, 2, 5])</span></span><br></pre></td></tr></table></figure></div>
+</li>
+</ul>
+<p>总结：</p>
+<table>
+<thead>
+<tr>
+<th>操作</th>
+<th>方法</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>调整形状</td>
+<td><code>view() / reshape()</code></td>
+<td>改变形状</td>
+</tr>
+<tr>
+<td>增加维度</td>
+<td><code>unsqueeze()</code></td>
+<td>增加维度</td>
+</tr>
+<tr>
+<td>减少维度</td>
+<td><code>squeeze()</code></td>
+<td>移除大小为 1 的维度</td>
+</tr>
+<tr>
+<td>交换维度</td>
+<td><code>permute() / transpose()</code></td>
+<td>交换多个维度 / 交换两个维度</td>
+</tr>
+<tr>
+<td>展开/合并</td>
+<td><code>flatten() / unflatten()</code></td>
+<td>合并维度 / 拆分维度</td>
+</tr>
+<tr>
+<td>重复数据</td>
+<td><code>repeat() / tile() / expand()</code></td>
+<td>沿维度复制数据</td>
+</tr>
+<tr>
+<td>拼接数据</td>
+<td><code>cat() / stack()</code></td>
+<td>拼接多个张量</td>
+</tr>
+</tbody>
+</table>
+<h2 id="张量运算">张量运算</h2>
+<h3 id="爱因斯坦求和约定-einsum">爱因斯坦求和约定 <code>einsum</code></h3>
+<p><code>torch.einsum</code>提供了一种基于<b>爱因斯坦求和约定</b>的简洁表达方式，能够高效执行各种张量操作，包括矩阵乘法、内积、外积、转置等。</p>
+<p>语法为：</p>
+<div class="code-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">torch.einsum(equation, *operands)</span><br></pre></td></tr></table></figure></div>
+<p>其中：</p>
+<ul>
+<li><code>equation</code>：字符串，定义操作规则</li>
+<li><code>operands</code>：一个或者多个张量</li>
+</ul>
+<p>爱因斯坦求和约定的内容为：</p>
+<ul>
+<li>若索引重复，表示在该维度上求和</li>
+<li>若索引不重复，表示保留该维度</li>
+<li>若索引在输出部分缺失，表示该维度被求和消去</li>
+</ul>
+<p>常见应用：</p>
+<ol>
+<li>矩阵乘法<div class="code-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">A = torch.randn(<span class="number">2</span>, <span class="number">3</span>)</span><br><span class="line">B = torch.randn(<span class="number">3</span>, <span class="number">4</span>)</span><br><span class="line"><span class="comment"># ij 表示 A 形状，jk 表示 B 形状。j是重复索引，在该维度上求和</span></span><br><span class="line">C = torch.einsum(<span class="string">&#x27;ij,jk-&gt;ik&#x27;</span>, A, B)  <span class="comment"># 等价于 torch.matmul(A, B)</span></span><br><span class="line"><span class="built_in">print</span>(C.shape)  <span class="comment"># (2, 4)</span></span><br></pre></td></tr></table></figure></div>
+</li>
+<li>向量点积<div class="code-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">a = torch.tensor([<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>])</span><br><span class="line">b = torch.tensor([<span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>])</span><br><span class="line"><span class="comment"># i,i-&gt; 说明 i 在两个向量中都存在，按元素相乘后求和，得到一个标量</span></span><br><span class="line">dot_product = torch.einsum(<span class="string">&#x27;i,i-&gt;&#x27;</span>, a, b)  <span class="comment"># 等价于 torch.dot(a, b)</span></span><br><span class="line"><span class="built_in">print</span>(dot_product)  <span class="comment"># 32 (1×4 + 2×5 + 3×6)</span></span><br></pre></td></tr></table></figure></div>
+</li>
+<li>向量外积<div class="code-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">a = torch.tensor([<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>])</span><br><span class="line">b = torch.tensor([<span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>])</span><br><span class="line"><span class="comment"># i,j-&gt;ij 表示保留 i 和 j 维度，不求和，得到外积，形状 (3,3)</span></span><br><span class="line">outer_product = torch.einsum(<span class="string">&#x27;i,j-&gt;ij&#x27;</span>, a, b)  <span class="comment"># 等价于 a.unsqueeze(1) * b.unsqueeze(0)</span></span><br><span class="line"><span class="built_in">print</span>(outer_product)</span><br></pre></td></tr></table></figure></div>
+</li>
+<li>批量矩阵乘法<div class="code-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">A = torch.randn(<span class="number">5</span>, <span class="number">2</span>, <span class="number">3</span>)  <span class="comment"># 5个 (2x3) 矩阵</span></span><br><span class="line">B = torch.randn(<span class="number">5</span>, <span class="number">3</span>, <span class="number">4</span>)  <span class="comment"># 5个 (3x4) 矩阵</span></span><br><span class="line"></span><br><span class="line">C = torch.einsum(<span class="string">&#x27;bij,bjk-&gt;bik&#x27;</span>, A, B)  <span class="comment"># 等价于 torch.matmul(A, B)</span></span><br><span class="line"><span class="built_in">print</span>(C.shape)  <span class="comment"># (5, 2, 4)</span></span><br></pre></td></tr></table></figure></div>
+</li>
+<li>计算矩阵的迹<div class="code-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">A = torch.randn(<span class="number">3</span>, <span class="number">3</span>)</span><br><span class="line"><span class="comment"># ii-&gt; 表示对角线求和，得到矩阵的迹</span></span><br><span class="line">trace = torch.einsum(<span class="string">&#x27;ii-&gt;&#x27;</span>, A)  <span class="comment"># 等价于 torch.trace(A)</span></span><br><span class="line"><span class="built_in">print</span>(trace)</span><br></pre></td></tr></table></figure></div>
+</li>
+<li>矩阵转置<div class="code-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">A = torch.randn(<span class="number">2</span>, <span class="number">3</span>)</span><br><span class="line"><span class="comment"># ij-&gt;ji 交换 i 和 j，实现转置</span></span><br><span class="line">A_T = torch.einsum(<span class="string">&#x27;ij-&gt;ji&#x27;</span>, A)  <span class="comment"># 等价于 A.T</span></span><br><span class="line"><span class="built_in">print</span>(A_T.shape)  <span class="comment"># (3,2)</span></span><br></pre></td></tr></table></figure></div>
+</li>
+</ol>
+<h3 id="张量乘法-matmul">张量乘法 <code>matmul</code></h3>
+<p><code>matmul</code>的行为取决于张量的维度。低维张量（如标量、向量和矩阵）的运算较为简单：</p>
+<table>
+<thead>
+<tr>
+<th><code>A</code>维度</th>
+<th><code>B</code>维度</th>
+<th><code>torch.matmul(A, B)</code>维度</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0（标量）</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr>
+<td>1（向量）</td>
+<td>1</td>
+<td>0（点积）</td>
+</tr>
+<tr>
+<td>2（矩阵）</td>
+<td>1</td>
+<td>1</td>
+</tr>
+<tr>
+<td>2</td>
+<td>2</td>
+<td>2</td>
+</tr>
+</tbody>
+</table>
+<p>对于高维张量（三维及以上），<code>torch.matmul(A, B)</code>采用批量矩阵乘法。即<b>从右往左取<code>A</code>和<code>B</code>的最后两个维度进行标准矩阵乘法，前面的批量维度自动对齐（需要保证可广播）</b></p>
+<div class="code-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">a = torch.randn(<span class="number">1</span>, <span class="number">4</span>, <span class="number">2</span>, <span class="number">3</span>)</span><br><span class="line">b = torch.randn(<span class="number">5</span>, <span class="number">1</span>, <span class="number">3</span>, <span class="number">4</span>)</span><br><span class="line">a_b = torch.matmul(a, b)</span><br><span class="line"><span class="built_in">print</span>(a.shape)          <span class="comment"># torch.Size([1, 4, 2, 3])</span></span><br><span class="line"><span class="built_in">print</span>(b.shape)          <span class="comment"># torch.Size([5, 1, 3, 4])</span></span><br><span class="line"><span class="built_in">print</span>(a_b.shape)        <span class="comment"># torch.Size([5, 4, 2, 4])</span></span><br></pre></td></tr></table></figure></div>
+<p>同时，pytorch还提供了<code>torch.bmm()</code>用于严格的3D批量矩阵乘法，即仅适用于<code>(b, m, k) @ (b, k, n)</code>。</p>
+
+		</div>
+
+		
+		<div class="post-copyright-info w-full my-8 px-2 sm:px-6 md:px-8">
+			<div class="article-copyright-info-container">
+    <ul>
+        <li><strong>Title:</strong> pytorch中张量的维度操作</li>
+        <li><strong>Author:</strong> Jachin Zhang</li>
+        <li><strong>Created at
+                :</strong> 2025-03-03 16:50:07</li>
+        
+            <li>
+                <strong>Updated at
+                    :</strong> 2025-03-03 21:22:20
+            </li>
+        
+        <li>
+            <strong>Link:</strong> https://jachinzhang1.github.io/2025/03/03/tensor-dimension-operations/
+        </li>
+        <li>
+            <strong>
+                License:
+            </strong>
+            
+
+            
+                This work is licensed under <a class="license" target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0">CC BY-NC-SA 4.0</a>.
+            
+        </li>
+    </ul>
+</div>
+
+		</div>
+		
+
+		
+		<ul class="post-tags-box text-lg mt-1.5 flex-wrap justify-center flex md:hidden">
+			
+			<li class="tag-item mx-0.5">
+				<a href="/tags/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/">#深度学习</a>&nbsp;
+			</li>
+			
+		</ul>
+		
+
+		
+
+		
+		<div class="article-nav my-8 flex justify-between items-center px-2 sm:px-6 md:px-8">
+			
+			
+			<div class="article-next border-border-color shadow-redefine-flat shadow-shadow-color-2 rounded-medium px-4 py-2 hover:shadow-redefine-flat-hover hover:shadow-shadow-color-2">
+				<a class="next" rel="next" href="/2025/02/24/regular-expressions/">
+					<span class="title flex justify-center items-center">
+						<span class="post-nav-title-item">正则表达式介绍</span>
+						<span class="post-nav-item">Next posts</span>
+					</span>
+					<span class="right arrow-icon flex justify-center items-center">
+						<i class="fa-solid fa-chevron-right"></i>
+					</span>
+				</a>
+			</div>
+			
+		</div>
+		
+
+
+		
+		<div class="comment-container px-2 sm:px-6 md:px-8 pb-8">
+			<div class="comments-container mt-10 w-full ">
+    <div id="comment-anchor" class="w-full h-2.5"></div>
+    <div class="comment-area-title w-full my-1.5 md:my-2.5 text-xl md:text-3xl font-bold">
+        Comments
+    </div>
+    
+
+        
+            
+    <div id="giscus-container"></div>
+    <script data-swup-reload-script defer>
+        async function loadGiscus() {
+            const giscusConfig = {
+                'src': 'https://giscus.app/client.js',
+                'data-repo': 'jachinzhang1/jachinzhang1.github.io',
+                'data-repo-id': 'R_kgDONy_q0w',
+                'data-category': 'Announcements',
+                'data-category-id': 'DIC_kwDONy_q084Cmo0P',
+                'data-mapping': 'title',
+                'data-strict': '0',
+                'data-reactions-enabled': '1',
+                'data-emit-metadata': '1',
+                'data-theme': 'preferred_color_scheme',
+                'data-lang': 'zh-CN',
+                'data-input-position': 'top',
+                'data-loading': 'lazy',
+                'crossorigin': 'anonymous',
+                'async': true
+            }
+            const giscusScript = document.createElement('script');
+            for (const key in giscusConfig) {
+                giscusScript.setAttribute(key, giscusConfig[key]);
+            }
+            document.getElementById('giscus-container').appendChild(giscusScript);
+        }
+        if ('true') {
+            let loadGiscusTimeout = setTimeout(() => {
+                loadGiscus();
+                clearTimeout(loadGiscusTimeout);
+            }, 1000);
+        } else {
+            document.addEventListener('DOMContentLoaded', loadGiscus);
+        }
+    </script>
+
+
+        
+        
+    
+</div>
+
+		</div>
+		
+	</div>
+
+	
+	<div class="toc-content-container">
+		<div class="post-toc-wrap">
+	<div class="post-toc">
+		<div class="toc-title">On this page</div>
+		<div class="page-title">pytorch中张量的维度操作</div>
+		<ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BC%95%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text">引言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BB%B4%E5%BA%A6%E6%93%8D%E4%BD%9C"><span class="nav-number">2.</span> <span class="nav-text">维度操作</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%B0%83%E6%95%B4%E5%BD%A2%E7%8A%B6"><span class="nav-number">2.1.</span> <span class="nav-text">调整形状</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A2%9E%E5%87%8F%E7%BB%B4%E5%BA%A6"><span class="nav-number">2.2.</span> <span class="nav-text">增减维度</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BA%A4%E6%8D%A2%E7%BB%B4%E5%BA%A6"><span class="nav-number">2.3.</span> <span class="nav-text">交换维度</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BB%B4%E5%BA%A6%E5%B1%95%E5%BC%80%E4%B8%8E%E5%90%88%E5%B9%B6"><span class="nav-number">2.4.</span> <span class="nav-text">维度展开与合并</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BC%A0%E9%87%8F%E6%89%A9%E5%B1%95"><span class="nav-number">2.5.</span> <span class="nav-text">张量扩展</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BC%A0%E9%87%8F%E6%8B%BC%E6%8E%A5"><span class="nav-number">2.6.</span> <span class="nav-text">张量拼接</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BC%A0%E9%87%8F%E8%BF%90%E7%AE%97"><span class="nav-number">3.</span> <span class="nav-text">张量运算</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%88%B1%E5%9B%A0%E6%96%AF%E5%9D%A6%E6%B1%82%E5%92%8C%E7%BA%A6%E5%AE%9A-einsum"><span class="nav-number">3.1.</span> <span class="nav-text">爱因斯坦求和约定 einsum</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BC%A0%E9%87%8F%E4%B9%98%E6%B3%95-matmul"><span class="nav-number">3.2.</span> <span class="nav-text">张量乘法 matmul</span></a></li></ol></li></ol>
+
+	</div>
+</div>
+	</div>
+	
+</div>
+			</div>
+
+			
+		</div>
+
+		<div class="main-content-footer">
+			<footer class="footer mt-5 py-5 h-auto text-base text-third-text-color relative border-t-2 border-t-border-color">
+    <div class="info-container py-3 text-center">
+        
+        <div class="text-center">
+            &copy;
+            
+              <span>2025</span>
+              -
+            
+            2025&nbsp;&nbsp;<i class="fa-solid fa-heart fa-beat" style="--fa-animation-duration: 0.5s; color: #f54545"></i>&nbsp;&nbsp;<a href="/">Jachin Zhang</a>
+            
+        </div>
+        
+            <script data-swup-reload-script src="https://cn.vercount.one/js"></script>
+            <div class="relative text-center lg:absolute lg:right-[20px] lg:top-1/2 lg:-translate-y-1/2 lg:text-right">
+                
+                    <span id="busuanzi_container_site_uv" class="lg:!block">
+                        <span class="text-sm">VISITOR COUNT</span>
+                        <span id="busuanzi_value_site_uv"></span>
+                    </span>
+                
+                
+                    <span id="busuanzi_container_site_pv" class="lg:!block">
+                        <span class="text-sm">TOTAL PAGE VIEWS</span>
+                        <span id="busuanzi_value_site_pv"></span>
+                    </span>
+                
+            </div>
+        
+        <div class="relative text-center lg:absolute lg:left-[20px] lg:top-1/2 lg:-translate-y-1/2 lg:text-left">
+            <span class="lg:block text-sm">POWERED BY <?xml version="1.0" encoding="utf-8"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"><svg class="relative top-[2px] inline-block align-baseline" version="1.1" id="圖層_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="1rem" height="1rem" viewBox="0 0 512 512" enable-background="new 0 0 512 512" xml:space="preserve"><path fill="#0E83CD" d="M256.4,25.8l-200,115.5L56,371.5l199.6,114.7l200-115.5l0.4-230.2L256.4,25.8z M349,354.6l-18.4,10.7l-18.6-11V275H200v79.6l-18.4,10.7l-18.6-11v-197l18.5-10.6l18.5,10.8V237h112v-79.6l18.5-10.6l18.5,10.8V354.6z"/></svg><a target="_blank" class="text-base" href="https://hexo.io">Hexo</a></span>
+            <span class="text-sm lg:block">THEME&nbsp;<a class="text-base" target="_blank" href="https://github.com/EvanNotFound/hexo-theme-redefine">Redefine v2.8.2</a></span>
+        </div>
+        
+        
+            <div>
+                Blog up for <span class="odometer" id="runtime_days" ></span> days <span class="odometer" id="runtime_hours"></span> hrs <span class="odometer" id="runtime_minutes"></span> Min <span class="odometer" id="runtime_seconds"></span> Sec
+            </div>
+        
+        
+            <script data-swup-reload-script>
+                try {
+                    function odometer_init() {
+                    const elements = document.querySelectorAll('.odometer');
+                    elements.forEach(el => {
+                        new Odometer({
+                            el,
+                            format: '( ddd).dd',
+                            duration: 200
+                        });
+                    });
+                    }
+                    odometer_init();
+                } catch (error) {}
+            </script>
+        
+        
+        
+    </div>  
+</footer>
+		</div>
+	</div>
+
+	
+	<div class="post-tools">
+		<div class="post-tools-container">
+	<ul class="article-tools-list">
+		<!-- TOC aside toggle -->
+		
+		<li class="right-bottom-tools page-aside-toggle">
+			<i class="fa-regular fa-outdent"></i>
+		</li>
+		
+
+		<!-- go comment -->
+		
+		<li class="go-comment">
+			<i class="fa-regular fa-comments"></i>
+		</li>
+		
+	</ul>
+</div>
+	</div>
+	
+
+	<div class="right-side-tools-container">
+		<div class="side-tools-container">
+	<ul class="hidden-tools-list">
+		<li class="right-bottom-tools tool-font-adjust-plus flex justify-center items-center">
+			<i class="fa-regular fa-magnifying-glass-plus"></i>
+		</li>
+
+		<li class="right-bottom-tools tool-font-adjust-minus flex justify-center items-center">
+			<i class="fa-regular fa-magnifying-glass-minus"></i>
+		</li>
+
+		<li class="right-bottom-tools tool-dark-light-toggle flex justify-center items-center">
+			<i class="fa-regular fa-moon"></i>
+		</li>
+
+		<!-- rss -->
+		
+
+		
+
+		<li class="right-bottom-tools tool-scroll-to-bottom flex justify-center items-center">
+			<i class="fa-regular fa-arrow-down"></i>
+		</li>
+	</ul>
+
+	<ul class="visible-tools-list">
+		<li class="right-bottom-tools toggle-tools-list flex justify-center items-center">
+			<i class="fa-regular fa-cog fa-spin"></i>
+		</li>
+		
+		<li class="right-bottom-tools tool-scroll-to-top flex justify-center items-center">
+			<i class="arrow-up fas fa-arrow-up"></i>
+			<span class="percent"></span>
+		</li>
+		
+		
+	</ul>
+</div>
+	</div>
+
+	<div class="image-viewer-container">
+	<img src="">
+</div>
+
+	
+	<div class="search-pop-overlay">
+	<div class="popup search-popup">
+		<div class="search-header">
+			<span class="search-input-field-pre">
+				<i class="fa-solid fa-keyboard"></i>
+			</span>
+			<div class="search-input-container">
+				<input autocomplete="off" autocorrect="off" autocapitalize="off" placeholder="Search..." spellcheck="false" type="search" class="search-input">
+			</div>
+			<span class="popup-btn-close">
+				<i class="fa-solid fa-times"></i>
+			</span>
+		</div>
+		<div id="search-result">
+			<div id="no-result">
+				<i class="fa-solid fa-spinner fa-spin-pulse fa-5x fa-fw"></i>
+			</div>
+		</div>
+	</div>
+</div>
+	
+
+</main>
+
+
+
+<script src="/js/build/libs/Swup.min.js"></script>
+
+<script src="/js/build/libs/SwupSlideTheme.min.js"></script>
+
+<script src="/js/build/libs/SwupScriptsPlugin.min.js"></script>
+
+<script src="/js/build/libs/SwupProgressPlugin.min.js"></script>
+
+<script src="/js/build/libs/SwupScrollPlugin.min.js"></script>
+
+<script src="/js/build/libs/SwupPreloadPlugin.min.js"></script>
+
+<script>
+    const swup = new Swup({
+        plugins: [
+            new SwupScriptsPlugin({
+                optin: true,
+            }),
+            new SwupProgressPlugin(),
+            new SwupScrollPlugin({
+                offset: 80,
+            }),
+            new SwupSlideTheme({
+                mainElement: ".main-content-body",
+            }),
+            new SwupPreloadPlugin(),
+        ],
+        containers: ["#swup"],
+    });
+</script>
+
+
+
+
+
+    
+
+  
+  
+
+	
+<script src="/js/build/tools/imageViewer.js" type="module"></script>
+
+<script src="/js/build/utils.js" type="module"></script>
+
+<script src="/js/build/main.js" type="module"></script>
+
+<script src="/js/build/layouts/navbarShrink.js" type="module"></script>
+
+<script src="/js/build/tools/scrollTopBottom.js" type="module"></script>
+
+<script src="/js/build/tools/lightDarkSwitch.js" type="module"></script>
+
+<script src="/js/build/layouts/categoryList.js" type="module"></script>
+
+
+
+    
+<script src="/js/build/tools/localSearch.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/build/tools/codeBlock.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/build/layouts/lazyload.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/build/tools/runtime.js"></script>
+
+    
+<script src="/js/build/libs/odometer.min.js"></script>
+
+    
+<link rel="stylesheet" href="/assets/odometer-theme-minimal.css">
+
+
+
+
+  
+<script src="/js/build/libs/Typed.min.js"></script>
+
+  
+<script src="/js/build/plugins/typed.js" type="module"></script>
+
+
+
+
+    
+        
+<script src="/js/build/libs/mermaid.min.js"></script>
+
+    
+    
+<script src="/js/build/plugins/mermaid.js"></script>
+
+
+
+
+    
+<script src="/js/build/libs/minimasonry.min.js"></script>
+
+    
+<script src="/js/build/plugins/masonry.js" type="module"></script>
+
+
+
+
+
+
+
+    
+<script src="/js/build/tools/tocToggle.js" type="module" data-swup-reload-script=""></script>
+
+<script src="/js/build/layouts/toc.js" type="module" data-swup-reload-script=""></script>
+
+<script src="/js/build/plugins/tabs.js" type="module" data-swup-reload-script=""></script>
+
+
+
+
+<script src="/js/build/libs/moment-with-locales.min.js" data-swup-reload-script=""></script>
+
+
+<script src="/js/build/layouts/essays.js" type="module" data-swup-reload-script=""></script>
+
+
+
+
+
+	
+</body>
+
+</html>
