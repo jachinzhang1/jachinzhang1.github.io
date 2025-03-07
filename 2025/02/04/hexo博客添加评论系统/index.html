@@ -573,7 +573,7 @@
         <div class="label text-third-text-color text-sm">Categories</div>
     </a>
     <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/archives">
-        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">14</div>
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">15</div>
         <div class="label text-third-text-color text-sm">Posts</div>
     </a>
 </div>
@@ -665,7 +665,7 @@
     
     
         <span class="article-wordcount article-meta-item">
-            <i class="fa-regular fa-typewriter"></i>&nbsp;<span>955 Words</span>
+            <i class="fa-regular fa-typewriter"></i>&nbsp;<span>994 Words</span>
         </span>
     
     
@@ -689,45 +689,53 @@
 
 
 		<div class="article-content markdown-body px-2 sm:px-6 md:px-8 pb-8">
-			<p>在Hexo框架下的博客有很多种实现评论系统的方式。我这里采用了Giscus实现评论系统，这是利用<a class="link"   target="_blank" rel="noopener" href="https://docs.github.com/en/discussions" >GitHub Discussions<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a>实现的评论系统，优点包括但不限于：</p>
-<ul>
-<li>开源、无广告、永久免费</li>
-<li>无需自建数据库（数据储存在项目仓库的Discussions中）</li>
-<li>用户通过GitHub账户登录，简化注册流程，也增强了评论者的身份可信度、便于评论的及时回复与管理</li>
-<li>支持自定义主题样式、评论排序、过滤等功能</li>
-<li>配置简单，几分钟就能搞定</li>
-</ul>
+			<p>在Hexo框架下的博客有很多种实现评论系统的方式。我这里采用了Giscus实现评论系统，这是利用<a class="link" 
+ target="_blank" rel="noopener" href="https://docs.github.com/en/discussions" >GitHub
+Discussions<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a>实现的评论系统，优点包括但不限于： -
+开源、无广告、永久免费 -
+无需自建数据库（数据储存在项目仓库的Discussions中） -
+用户通过GitHub账户登录，简化注册流程，也增强了评论者的身份可信度、便于评论的及时回复与管理
+- 支持自定义主题样式、评论排序、过滤等功能 -
+配置简单，几分钟就能搞定</p>
 <h3 id="安装">安装</h3>
-<p>进入在GitHub账户中对Giscus的<a class="link"   target="_blank" rel="noopener" href="https://github.com/apps/giscus" >安装界面<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a>点击install进行安装。</p>
-<p><figure class="image-caption"><img  
+<p>进入在GitHub账户中对Giscus的<a class="link" 
+ target="_blank" rel="noopener" href="https://github.com/apps/giscus" >安装界面<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a>点击install进行安装。</p>
+<figure>
+<figure class="image-caption"><img  
                      lazyload
                      src="/images/loading.svg"
                      data-src="/images/posts/giscus_install.png"
-                      alt="安装成功后的界面长这样"
-                ><figcaption>安装成功后的界面长这样</figcaption></figure></p>
+                     
+alt="安装成功后的界面长这样" 
+                ><figcaption>安装成功后的界面长这样</figcaption></figure>
+<figcaption aria-hidden="true">安装成功后的界面长这样</figcaption>
+</figure>
 <h3 id="官网配置"><a class="link"   target="_blank" rel="noopener" href="https://giscus.app/zh-CN" >官网<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a>配置</h3>
 <p>选择一个GitHub仓库用于储存评论数据，<u>可以是博客项目仓库，也可以是专门用于储存评论数据的仓库</u>。但要确保仓库满足3个条件：</p>
-<ol>
+<ol type="1">
 <li>该仓库是<strong>公开的</strong>，否则访客将无法查看评论信息；</li>
-<li>giscus app 已安装，否则访客将无法评论和回应（上一步已完成这一条件）；</li>
-<li>Discussions 功能<strong>已在你的仓库中启用</strong>。<br>
-进入对应的仓库，点击右上角的 <code>Settings</code>，往下翻到<code>Features</code>，勾选<code>Discussions</code>。</li>
+<li>giscus app
+已安装，否则访客将无法评论和回应（上一步已完成这一条件）；</li>
+<li>Discussions 功能<strong>已在你的仓库中启用</strong>。
+进入对应的仓库，点击右上角的
+<code>Settings</code>，往下翻到<code>Features</code>，勾选<code>Discussions</code>。</li>
 </ol>
-<p><figure class="image-caption"><img src="/images/posts/giscus_repo.png" alt="输入仓库（用户名/仓库名）后，系统会提示你该仓库是否满足所有条件"><figcaption>输入仓库（用户名/仓库名）后，系统会提示你该仓库是否满足所有条件</figcaption></figure></p>
+<figure>
+<figure class="image-caption"><img src="/images/posts/giscus_repo.png"
+alt="输入仓库（用户名/仓库名）后，系统会提示你该仓库是否满足所有条件" /><figcaption>输入仓库（用户名/仓库名）后，系统会提示你该仓库是否满足所有条件</figcaption></figure>
+<figcaption
+aria-hidden="true">输入仓库（用户名/仓库名）后，系统会提示你该仓库是否满足所有条件</figcaption>
+</figure>
 <blockquote>
 <p>有个小细节，我逐字母输入这个空的时候明明该仓库符合所有条件它还是会显示不可以使用，但我直接复制粘贴仓库地址时它就显示可以使用了。不知道算不算一个bug</p>
 </blockquote>
-<p>后面有一些个性化设置，比如：</p>
-<ul>
-<li>【页面 &lt;-&gt; Discussion映射关系】<br>
-这个决定你用于存储评论数据的仓库中Discussion如何分类显示，以及giscus如何筛选仓库Discussion中该页面的信息显示在网页上。如果使用<code>pathname</code>而你的博客标题是中文的话，Discussion界面会显示一串很长的码，不易分辨来自哪篇帖子。<strong>所以这里我选择了<code>title</code>，这样Discussion标题里的中文是可以正常显示的。</strong></li>
-<li>【Discussion分类】<br>
-建议选择<code>Announcements</code>，并勾选下面的“只搜索该分类中的discussion”</li>
-<li>【特性】<br>
-建议勾选“启用主帖子上的反应（可以给博客文章贴表情）”“将评论框放在评论上方”和“懒加载评论（评论的加载将延迟到用户滚动到评论容器附近，有助于博客界面的快速加载，是一种前端显示的优化手段）”</li>
-<li>【主题】<br>
-建议勾选“用户偏好的色彩方案”，这个随意</li>
-</ul>
+<p>后面有一些个性化设置，比如： - 【页面 &lt;-&gt; Discussion映射关系】
+这个决定你用于存储评论数据的仓库中Discussion如何分类显示，以及giscus如何筛选仓库Discussion中该页面的信息显示在网页上。如果使用<code>pathname</code>而你的博客标题是中文的话，Discussion界面会显示一串很长的码，不易分辨来自哪篇帖子。<strong>所以这里我选择了<code>title</code>，这样Discussion标题里的中文是可以正常显示的。</strong>
+- 【Discussion分类】
+建议选择<code>Announcements</code>，并勾选下面的“只搜索该分类中的discussion”
+- 【特性】
+建议勾选“启用主帖子上的反应（可以给博客文章贴表情）”“将评论框放在评论上方”和“懒加载评论（评论的加载将延迟到用户滚动到评论容器附近，有助于博客界面的快速加载，是一种前端显示的优化手段）”
+- 【主题】 建议勾选“用户偏好的色彩方案”，这个随意</p>
 <h3 id="启用giscus">启用giscus</h3>
 <p>完成上述设置之后，下面会自动生成对应的javascript代码。比如：</p>
 <div class="code-container" data-rel="Js"><figure class="iseeu highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">&lt;script src=<span class="string">&quot;https://giscus.app/client.js&quot;</span></span><br><span class="line">        data-repo=<span class="string">&quot;jachinzhang1/jachinzhang1.github.io&quot;</span></span><br><span class="line">        data-repo-id=<span class="string">&quot;R_kgDONy_q0w&quot;</span></span><br><span class="line">        data-category=<span class="string">&quot;Announcements&quot;</span></span><br><span class="line">        data-category-id=<span class="string">&quot;DIC_kwDONy_q084Cmo0P&quot;</span></span><br><span class="line">        data-mapping=<span class="string">&quot;title&quot;</span></span><br><span class="line">        data-strict=<span class="string">&quot;0&quot;</span></span><br><span class="line">        data-reactions-enabled=<span class="string">&quot;1&quot;</span></span><br><span class="line">        data-emit-metadata=<span class="string">&quot;0&quot;</span></span><br><span class="line">        data-input-position=<span class="string">&quot;top&quot;</span></span><br><span class="line">        data-theme=<span class="string">&quot;preferred_color_scheme&quot;</span></span><br><span class="line">        data-lang=<span class="string">&quot;zh-CN&quot;</span></span><br><span class="line">        data-loading=<span class="string">&quot;lazy&quot;</span></span><br><span class="line">        crossorigin=<span class="string">&quot;anonymous&quot;</span></span><br><span class="line">        <span class="keyword">async</span>&gt;</span><br><span class="line">&lt;/script&gt;</span><br></pre></td></tr></table></figure></div>

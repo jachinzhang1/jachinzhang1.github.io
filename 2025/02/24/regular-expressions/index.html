@@ -572,7 +572,7 @@
         <div class="label text-third-text-color text-sm">Categories</div>
     </a>
     <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/archives">
-        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">14</div>
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">15</div>
         <div class="label text-third-text-color text-sm">Posts</div>
     </a>
 </div>
@@ -684,12 +684,13 @@
 
 
 		<div class="article-content markdown-body px-2 sm:px-6 md:px-8 pb-8">
-			<h2 id="什么是正则表达式？">什么是正则表达式？</h2>
-<p>学过编程的应该都知道正则表达式（regular expressions）这个东西，使用它可以方便地从文本中筛选出所需格式的字符串。</p>
+			<h2 id="什么是正则表达式">什么是正则表达式？</h2>
+<p>学过编程的应该都知道正则表达式（regular
+expressions）这个东西，使用它可以方便地从文本中筛选出所需格式的字符串。</p>
 <p>举个例子，很多网站的注册界面都会要求用户输入邮箱，那么如何判定用户输入的字符串是合法的邮箱格式呢？可以使用如下的正则表达式进行判定：</p>
 <div class="code-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]&#123;2,&#125;$</span><br></pre></td></tr></table></figure></div>
 <p>看起来还是很抽象的，但实际上把正则表达式中常用的语法搞清楚之后就一目了然了。</p>
-<p>推荐一个用于测试和练习正则表达式的网站：<a class="link"   target="_blank" rel="noopener" href="https://regex101.com/" >https://regex101.com/<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a></p>
+<p>推荐一个用于测试和练习正则表达式的网站：https://regex101.com/</p>
 <h2 id="语法">语法</h2>
 <p>正则表达式主要依赖于元字符。这些元字符往往具有特殊的含义，组成了正则表达式的语义和筛选条件。下面对一些主要的元字符作介绍：</p>
 <table>
@@ -733,7 +734,7 @@
 <td>字符集，匹配与括号内相等的字符串</td>
 </tr>
 <tr>
-<td><code>|</code></td>
+<td><code>\|</code></td>
 <td>或运算符，匹配该符号前<b>或</b>后的字符</td>
 </tr>
 <tr>
@@ -756,23 +757,24 @@
                      lazyload
                      src="/images/loading.svg"
                      data-src="/images/posts/regular_expressions/base.png"
-                      alt=""
+                      
                 ></p>
-<h3 id="点运算符">点运算符 <code>.</code></h3>
+<h3 id="点运算符-.">点运算符 <code>.</code></h3>
 <p>最简单的元字符，可以匹配<b>除换行符外</b>的任意单个字符。例如对于正则表达式<code>.he</code>，它匹配任意一个字符后跟着<code>he</code>的字符串。</p>
 <p><img  
                      lazyload
                      src="/images/loading.svg"
                      data-src="/images/posts/regular_expressions/dot.png"
-                      alt=""
+                      
                 ></p>
 <h3 id="字符集">字符集 <code>[]</code></h3>
 <p>方括号用于指定一个字符集合，在方括号中使用连字符<code>-</code>指定字符集的范围。方括号内的字符集不关心顺序，类似于集合中元素的无序性。</p>
-<p><img  
+<p><img 
+
                      lazyload
                      src="/images/loading.svg"
                      data-src="/images/posts/regular_expressions/square_brackets.png"
-                      alt=""
+                      
                 ></p>
 <h3 id="否定字符集">否定字符集 <code>^</code></h3>
 <p>一般使用<code>^</code>表示一个字符串的开头，但用在字符集中的开头时，它表示该字符集是否定的，匹配该字符集<b>在所有字符的集合中的补集</b>。</p>
@@ -780,21 +782,22 @@
                      lazyload
                      src="/images/loading.svg"
                      data-src="/images/posts/regular_expressions/negative.png"
-                      alt=""
+                      
                 ></p>
 <h3 id="星号">星号 <code>*</code></h3>
 <p>星号匹配在它之前的字符出现不小于0次的字符。例如，<code>[a-z]*</code>表示所有小写字母组成的子串。</p>
-<p><img  
+<p><img 
+
                      lazyload
                      src="/images/loading.svg"
                      data-src="/images/posts/regular_expressions/star_lowercase.png"
-                      alt=""
+                      
                 ></p>
 <p><img  
                      lazyload
                      src="/images/loading.svg"
                      data-src="/images/posts/regular_expressions/star_number.png"
-                      alt=""
+                      
                 ></p>
 
   <div class="note p-4 mb-4 rounded-small blue">
@@ -807,7 +810,7 @@
                      lazyload
                      src="/images/loading.svg"
                      data-src="/images/posts/regular_expressions/plus.png"
-                      alt=""
+                      
                 ></p>
 <h3 id="问号">问号 <code>?</code></h3>
 <p>在<code>?</code>号前面的字符为可选，即出现0或1次。例如<code>t?he</code>匹配字符串<code>the</code>或<code>he</code>。</p>
@@ -815,7 +818,7 @@
                      lazyload
                      src="/images/loading.svg"
                      data-src="/images/posts/regular_expressions/question_mark.png"
-                      alt=""
+                      
                 ></p>
 <h3 id="花括号">花括号 <code>&#123;&#125;</code></h3>
 <p>花括号在正则表达式中常用作量词，限定其前面的字符可以重复出现的次数，可以传入不多于两个的参数。</p>
@@ -824,7 +827,7 @@
                      lazyload
                      src="/images/loading.svg"
                      data-src="/images/posts/regular_expressions/curly_braces.png"
-                      alt=""
+                      
                 ></p>
 <h3 id="特征标群">特征标群 <code>()</code></h3>
 <p>特征标群是一组写在小括号内的子模式，括号内的内容会被看作一个整体。例如<code>ab*</code>匹配<code>a</code>后连续出现不小于0个<code>b</code>的字符串，而<code>(ab)*</code>匹配连续出现不小于0个<code>ab</code>的字符串。</p>
@@ -832,7 +835,7 @@
                      lazyload
                      src="/images/loading.svg"
                      data-src="/images/posts/regular_expressions/parentheses.png"
-                      alt=""
+                      
                 ></p>
 <h3 id="或运算符">或运算符 <code>|</code></h3>
 <p>或运算符<code>|</code>表示“或”的判断条件。如<code>(T|t)he|car</code>匹配<code>The</code>，<code>the</code>和<code>car</code>。</p>
@@ -840,7 +843,7 @@
                      lazyload
                      src="/images/loading.svg"
                      data-src="/images/posts/regular_expressions/or.png"
-                      alt=""
+                      
                 ></p>
 <h3 id="转义字符">转义字符 <code>\</code></h3>
 <p>转义字符用于转码紧跟其后的特殊字符，例如以上提到的这些。如果想要在字符串中匹配这些字符需要在其前面加上<code>\</code>符号。例如<code>\.</code>用于匹配字符<code>.</code>。值得注意的是，如果再在后面添加问号，即<code>\.?</code>，表示该字符（<code>.</code>）是选择性匹配的。</p>
@@ -848,7 +851,7 @@
                      lazyload
                      src="/images/loading.svg"
                      data-src="/images/posts/regular_expressions/escape.png"
-                      alt=""
+                      
                 ></p>
 <h3 id="锚点-与">锚点 <code>^</code>与<code>$</code></h3>
 <p>锚点<code>^</code>和<code>$</code>分别表示输入的字符串的开头和结尾。例如，<code>^(T|t)he</code>仅匹配在句首出现的<code>the</code>或<code>The</code>，而<code>(at)\.?$</code>仅匹配在句尾出现的<code>at.</code>或<code>at</code>。</p>
@@ -856,13 +859,13 @@
                      lazyload
                      src="/images/loading.svg"
                      data-src="/images/posts/regular_expressions/beginning.png"
-                      alt=""
+                      
                 ></p>
 <p><img  
                      lazyload
                      src="/images/loading.svg"
                      data-src="/images/posts/regular_expressions/end.png"
-                      alt=""
+                      
                 ></p>
 <h3 id="简写字符集">简写字符集</h3>
 <p>正则表达式提供了一些常用的字符集简写：</p>
@@ -952,51 +955,49 @@
 </tr>
 </tbody>
 </table>
-<p>看名称可能有点难理解，通俗点解释就是：</p>
-<ul>
-<li>“正/负”表示该断言用于判断存在某格式（正）还是排除某格式（负）；</li>
-<li>“先行/后发”表示该断言用于筛选其后跟随某格式（先行）还是其前跟随某格式（后发）。</li>
-</ul>
+<p>看名称可能有点难理解，通俗点解释就是： -
+“正/负”表示该断言用于判断存在某格式（正）还是排除某格式（负）； -
+“先行/后发”表示该断言用于筛选其后跟随某格式（先行）还是其前跟随某格式（后发）。</p>
 <p>下面作出更详细的解释：</p>
 <ul>
-<li>
-<p>先行断言用于根据<b>第一部分表达式</b>之后<u>是否存在</u>断言定义的表达式进行筛选。</p>
+<li>先行断言用于根据<b>第一部分表达式</b>之后<u>是否存在</u>断言定义的表达式进行筛选。
 <ul>
-<li>正先行断言表示第一部分表达式之后必须跟着<code>?=</code>定义的表达式。比如，<code>a(?=b)</code>匹配后面跟着<code>b</code>的<code>a</code>。如果<code>a</code>后面没有<code>b</code>则不会被匹配。被断言定义的表达式<code>b</code>不会被匹配。<br>
-<img  
+<li>正先行断言表示第一部分表达式之后必须跟着<code>?=</code>定义的表达式。比如，<code>a(?=b)</code>匹配后面跟着<code>b</code>的<code>a</code>。如果<code>a</code>后面没有<code>b</code>则不会被匹配。被断言定义的表达式<code>b</code>不会被匹配。
+<img 
+
                      lazyload
                      src="/images/loading.svg"
                      data-src="/images/posts/regular_expressions/positive_lookahead_assertion.png"
-                      alt=""
+                      
                 ></li>
-<li>负先行断言<code>?!</code>则相反，简单理解为正先行断言的反例即可。<br>
-<img  
+<li>负先行断言<code>?!</code>则相反，简单理解为正先行断言的反例即可。
+<img 
+
                      lazyload
                      src="/images/loading.svg"
                      data-src="/images/posts/regular_expressions/negative_lookahead_assertion.png"
-                      alt=""
+                      
                 ></li>
-</ul>
-</li>
-<li>
-<p>后发断言用于根据<b>第二部分表达式</b>之前<u>是否存在</u>断言定义的表达式进行筛选。</p>
+</ul></li>
+<li>后发断言用于根据<b>第二部分表达式</b>之前<u>是否存在</u>断言定义的表达式进行筛选。
 <ul>
-<li>正后发断言表示第二部分表达式之前必须跟着<code>?&lt;=</code>定义的表达式。比如<code>(?&lt;=a)b</code>匹配前面有<code>a</code>的<code>b</code>。如果<code>b</code>前面没有<code>a</code>则不会被匹配。被断言定义的表达式<code>a</code>不会被匹配。<br>
-<img  
+<li>正后发断言表示第二部分表达式之前必须跟着<code>?&lt;=</code>定义的表达式。比如<code>(?&lt;=a)b</code>匹配前面有<code>a</code>的<code>b</code>。如果<code>b</code>前面没有<code>a</code>则不会被匹配。被断言定义的表达式<code>a</code>不会被匹配。
+<img 
+
                      lazyload
                      src="/images/loading.svg"
                      data-src="/images/posts/regular_expressions/positive_lookbehind_assertion.png"
-                      alt=""
+                      
                 ></li>
-<li>负后发断言<code>?&lt;!</code>则相反，简单理解为正后发断言的反例即可。<br>
-<img  
+<li>负后发断言<code>?&lt;!</code>则相反，简单理解为正后发断言的反例即可。
+<img 
+
                      lazyload
                      src="/images/loading.svg"
                      data-src="/images/posts/regular_expressions/negative_lookbehind_assertion.png"
-                      alt=""
+                      
                 ></li>
-</ul>
-</li>
+</ul></li>
 </ul>
 <h3 id="模式修正符">模式修正符</h3>
 <p>模式修正符也叫标志，可以用于修改表达式的搜索结果。这些标志可以任意组合使用，属于整个正则表达式的一部分。这里仅介绍三个最常用的模式修正符。</p>
@@ -1022,48 +1023,51 @@
 </tr>
 </tbody>
 </table>
-<p><figure class="image-caption"><img  
+<figure>
+<figure class="image-caption"><img  
                      lazyload
                      src="/images/loading.svg"
                      data-src="/images/posts/regular_expressions/patterns_flags.png"
-                      alt="可以在网站的右边修改模式修正符"
-                ><figcaption>可以在网站的右边修改模式修正符</figcaption></figure></p>
+                     
+alt="可以在网站的右边修改模式修正符" 
+                ><figcaption>可以在网站的右边修改模式修正符</figcaption></figure>
+<figcaption
+aria-hidden="true">可以在网站的右边修改模式修正符</figcaption>
+</figure>
 <ul>
-<li>
-<p>全局搜索<code>g</code>常用于执行一个全局的搜索匹配，即不仅仅返回第一个匹配的，而是返回全部的匹配结果。</p>
-<p><img  
+<li><p>全局搜索<code>g</code>常用于执行一个全局的搜索匹配，即不仅仅返回第一个匹配的，而是返回全部的匹配结果。</p>
+<p><img 
+
                      lazyload
                      src="/images/loading.svg"
                      data-src="/images/posts/regular_expressions/global_search.png"
-                      alt=""
-                ></p>
-</li>
-<li>
-<p>忽略大小写标志<code>i</code>顾名思义，不再赘述。</p>
-<p><img  
+                      
+                ></p></li>
+<li><p>忽略大小写标志<code>i</code>顾名思义，不再赘述。</p>
+<p><img 
+
                      lazyload
                      src="/images/loading.svg"
                      data-src="/images/posts/regular_expressions/case_insensitive.png"
-                      alt=""
-                ></p>
-</li>
-<li>
-<p>多行修饰符<code>m</code>可以使得锚点元字符<code>^</code>和<code>$</code>在输入字符串的每行的开头和结尾均生效。</p>
-<p><img  
+                      
+                ></p></li>
+<li><p>多行修饰符<code>m</code>可以使得锚点元字符<code>^</code>和<code>$</code>在输入字符串的每行的开头和结尾均生效。</p>
+<p><img 
+
                      lazyload
                      src="/images/loading.svg"
                      data-src="/images/posts/regular_expressions/multiline.png"
-                      alt=""
-                ></p>
-</li>
+                      
+                ></p></li>
 </ul>
 <h3 id="贪婪匹配与惰性匹配">贪婪匹配与惰性匹配</h3>
 <p>正则表达式默认采用<b>贪婪匹配</b>模式，在该模式下意味着会匹配<b>尽可能长的子串</b>。我们可以使用<code>?</code>将贪婪匹配模式转化为&lt;b&lt;惰性匹配</b>模式，该模式下会匹配尽可能短的子串。</p>
-<p><img  
+<p><img 
+
                      lazyload
                      src="/images/loading.svg"
                      data-src="/images/posts/regular_expressions/greedy_lazy_matching.png"
-                      alt=""
+                      
                 ></p>
 
   <div class="note-large blue">
@@ -1072,8 +1076,10 @@
 
     </div>
     <div class="notel-content">
-      <p><a class="link"   target="_blank" rel="noopener" href="https://blog.csdn.net/LLLLQZ/article/details/118278287" >正则表达式学习笔记（超级详细！！！）| 有用的小知识 - CSDN博客<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a><br>
-<a class="link"   target="_blank" rel="noopener" href="https://regex101.com/" >regular expressions 101<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a></p>
+      <p><a class="link" 
+ target="_blank" rel="noopener" href="https://blog.csdn.net/LLLLQZ/article/details/118278287" >正则表达式学习笔记（超级详细！！！）|
+有用的小知识 - CSDN博客<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a> <a class="link"   target="_blank" rel="noopener" href="https://regex101.com/" >regular
+expressions 101<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a></p>
 
     </div>
   </div>
@@ -1220,7 +1226,7 @@
 	<div class="post-toc">
 		<div class="toc-title">On this page</div>
 		<div class="page-title">正则表达式介绍</div>
-		<ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%80%E4%B9%88%E6%98%AF%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F%EF%BC%9F"><span class="nav-number">1.</span> <span class="nav-text">什么是正则表达式？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%AF%AD%E6%B3%95"><span class="nav-number">2.</span> <span class="nav-text">语法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9F%BA%E6%9C%AC%E5%8C%B9%E9%85%8D"><span class="nav-number">2.1.</span> <span class="nav-text">基本匹配</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%82%B9%E8%BF%90%E7%AE%97%E7%AC%A6"><span class="nav-number">2.2.</span> <span class="nav-text">点运算符 .</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AD%97%E7%AC%A6%E9%9B%86"><span class="nav-number">2.3.</span> <span class="nav-text">字符集 []</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%90%A6%E5%AE%9A%E5%AD%97%E7%AC%A6%E9%9B%86"><span class="nav-number">2.4.</span> <span class="nav-text">否定字符集 ^</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%98%9F%E5%8F%B7"><span class="nav-number">2.5.</span> <span class="nav-text">星号 *</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8A%A0%E5%8F%B7"><span class="nav-number">2.6.</span> <span class="nav-text">加号 +</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%97%AE%E5%8F%B7"><span class="nav-number">2.7.</span> <span class="nav-text">问号 ?</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%8A%B1%E6%8B%AC%E5%8F%B7"><span class="nav-number">2.8.</span> <span class="nav-text">花括号 {}</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%89%B9%E5%BE%81%E6%A0%87%E7%BE%A4"><span class="nav-number">2.9.</span> <span class="nav-text">特征标群 ()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%88%96%E8%BF%90%E7%AE%97%E7%AC%A6"><span class="nav-number">2.10.</span> <span class="nav-text">或运算符 |</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BD%AC%E4%B9%89%E5%AD%97%E7%AC%A6"><span class="nav-number">2.11.</span> <span class="nav-text">转义字符 \</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%94%9A%E7%82%B9-%E4%B8%8E"><span class="nav-number">2.12.</span> <span class="nav-text">锚点 ^与$</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AE%80%E5%86%99%E5%AD%97%E7%AC%A6%E9%9B%86"><span class="nav-number">2.13.</span> <span class="nav-text">简写字符集</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%9B%B6%E5%AE%BD%E5%BA%A6%E6%96%AD%E8%A8%80"><span class="nav-number">2.14.</span> <span class="nav-text">零宽度断言</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A8%A1%E5%BC%8F%E4%BF%AE%E6%AD%A3%E7%AC%A6"><span class="nav-number">2.15.</span> <span class="nav-text">模式修正符</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%B4%AA%E5%A9%AA%E5%8C%B9%E9%85%8D%E4%B8%8E%E6%83%B0%E6%80%A7%E5%8C%B9%E9%85%8D"><span class="nav-number">2.16.</span> <span class="nav-text">贪婪匹配与惰性匹配</span></a></li></ol></li></ol>
+		<ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%80%E4%B9%88%E6%98%AF%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F"><span class="nav-number">1.</span> <span class="nav-text">什么是正则表达式？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%AF%AD%E6%B3%95"><span class="nav-number">2.</span> <span class="nav-text">语法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9F%BA%E6%9C%AC%E5%8C%B9%E9%85%8D"><span class="nav-number">2.1.</span> <span class="nav-text">基本匹配</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%82%B9%E8%BF%90%E7%AE%97%E7%AC%A6-."><span class="nav-number">2.2.</span> <span class="nav-text">点运算符 .</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AD%97%E7%AC%A6%E9%9B%86"><span class="nav-number">2.3.</span> <span class="nav-text">字符集 []</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%90%A6%E5%AE%9A%E5%AD%97%E7%AC%A6%E9%9B%86"><span class="nav-number">2.4.</span> <span class="nav-text">否定字符集 ^</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%98%9F%E5%8F%B7"><span class="nav-number">2.5.</span> <span class="nav-text">星号 *</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8A%A0%E5%8F%B7"><span class="nav-number">2.6.</span> <span class="nav-text">加号 +</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%97%AE%E5%8F%B7"><span class="nav-number">2.7.</span> <span class="nav-text">问号 ?</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%8A%B1%E6%8B%AC%E5%8F%B7"><span class="nav-number">2.8.</span> <span class="nav-text">花括号 {}</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%89%B9%E5%BE%81%E6%A0%87%E7%BE%A4"><span class="nav-number">2.9.</span> <span class="nav-text">特征标群 ()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%88%96%E8%BF%90%E7%AE%97%E7%AC%A6"><span class="nav-number">2.10.</span> <span class="nav-text">或运算符 |</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BD%AC%E4%B9%89%E5%AD%97%E7%AC%A6"><span class="nav-number">2.11.</span> <span class="nav-text">转义字符 \</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%94%9A%E7%82%B9-%E4%B8%8E"><span class="nav-number">2.12.</span> <span class="nav-text">锚点 ^与$</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AE%80%E5%86%99%E5%AD%97%E7%AC%A6%E9%9B%86"><span class="nav-number">2.13.</span> <span class="nav-text">简写字符集</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%9B%B6%E5%AE%BD%E5%BA%A6%E6%96%AD%E8%A8%80"><span class="nav-number">2.14.</span> <span class="nav-text">零宽度断言</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A8%A1%E5%BC%8F%E4%BF%AE%E6%AD%A3%E7%AC%A6"><span class="nav-number">2.15.</span> <span class="nav-text">模式修正符</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%B4%AA%E5%A9%AA%E5%8C%B9%E9%85%8D%E4%B8%8E%E6%83%B0%E6%80%A7%E5%8C%B9%E9%85%8D"><span class="nav-number">2.16.</span> <span class="nav-text">贪婪匹配与惰性匹配</span></a></li></ol></li></ol>
 
 	</div>
 </div>

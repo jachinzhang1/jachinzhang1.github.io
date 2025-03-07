@@ -572,7 +572,7 @@
         <div class="label text-third-text-color text-sm">Categories</div>
     </a>
     <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/archives">
-        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">14</div>
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">15</div>
         <div class="label text-third-text-color text-sm">Posts</div>
     </a>
 </div>
@@ -691,7 +691,8 @@
 
     </div>
     <div class="notel-content">
-      <p><a class="link"   target="_blank" rel="noopener" href="https://arxiv.org/abs/1706.03762" >Attention is All You Need<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a></p>
+      <p><a class="link"   target="_blank" rel="noopener" href="https://arxiv.org/abs/1706.03762" >Attention is All You
+Need<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a></p>
 
     </div>
   </div>
@@ -701,132 +702,162 @@
 <p>对于自然语言文本，计算机难以直接使用，因此在NLP中第一步都是将自然语言的单词转化为等长的向量，这个过程叫做<b>嵌入</b>。向量的每个维度都有其潜在的含义，只不过在具体实践中难以对每个维度的含义做具体解释。</p>
 <p>词嵌入并无普遍标准，同一个词的嵌入也会因为任务、神经网络、训练阶段的不同而不同。初始嵌入为随机值，在训练期间会不断调整从而最小化神经网络的误差。</p>
 <p>举个例子，我们要将这句话输进计算机做处理：</p>
-<p><centering>I will come and teach you how to do this tomorrow.</centering></p>
-<p>句子被输入计算机时，程序将该字符串分为若干个token $t$，每个token生成一个词嵌入$a$。但此时这些词嵌入不包含上下文信息，即对程序来说，这些词嵌入组合相当于一个无序地装着多个单词的词袋，包含的信息十分有限。</p>
+<p><centering>I will come and teach you how to do this
+tomorrow.</centering></p>
+<p>句子被输入计算机时，程序将该字符串分为若干个token <span
+class="math inline">\(t\)</span>，每个token生成一个词嵌入<span
+class="math inline">\(a\)</span>。但此时这些词嵌入不包含上下文信息，即对程序来说，这些词嵌入组合相当于一个无序地装着多个单词的词袋，包含的信息十分有限。</p>
 <p>而当我们分析句中单词的语义时会发现单词间的关联程度并不和它们之间的距离直接相关，例如will和tomorrow的关联程度明显比其与come的关联程度更高。因此<b>词语之间的关联程度需要根据上下文的语境决定</b>。接下来我们试图调整tokens的词嵌入，使其包含上下文信息。</p>
 <h2 id="缩放点积注意力的推导">缩放点积注意力的推导</h2>
 <p><img  
                      lazyload
                      src="/images/loading.svg"
                      data-src="/images/posts/attention/selfattn_1.png"
-                      alt=""
+                      
                 ></p>
-<p>如图，$a^i$是不含上下文信息的词嵌入（这里以NLP的过程为例，事实上注意力机制还可以用于图像处理等，$a^i$可为初始输入或来自某个模型的输出），输出的结果$b^i$与所有词嵌入都有关。当我们了解$b^1$向量如何产生之后，其余向量的产生过程都可以很容易得到。产生$b^1$向量的首要步骤是找到$a^1$与其他向量的关联程度（也称注意力分数）。</p>
+<p>如图，<span
+class="math inline">\(a^i\)</span>是不含上下文信息的词嵌入（这里以NLP的过程为例，事实上注意力机制还可以用于图像处理等，<span
+class="math inline">\(a^i\)</span>可为初始输入或来自某个模型的输出），输出的结果<span
+class="math inline">\(b^i\)</span>与所有词嵌入都有关。当我们了解<span
+class="math inline">\(b^1\)</span>向量如何产生之后，其余向量的产生过程都可以很容易得到。产生<span
+class="math inline">\(b^1\)</span>向量的首要步骤是找到<span
+class="math inline">\(a^1\)</span>与其他向量的关联程度（也称注意力分数）。</p>
 <p><img  
                      lazyload
                      src="/images/loading.svg"
                      data-src="/images/posts/attention/selfattn_2.png"
-                      alt=""
+                      
                 ></p>
-<p>对于求$a^i,a^j$之间的注意力分数$\alpha_{i,j}$，最常用的方法是求出$a^i$的查询（query）向量<br>
-$$<br>
-q^i=W^qa^i<br>
-$$<br>
-求出$a^j$的键值（key）向量<br>
-$$<br>
-k^j=W^ka^j<br>
-$$<br>
-则注意力分数为查询向量和键值向量的点积<br>
-$$<br>
-\alpha_{i,j}=q^i\cdot k^j<br>
-$$</p>
-<p>这里求$a^1$与其他嵌入向量的关联度，求出其查询向量$q^1$之后与所有嵌入向量的键值向量$k^i(i=1,2,3,4)$做点积，最后对求出的关联度向量组作softmax归一化。</p>
+<p>对于求<span
+class="math inline">\(a^i,a^j\)</span>之间的注意力分数<span
+class="math inline">\(\alpha_{i,j}\)</span>，最常用的方法是求出<span
+class="math inline">\(a^i\)</span>的查询（query）向量 <span
+class="math display">\[
+q^i=W^qa^i
+\]</span> 求出<span class="math inline">\(a^j\)</span>的键值（key）向量
+<span class="math display">\[
+k^j=W^ka^j
+\]</span> 则注意力分数为查询向量和键值向量的点积 <span
+class="math display">\[
+\alpha_{i,j}=q^i\cdot k^j
+\]</span></p>
+<p>这里求<span
+class="math inline">\(a^1\)</span>与其他嵌入向量的关联度，求出其查询向量<span
+class="math inline">\(q^1\)</span>之后与所有嵌入向量的键值向量<span
+class="math inline">\(k^i(i=1,2,3,4)\)</span>做点积，最后对求出的关联度向量组作softmax归一化。</p>
 <p><img  
                      lazyload
                      src="/images/loading.svg"
                      data-src="/images/posts/attention/selfattn_3.png"
-                      alt=""
+                      
                 ></p>
-<p>这个步骤可以简单理解为：在搜索引擎中输入的内容为$q$，搜索到的结果展示了各种信息的键值$k$，可以通过键值得到信息的内容（值，value）$v$本身。而关联度$\alpha$展示了这些信息与我们输入的内容的相关性有多大，这个值越大说明这个键值对应的内容和我输入的查询内容相关程度越高。</p>
+<p>这个步骤可以简单理解为：在搜索引擎中输入的内容为<span
+class="math inline">\(q\)</span>，搜索到的结果展示了各种信息的键值<span
+class="math inline">\(k\)</span>，可以通过键值得到信息的内容（值，value）<span
+class="math inline">\(v\)</span>本身。而关联度<span
+class="math inline">\(\alpha\)</span>展示了这些信息与我们输入的内容的相关性有多大，这个值越大说明这个键值对应的内容和我输入的查询内容相关程度越高。</p>
 
   <div class="note p-4 mb-4 rounded-small blue">
     <p>该步骤的激活函数并非必须为softmax，使用其他激活函数（如RELU，GELU等）也可，并且可能达到更好的效果。</p>
 
   </div>
-<p>得到$a^1$与自身及其他几个嵌入向量的注意力分数之后，将这些分数与其对应向量的值向量相乘然后求和，即可得到添加了上下文信息的嵌入$b^1$。值向量可通过下式求得：<br>
-$$<br>
-v^i=W^va^i<br>
-$$</p>
+<p>得到<span
+class="math inline">\(a^1\)</span>与自身及其他几个嵌入向量的注意力分数之后，将这些分数与其对应向量的值向量相乘然后求和，即可得到添加了上下文信息的嵌入<span
+class="math inline">\(b^1\)</span>。值向量可通过下式求得： <span
+class="math display">\[
+v^i=W^va^i
+\]</span></p>
 <p><img  
                      lazyload
                      src="/images/loading.svg"
                      data-src="/images/posts/attention/selfattn_4.png"
-                      alt=""
+                      
                 ></p>
-<p>其余$b$向量的产生过程同理。值得注意的是，这个过程并不需要依序产生，所有$b$向量可以通过一组矩阵运算同时产生。</p>
+<p>其余<span
+class="math inline">\(b\)</span>向量的产生过程同理。值得注意的是，这个过程并不需要依序产生，所有<span
+class="math inline">\(b\)</span>向量可以通过一组矩阵运算同时产生。</p>
 <p><img  
                      lazyload
                      src="/images/loading.svg"
                      data-src="/images/posts/attention/selfattn_5.png"
-                      alt=""
+                      
                 ></p>
 <p><img  
                      lazyload
                      src="/images/loading.svg"
                      data-src="/images/posts/attention/selfattn_6.png"
-                      alt=""
+                      
                 ></p>
 <p><img  
                      lazyload
                      src="/images/loading.svg"
                      data-src="/images/posts/attention/selfattn_7.png"
-                      alt=""
+                      
                 ></p>
 <p><img  
                      lazyload
                      src="/images/loading.svg"
                      data-src="/images/posts/attention/selfattn_8.png"
-                      alt=""
+                      
                 ></p>
-<p>使用向量形式可以非常简洁地表述上述过程。假设：</p>
-<ul>
-<li><b>查询矩阵</b>$Q\in\mathbb{R}^{m\times d_k}$($m$表示查询的个数，$d_k$是查询向量的维度)</li>
-<li><b>键矩阵</b>$K\in\mathbb{R}^{n\times d_k}$($n$表示键的个数)</li>
-<li><b>值矩阵</b>$V\in\mathbb{R}^{n\times d_v}$</li>
-</ul>
-<p>每个查询$q^i$和每个键$k^j$之间的相似度用点积计算（如式$(3)$），则所有查询和所有键的点积可以用矩阵表示：<br>
-$$<br>
-A=QK^T<br>
-$$</p>
-<p>其中$A\in\mathbb{R}^{m\times n}$是所有查询和所有键的相似度矩阵。接着采用softmax对$A$进行归一化处理（对矩阵的每一行进行归一化）：<br>
-$$<br>
-A^\prime = \mathrm{softmax}(A)<br>
-$$</p>
-<p>最终注意力的输出值是值$V$的加权求和：<br>
-$$<br>
-o_i = \sum_{j=1}^n{\alpha^\prime_{ij}v_j}<br>
-$$</p>
-<p>即<br>
-$$<br>
-O=AV<br>
-$$<br>
-其中$O\in\mathbb{R}^{m\times d_v}$是最终的注意力输出矩阵。</p>
-<p>值得注意的是，作者在<a class="link"   target="_blank" rel="noopener" href="https://arxiv.org/abs/1706.03762" >原论文<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a>中提出了<b>缩放因子</b>：<br>
-$$<br>
-A=\frac{QK^T}{\sqrt{d_k}}<br>
-$$</p>
-<p>其原因是：点积值的大小随着$d_k$增大而增大。如果$d_k$很大，$QK^T$的数值会很大，导致Softmax计算时指数项变大，使得梯度消失或过于集中于某些键值，确保注意力分布合理。</p>
-<p>最终我们得到了完整的注意力机制公式：<br>
-$$<br>
-\mathrm{Attention}(Q,K,V)=\mathrm{softmax}\Big(\frac{QK^T}{\sqrt{d}}\Big)V<br>
-$$</p>
-<p><strong>整个过程只有矩阵$W^Q,W^K,W^V$是需要训练的。</strong></p>
+<p>使用向量形式可以非常简洁地表述上述过程。假设： - <b>查询矩阵</b><span
+class="math inline">\(Q\in\mathbb{R}^{m\times d_k}\)</span>(<span
+class="math inline">\(m\)</span>表示查询的个数，<span
+class="math inline">\(d_k\)</span>是查询向量的维度) - <b>键矩阵</b><span
+class="math inline">\(K\in\mathbb{R}^{n\times d_k}\)</span>(<span
+class="math inline">\(n\)</span>表示键的个数) - <b>值矩阵</b><span
+class="math inline">\(V\in\mathbb{R}^{n\times d_v}\)</span></p>
+<p>每个查询<span class="math inline">\(q^i\)</span>和每个键<span
+class="math inline">\(k^j\)</span>之间的相似度用点积计算（如式<span
+class="math inline">\((3)\)</span>），则所有查询和所有键的点积可以用矩阵表示：
+<span class="math display">\[
+A=QK^T
+\]</span></p>
+<p>其中<span class="math inline">\(A\in\mathbb{R}^{m\times
+n}\)</span>是所有查询和所有键的相似度矩阵。接着采用softmax对<span
+class="math inline">\(A\)</span>进行归一化处理（对矩阵的每一行进行归一化）：
+<span class="math display">\[
+A^\prime = \mathrm{softmax}(A)
+\]</span></p>
+<p>最终注意力的输出值是值<span
+class="math inline">\(V\)</span>的加权求和： <span
+class="math display">\[
+o_i = \sum_{j=1}^n{\alpha^\prime_{ij}v_j}
+\]</span></p>
+<p>即 <span class="math display">\[
+O=AV
+\]</span> 其中<span class="math inline">\(O\in\mathbb{R}^{m\times
+d_v}\)</span>是最终的注意力输出矩阵。</p>
+<p>值得注意的是，作者在<a class="link" 
+ target="_blank" rel="noopener" href="https://arxiv.org/abs/1706.03762" >原论文<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a>中提出了<b>缩放因子</b>：
+<span class="math display">\[
+A=\frac{QK^T}{\sqrt{d_k}}
+\]</span></p>
+<p>其原因是：点积值的大小随着<span
+class="math inline">\(d_k\)</span>增大而增大。如果<span
+class="math inline">\(d_k\)</span>很大，<span
+class="math inline">\(QK^T\)</span>的数值会很大，导致Softmax计算时指数项变大，使得梯度消失或过于集中于某些键值，确保注意力分布合理。</p>
+<p>最终我们得到了完整的注意力机制公式： <span class="math display">\[
+\mathrm{Attention}(Q,K,V)=\mathrm{softmax}\Big(\frac{QK^T}{\sqrt{d}}\Big)V
+\]</span></p>
+<p><strong>整个过程只有矩阵<span
+class="math inline">\(W^Q,W^K,W^V\)</span>是需要训练的。</strong></p>
 
   <div class="note p-4 mb-4 rounded-small blue">
-    <p>在机器翻译或文本生成的任务中，通常需要预测下一个单词出现的概率，这类任务要求注意力只能放在下一个词，不能放在更往后的词上。简而言之，<strong>注意力矩阵不能有非平凡的超对角线分量</strong>。这时我们可以通过添加<strong>掩码矩阵</strong>$M$来修正注意力，消除神经网络对未来的了解。即<br>
-$$<br>
-\mathrm{Attention}(Q,K,V)=\mathrm{softmax}\Big(\frac{QK^T}{\sqrt{d}}+M\Big)V<br>
-$$</p>
-<p>其中，<br>
-$$<br>
-\begin{aligned}<br>
-M&amp;=\left( m_{i,j} \right) <em>{i,j=0}^{n}\<br>
-m</em>{i,j}&amp;=\begin{cases}<br>
-0&amp;		i\ge j\<br>
--\infty&amp;		i&lt;j\<br>
-\end{cases}\<br>
-\end{aligned}<br>
-$$</p>
+    <p>在机器翻译或文本生成的任务中，通常需要预测下一个单词出现的概率，这类任务要求注意力只能放在下一个词，不能放在更往后的词上。简而言之，<strong>注意力矩阵不能有非平凡的超对角线分量</strong>。这时我们可以通过添加<strong>掩码矩阵</strong><span
+class="math inline">\(M\)</span>来修正注意力，消除神经网络对未来的了解。即
+<span class="math display">\[
+\mathrm{Attention}(Q,K,V)=\mathrm{softmax}\Big(\frac{QK^T}{\sqrt{d}}+M\Big)V
+\]</span></p>
+<p>其中， <span class="math display">\[
+\begin{aligned}
+    M&amp;=\left( m_{i,j} \right) _{i,j=0}^{n}\\
+    m_{i,j}&amp;=\begin{cases}
+    0&amp;      i\ge j\\
+    -\infty&amp;        i&lt;j\\
+\end{cases}\\
+\end{aligned}
+\]</span></p>
 
   </div>
 <p>利用神经网络结构表示注意力机制如下图所示：</p>
@@ -834,7 +865,7 @@ $$</p>
                      lazyload
                      src="/images/loading.svg"
                      data-src="/images/posts/attention/selfattn_nn.png"
-                      alt=""
+                      
                 ></p>
 
   <div class="note-large blue">
@@ -844,50 +875,61 @@ $$</p>
     </div>
     <div class="notel-content">
       <ul>
-<li><a class="link"   target="_blank" rel="noopener" href="https://www.zhihu.com/question/298810062/answer/2274132657" >iynil的回答 - 知乎<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a></li>
-<li><a class="link"   target="_blank" rel="noopener" href="https://www.zhihu.com/question/298810062/answer/86505956036" >司马懿的回答 - 知乎<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a></li>
-<li><a class="link"   target="_blank" rel="noopener" href="https://www.zhihu.com/question/298810062/answer/1828080188" >陀飞轮的回答 - 知乎<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a></li>
+<li><a class="link" 
+ target="_blank" rel="noopener" href="https://www.zhihu.com/question/298810062/answer/2274132657" >iynil的回答
+- 知乎<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a></li>
+<li><a class="link" 
+ target="_blank" rel="noopener" href="https://www.zhihu.com/question/298810062/answer/86505956036" >司马懿的回答
+- 知乎<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a></li>
+<li><a class="link" 
+ target="_blank" rel="noopener" href="https://www.zhihu.com/question/298810062/answer/1828080188" >陀飞轮的回答
+- 知乎<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a></li>
 </ul>
 
     </div>
   </div>
 <h2 id="多头注意力机制">多头注意力机制</h2>
-<p>有时，只用一个注意力头可能无法很好捕捉多个词在语境上复杂的关联。因此，可以添加更多线性层作为键、查询和值。这些线性层在每轮并行训练，彼此权重独立，每层都各提供一个输出，从而各算出独立的权重。每一层被称为一个“头”。可以有任意数量$h$个线性层，提供$h$个注意力输出，然后将它们连接在一起。</p>
+<p>有时，只用一个注意力头可能无法很好捕捉多个词在语境上复杂的关联。因此，可以添加更多线性层作为键、查询和值。这些线性层在每轮并行训练，彼此权重独立，每层都各提供一个输出，从而各算出独立的权重。每一层被称为一个“头”。可以有任意数量<span
+class="math inline">\(h\)</span>个线性层，提供<span
+class="math inline">\(h\)</span>个注意力输出，然后将它们连接在一起。</p>
 <p><img  
                      lazyload
                      src="/images/loading.svg"
                      data-src="/images/posts/attention/multihead.png"
-                      alt=""
+                      
                 ></p>
-<p>仿照上述的向量表示方法，多头注意力可以表示为<br>
-$$<br>
-\begin{aligned}\mathrm{head}_i&amp;=\text{Attention}(QW_i^Q,KW_i^K,VW_i^V)\<br>
-\text{MultiHead}&amp;=\text{Concat}(\text{head}_1,\text{head}_2,\ldots,\text{head}_k)W^O\end{aligned}<br>
-$$</p>
-<p>其中$QW_i^Q,KW_i^K,VW_i^V$是不同头的参数矩阵。通过多个头学习不同的注意力模式，最终拼接后投影到输出空间。多头注意力能够提高模型的表达能力，并增强不同语义层次的表示。</p>
-<p><figure class="image-caption"><img  
+<p>仿照上述的向量表示方法，多头注意力可以表示为 <span
+class="math display">\[
+\begin{aligned}\mathrm{head}_i&amp;=\text{Attention}(QW_i^Q,KW_i^K,VW_i^V)\\
+\text{MultiHead}&amp;=\text{Concat}(\text{head}_1,\text{head}_2,\ldots,\text{head}_k)W^O\end{aligned}
+\]</span></p>
+<p>其中<span
+class="math inline">\(QW_i^Q,KW_i^K,VW_i^V\)</span>是不同头的参数矩阵。通过多个头学习不同的注意力模式，最终拼接后投影到输出空间。多头注意力能够提高模型的表达能力，并增强不同语义层次的表示。</p>
+<figure>
+<figure class="image-caption"><img  
                      lazyload
                      src="/images/loading.svg"
                      data-src="/images/posts/attention/multihead_nn.png"
-                      alt="多头注意力的神经网络结构表示"
-                ><figcaption>多头注意力的神经网络结构表示</figcaption></figure></p>
-<h2 id="缩放点积注意力的Pytorch实现">缩放点积注意力的Pytorch实现</h2>
+                     
+alt="多头注意力的神经网络结构表示" 
+                ><figcaption>多头注意力的神经网络结构表示</figcaption></figure>
+<figcaption aria-hidden="true">多头注意力的神经网络结构表示</figcaption>
+</figure>
+<h2 id="缩放点积注意力的pytorch实现">缩放点积注意力的Pytorch实现</h2>
 <p>使用类<code>ScaledDotProductAttention</code>实现该注意力机制的模型：</p>
 <div class="code-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> torch</span><br><span class="line"><span class="keyword">import</span> torch.nn <span class="keyword">as</span> nn</span><br><span class="line"><span class="keyword">import</span> torch.functional <span class="keyword">as</span> F</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">ScaledDotProductAttention</span>(nn.Module):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, d_k</span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;设置key和query的维度&quot;&quot;&quot;</span></span><br><span class="line">        <span class="built_in">super</span>(ScaledDotProductAttention, <span class="variable language_">self</span>).__init__()</span><br><span class="line">        <span class="variable language_">self</span>.d_k = d_k</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">forward</span>(<span class="params">self, Q: torch.Tensor, K: torch.Tensor, V: torch.Tensor, mask=<span class="literal">None</span></span>):</span><br><span class="line">        <span class="comment"># 计算Q和K的点积并缩放</span></span><br><span class="line">        scores = torch.matmul(Q, K.transpose(-<span class="number">2</span>, -<span class="number">1</span>) / torch.sqrt(torch.tensor(<span class="variable language_">self</span>.d_k)))</span><br><span class="line">        <span class="comment"># 如果有掩码，对无效部分取负无穷使得softmax后归一化权重趋近于0</span></span><br><span class="line">        <span class="keyword">if</span> mask:</span><br><span class="line">            scores = scores.masked_fill(mask==<span class="number">0</span>, <span class="built_in">float</span>(<span class="string">&#x27;-inf&#x27;</span>))</span><br><span class="line">        <span class="comment"># 使用softmax归一化计算注意力权重</span></span><br><span class="line">        attention_weights = torch.softmax(scores, dim=-<span class="number">1</span>)</span><br><span class="line">        <span class="comment"># 计算最终的注意力输出</span></span><br><span class="line">        output = torch.matmul(attention_weights, V)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> output, attention_weights</span><br></pre></td></tr></table></figure></div>
 <p>接下来设置参数并尝试运行：</p>
 <div class="code-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">batch_size, n_heads, seq_len, d_k, d_v = <span class="number">1</span>, <span class="number">1</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">3</span></span><br><span class="line">Q = torch.rand(batch_size, n_heads, seq_len, d_k)</span><br><span class="line">K = torch.rand(batch_size, n_heads, seq_len, d_k)</span><br><span class="line">V = torch.rand(batch_size, n_heads, seq_len, d_v)</span><br><span class="line">attention = ScaledDotProductAttention(d_k)</span><br><span class="line">output, attn_weights = attention(Q, K, V)</span><br><span class="line"><span class="built_in">print</span>(output.shape)  <span class="comment"># (batch_size, n_heads, seq_len, d_v)</span></span><br><span class="line"><span class="built_in">print</span>(attn_weights.shape)  <span class="comment"># (batch_size, n_heads, seq_len, d_k)</span></span><br></pre></td></tr></table></figure></div>
-<p>对于其中各个参数和输出结果含义的解释：</p>
-<ul>
-<li><code>batch_size</code>可理解为句子的数量（一次处理多少个句子）</li>
-<li><code>n_heads</code>代表注意力头的数量</li>
-<li><code>seq_len</code>代表一个句子中包含多少个词元（tokens）</li>
-<li><code>d_k</code>设置了query和key的维度</li>
-<li><code>d_v</code>设置了value的维度</li>
-<li><code>output</code>表示在输入的序列中，每个词元的value根据其他词元的相关性加权之后的结果，作为每个位置的最终表示</li>
-<li><code>attn_weights</code>是注意力分配给每个位置的权重，决定了查询<code>i</code>在计算输出时，从键<code>j</code>的值<code>V[j]</code>获取信息的程度</li>
-</ul>
-<p>输出结果：</p>
-<div class="code-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">torch.Size([1, 1, 5, 3])</span><br><span class="line">torch.Size([1, 1, 5, 5])</span><br></pre></td></tr></table></figure></div>
+<p>对于其中各个参数和输出结果含义的解释： -
+<code>batch_size</code>可理解为句子的数量（一次处理多少个句子） -
+<code>n_heads</code>代表注意力头的数量 -
+<code>seq_len</code>代表一个句子中包含多少个词元（tokens） -
+<code>d_k</code>设置了query和key的维度 -
+<code>d_v</code>设置了value的维度 -
+<code>output</code>表示在输入的序列中，每个词元的value根据其他词元的相关性加权之后的结果，作为每个位置的最终表示
+-
+<code>attn_weights</code>是注意力分配给每个位置的权重，决定了查询<code>i</code>在计算输出时，从键<code>j</code>的值<code>V[j]</code>获取信息的程度</p>
+<p>输出结果： <div class="code-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">torch.Size([1, 1, 5, 3])</span><br><span class="line">torch.Size([1, 1, 5, 5])</span><br></pre></td></tr></table></figure></div></p>
 
   <div class="note-large blue">
     <div class="notel-title rounded-t-lg p-3 font-bold text-lg flex flex-row gap-2 items-center">
@@ -895,8 +937,13 @@ $$</p>
 
     </div>
     <div class="notel-content">
-      <p><a class="link"   target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1xM4m1m7vA?p=6" >【强烈推荐】零基础入门【大模型、多模态】CLIP ！-哔哩哔哩<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a></p>
-<p><a class="link"   target="_blank" rel="noopener" href="https://blog.csdn.net/jarodyv/article/details/130867562" >【万字长文】深度解析 Transformer 和注意力机制（含完整代码实现）_transformer架构注意力机制-CSDN博客<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a></p>
+      <p><a class="link" 
+ target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1xM4m1m7vA?p=6" >【强烈推荐】零基础入门【大模型、多模态】CLIP
+！-哔哩哔哩<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a></p>
+<p><a class="link" 
+ target="_blank" rel="noopener" href="https://blog.csdn.net/jarodyv/article/details/130867562" >【万字长文】深度解析
+Transformer
+和注意力机制（含完整代码实现）_transformer架构注意力机制-CSDN博客<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a></p>
 
     </div>
   </div>
@@ -1043,7 +1090,7 @@ $$</p>
 	<div class="post-toc">
 		<div class="toc-title">On this page</div>
 		<div class="page-title">注意力机制解析</div>
-		<ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%83%8C%E6%99%AF"><span class="nav-number">1.</span> <span class="nav-text">背景</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%AF%8D%E5%B5%8C%E5%85%A5-embedding"><span class="nav-number">2.</span> <span class="nav-text">词嵌入 (embedding)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BC%A9%E6%94%BE%E7%82%B9%E7%A7%AF%E6%B3%A8%E6%84%8F%E5%8A%9B%E7%9A%84%E6%8E%A8%E5%AF%BC"><span class="nav-number">3.</span> <span class="nav-text">缩放点积注意力的推导</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A4%9A%E5%A4%B4%E6%B3%A8%E6%84%8F%E5%8A%9B%E6%9C%BA%E5%88%B6"><span class="nav-number">4.</span> <span class="nav-text">多头注意力机制</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BC%A9%E6%94%BE%E7%82%B9%E7%A7%AF%E6%B3%A8%E6%84%8F%E5%8A%9B%E7%9A%84Pytorch%E5%AE%9E%E7%8E%B0"><span class="nav-number">5.</span> <span class="nav-text">缩放点积注意力的Pytorch实现</span></a></li></ol>
+		<ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%83%8C%E6%99%AF"><span class="nav-number">1.</span> <span class="nav-text">背景</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%AF%8D%E5%B5%8C%E5%85%A5-embedding"><span class="nav-number">2.</span> <span class="nav-text">词嵌入 (embedding)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BC%A9%E6%94%BE%E7%82%B9%E7%A7%AF%E6%B3%A8%E6%84%8F%E5%8A%9B%E7%9A%84%E6%8E%A8%E5%AF%BC"><span class="nav-number">3.</span> <span class="nav-text">缩放点积注意力的推导</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A4%9A%E5%A4%B4%E6%B3%A8%E6%84%8F%E5%8A%9B%E6%9C%BA%E5%88%B6"><span class="nav-number">4.</span> <span class="nav-text">多头注意力机制</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BC%A9%E6%94%BE%E7%82%B9%E7%A7%AF%E6%B3%A8%E6%84%8F%E5%8A%9B%E7%9A%84pytorch%E5%AE%9E%E7%8E%B0"><span class="nav-number">5.</span> <span class="nav-text">缩放点积注意力的Pytorch实现</span></a></li></ol>
 
 	</div>
 </div>

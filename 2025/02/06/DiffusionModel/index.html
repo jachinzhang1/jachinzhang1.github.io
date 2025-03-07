@@ -572,7 +572,7 @@
         <div class="label text-third-text-color text-sm">Categories</div>
     </a>
     <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/archives">
-        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">14</div>
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">15</div>
         <div class="label text-third-text-color text-sm">Posts</div>
     </a>
 </div>
@@ -691,119 +691,197 @@
   </div>
 
   <div class="note p-4 mb-4 rounded-small blue">
-    <p>论文：<a class="link"   target="_blank" rel="noopener" href="https://arxiv.org/abs/2006.11239" >Denoising Diffusion Probabilistic Models<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a><br>
-模型实现代码：<a class="link"   target="_blank" rel="noopener" href="https://github.com/hojonathanho/diffusion" >tensorflow (official)<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a> / <a class="link"   target="_blank" rel="noopener" href="https://github.com/lucidrains/denoising-diffusion-pytorch" >pytorch<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a></p>
+    <p>论文：<a class="link"   target="_blank" rel="noopener" href="https://arxiv.org/abs/2006.11239" >Denoising Diffusion
+Probabilistic Models<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a> 模型实现代码：<a class="link" 
+ target="_blank" rel="noopener" href="https://github.com/hojonathanho/diffusion" >tensorflow
+(official)<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a> / <a class="link" 
+ target="_blank" rel="noopener" href="https://github.com/lucidrains/denoising-diffusion-pytorch" >pytorch<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a></p>
 
   </div>
 <h2 id="原理">原理</h2>
 <p>扩散模型可实现从噪声（采样自简单分布，如高斯分布）到数据样本的转换，分为两个步骤：</p>
 <ul>
-<li><b>固定的</b>前向扩散过程$q$：逐步向图片添加噪声直至得到一张纯噪声图像；</li>
-<li><b>可训练的</b>去噪过程$p$：训练神经网络从纯噪声图像中去噪，得到一张真正的图片。</li>
+<li><b>固定的</b>前向扩散过程<span
+class="math inline">\(q\)</span>：逐步向图片添加噪声直至得到一张纯噪声图像；</li>
+<li><b>可训练的</b>去噪过程<span
+class="math inline">\(p\)</span>：训练神经网络从纯噪声图像中去噪，得到一张真正的图片。</li>
 </ul>
-<p><figure class="image-caption"><img  
+<figure>
+<figure class="image-caption"><img  
                      lazyload
                      src="/images/loading.svg"
                      data-src="/images/posts/ddpm/fig2.png"
-                      alt="扩散模型原理"
-                ><figcaption>扩散模型原理</figcaption></figure></p>
-<p>该过程是一个<b>马尔可夫过程</b>，因为计算$\mathbf x_t$只需要用到$\mathbf x_{t-1}$，即当前时刻的状态仅由上一时刻的状态决定。</p>
-<p>正向过程中，向原图像$\mathbf x_0$中不断混入高斯噪声，经过$T$次加噪，图像$\mathbf x_T$为符合标准高斯分布的纯噪声图像。网络的学习目标是学会$T$个去噪操作，将$\mathbf x_T$还原为$\mathbf x_0$，每步去噪操作刚好抵消掉前面对应步骤的加噪操作。</p>
+                      alt="扩散模型原理" 
+                ><figcaption>扩散模型原理</figcaption></figure>
+<figcaption aria-hidden="true">扩散模型原理</figcaption>
+</figure>
+<p>该过程是一个<b>马尔可夫过程</b>，因为计算<span
+class="math inline">\(\mathbf x_t\)</span>只需要用到<span
+class="math inline">\(\mathbf
+x_{t-1}\)</span>，即当前时刻的状态仅由上一时刻的状态决定。</p>
+<p>正向过程中，向原图像<span class="math inline">\(\mathbf
+x_0\)</span>中不断混入高斯噪声，经过<span
+class="math inline">\(T\)</span>次加噪，图像<span
+class="math inline">\(\mathbf
+x_T\)</span>为符合标准高斯分布的纯噪声图像。网络的学习目标是学会<span
+class="math inline">\(T\)</span>个去噪操作，将<span
+class="math inline">\(\mathbf x_T\)</span>还原为<span
+class="math inline">\(\mathbf
+x_0\)</span>，每步去噪操作刚好抵消掉前面对应步骤的加噪操作。</p>
 <h2 id="前向与反向过程">前向与反向过程</h2>
 <h3 id="前向过程">前向过程</h3>
-<p>设来自某训练集的图像$\mathbf x_0$会被添加$T$次噪声，$\mathbf x_T$为最终生成的噪声图像，$\mathbf x_t$是这一时刻生成的图像，$\mathbf x_{t-1}$是上一时刻生成的图像。我们通常将正态分布设置为这个形式：<br>
-$$<br>
-\mathbf{x}<em>t\sim\mathcal{N}(\sqrt{1-\beta_t}\mathbf{x}</em>{t-1},\beta_t\mathbf{I})<br>
-$$</p>
-<p>$\mathbf x_t$可以通过一个服从标准正态分布的样本$\epsilon_{t-1}$算出：<br>
-$$<br>
-\mathbf{x}<em>t=\sqrt{1-\beta_t}\mathbf{x}</em>{t-1}+\sqrt{\beta_t}\epsilon_{t-1};\quad\epsilon_{t-1}\sim\mathcal{N}(0,\mathbf{I})<br>
-$$</p>
-<p>$\epsilon_t(t=1,2,\dots,T-1)$是一组服从正态分布$\mathcal{N}(0,\mathbf{I})$的独立样本。</p>
+<p>设来自某训练集的图像<span class="math inline">\(\mathbf
+x_0\)</span>会被添加<span class="math inline">\(T\)</span>次噪声，<span
+class="math inline">\(\mathbf x_T\)</span>为最终生成的噪声图像，<span
+class="math inline">\(\mathbf x_t\)</span>是这一时刻生成的图像，<span
+class="math inline">\(\mathbf
+x_{t-1}\)</span>是上一时刻生成的图像。我们通常将正态分布设置为这个形式：
+<span class="math display">\[
+\mathbf{x}_t\sim\mathcal{N}(\sqrt{1-\beta_t}\mathbf{x}_{t-1},\beta_t\mathbf{I})
+\]</span></p>
+<p><span class="math inline">\(\mathbf
+x_t\)</span>可以通过一个服从标准正态分布的样本<span
+class="math inline">\(\epsilon_{t-1}\)</span>算出： <span
+class="math display">\[
+\mathbf{x}_t=\sqrt{1-\beta_t}\mathbf{x}_{t-1}+\sqrt{\beta_t}\epsilon_{t-1};\quad\epsilon_{t-1}\sim\mathcal{N}(0,\mathbf{I})
+\]</span></p>
+<p><span
+class="math inline">\(\epsilon_t(t=1,2,\dots,T-1)\)</span>是一组服从正态分布<span
+class="math inline">\(\mathcal{N}(0,\mathbf{I})\)</span>的独立样本。</p>
 
   <div class="note p-4 mb-4 rounded-small blue">
-    <p>这里$\beta_t$不是常量，而是一个随时间$t$变化的变量，一般要越来越大，表示在给图像加噪的过程中，噪声的添加进度越来越快。将思维逆转过来，考虑反向去噪过程，一开始对纯噪声图像去噪较多，当图像越接近原图像时，去噪会越来越慢。</p>
-<p>原论文中随着$t$的增大，$\beta_t$从1e-4到2e-2线性增长。</p>
+    <p>这里<span
+class="math inline">\(\beta_t\)</span>不是常量，而是一个随时间<span
+class="math inline">\(t\)</span>变化的变量，一般要越来越大，表示在给图像加噪的过程中，噪声的添加进度越来越快。将思维逆转过来，考虑反向去噪过程，一开始对纯噪声图像去噪较多，当图像越接近原图像时，去噪会越来越慢。</p>
+<p>原论文中随着<span class="math inline">\(t\)</span>的增大，<span
+class="math inline">\(\beta_t\)</span>从1e-4到2e-2线性增长。</p>
 
   </div>
-<p>令$\alpha_t=1-\beta_t$，$\bar{\alpha_t}=\prod_{s=1}^t{\alpha_s}$，上式可化为<br>
-$$<br>
-\mathbf{x}<em>t=\sqrt{\alpha_t}\mathbf{x}</em>{t-1}+\sqrt{1-\alpha_t}\epsilon_{t}<br>
-$$</p>
-<p>接着向前递推，可做如下推导：<br>
-$$<br>
-\begin{aligned}<br>
-q\left( \mathbf{x}<em>t|\mathbf{x}</em>{t-1} \right) &amp;=\sqrt{\alpha <em>t}\mathbf{x}</em>{t-1}+\sqrt{1-\alpha _t}\epsilon _{t}\<br>
-&amp;=\sqrt{\alpha _t}\left( \sqrt{\alpha <em>{t-1}}\mathbf{x}</em>{t-2}+\sqrt{1-\alpha _{t-1}}\epsilon _{t-1} \right) +\sqrt{1-\alpha _t}\epsilon _{t}\<br>
-&amp;=\sqrt{\alpha _t\alpha <em>{t-1}}\mathbf{x}</em>{t-2}+\sqrt{\alpha _t-\alpha _t\alpha _{t-1}}\epsilon _{t-1}+\sqrt{1-\alpha _t}\epsilon _{t}\<br>
-&amp;=\sqrt{\alpha _t\alpha <em>{t-1}}\mathbf{x}</em>{t-2}+\sqrt{1-\alpha _t\alpha _{t-1}}\epsilon \left( \text{正态分布相加还是正态分布} \right)\<br>
-\vdots\<br>
-&amp;=\sqrt{\bar{\alpha}_t}\mathbf{x}_0+\sqrt{1-\bar{\alpha}_t}\epsilon\<br>
-q\left( \mathbf{x}_t|\mathbf{x}_0 \right) &amp;=\mathcal{N} \left( \mathbf{x}_t;\sqrt{\bar{\alpha}_t}\mathbf{x}_0,\left( 1-\bar{\alpha}_t \right) \mathbf{I} \right)\<br>
-\end{aligned}<br>
-$$</p>
-<p>如此我们就可以直接从$\mathbf{x}_0$推导出$\mathbf{x}_t$。</p>
+<p>令<span class="math inline">\(\alpha_t=1-\beta_t\)</span>，<span
+class="math inline">\(\bar{\alpha_t}=\prod_{s=1}^t{\alpha_s}\)</span>，上式可化为
+<span class="math display">\[
+\mathbf{x}_t=\sqrt{\alpha_t}\mathbf{x}_{t-1}+\sqrt{1-\alpha_t}\epsilon_{t}
+\]</span></p>
+<p>接着向前递推，可做如下推导： <span class="math display">\[
+\begin{aligned}
+    q\left( \mathbf{x}_t|\mathbf{x}_{t-1} \right) &amp;=\sqrt{\alpha
+_t}\mathbf{x}_{t-1}+\sqrt{1-\alpha _t}\epsilon _{t}\\
+    &amp;=\sqrt{\alpha _t}\left( \sqrt{\alpha
+_{t-1}}\mathbf{x}_{t-2}+\sqrt{1-\alpha _{t-1}}\epsilon _{t-1} \right)
++\sqrt{1-\alpha _t}\epsilon _{t}\\
+    &amp;=\sqrt{\alpha _t\alpha _{t-1}}\mathbf{x}_{t-2}+\sqrt{\alpha
+_t-\alpha _t\alpha _{t-1}}\epsilon _{t-1}+\sqrt{1-\alpha _t}\epsilon
+_{t}\\
+    &amp;=\sqrt{\alpha _t\alpha _{t-1}}\mathbf{x}_{t-2}+\sqrt{1-\alpha
+_t\alpha _{t-1}}\epsilon \left( \text{正态分布相加还是正态分布}
+\right)\\
+    \vdots\\
+    &amp;=\sqrt{\bar{\alpha}_t}\mathbf{x}_0+\sqrt{1-\bar{\alpha}_t}\epsilon\\
+    q\left( \mathbf{x}_t|\mathbf{x}_0 \right) &amp;=\mathcal{N} \left(
+\mathbf{x}_t;\sqrt{\bar{\alpha}_t}\mathbf{x}_0,\left( 1-\bar{\alpha}_t
+\right) \mathbf{I} \right)\\
+\end{aligned}
+\]</span></p>
+<p>如此我们就可以直接从<span
+class="math inline">\(\mathbf{x}_0\)</span>推导出<span
+class="math inline">\(\mathbf{x}_t\)</span>。</p>
 <h3 id="反向过程">反向过程</h3>
-<p>该过程我们希望能倒过来取消每一步的加噪操作，使一幅纯噪声图像$\mathbf{x}_T$变回数据集中的图像$\mathbf{x}_0$，利用这个过程，我们可以把任意一个从标准正态分布采样的噪声图像变成一幅和训练数据相近的图像，从而达到图像生成的目的。</p>
-<p>数学上有：当$\beta_t$足够小时，每一步的加噪逆操作仍然满足正态分布<br>
-$$<br>
-\mathbf{x}_{t-1}\sim\mathcal{N}(\tilde{\mu}_t,\tilde{\beta}_t\mathbf{I})<br>
-$$</p>
-<p>为了描述去噪操作，神经网络的任务就是根据当前时刻$t$、当前图像$\mathbf{x}_t$拟合当前加噪逆操作的正态分布，即拟合当前的均值$\tilde{\mu}_t$和方差$\tilde{\beta}_t$。事实上，由于加噪的操作是固定的，因此理论上去噪的操作（即加噪的逆操作）也是固定的，但该操作极难从理论上求得，只能用神经网络去尽量拟合。</p>
-<p>虽然我们无法得到逆转过程的概率分布$q\left( \mathbf{x}_{t-1}|\mathbf{x}<em>t \right)$，但如果知道$\mathbf x_0$，则可以直接由贝叶斯公式计算出$q\left( \mathbf{x}</em>{t-1}|\mathbf{x}<em>t ,\mathbf x_0\right)$：<br>
-$$<br>
-q(\mathbf{x}</em>{t-1}|\mathbf{x}_t,\mathbf{x}_0)=q(\mathbf{x}<em>t|\mathbf{x}</em>{t-1},\mathbf{x}<em>0)\frac{q(\mathbf{x}</em>{t-1}|\mathbf{x}_0)}{q(\mathbf{x}_t|\mathbf{x}_0)}<br>
-$$</p>
-<p>等式左边（其中均值和方差是待求项）：<br>
-$$<br>
-q(\mathbf{x}_{t-1}|\mathbf{x}_t,\mathbf{x}<em>0)=\mathcal{N}(\mathbf{x}</em>{t-1};\tilde{\mu}_t,\tilde{\beta}_t\mathbf{I})<br>
-$$</p>
-<p>等式右边：<br>
-$$<br>
-\begin{aligned}<br>
-q(\mathbf{x}<em>t|\mathbf{x}</em>{t-1},\mathbf{x}_0)&amp;=\mathcal{N} (\mathbf{x}_t;\sqrt{1-\beta <em>t}\mathbf{x}</em>{t-1},\beta _t\mathbf{I})\<br>
-q(\mathbf{x}_t|\mathbf{x}_0)&amp;=\mathcal{N} (\mathbf{x}_t;\sqrt{\bar{\alpha}_t}\mathbf{x}<em>0,(1-\bar{\alpha}<em>t)\mathbf{I})\<br>
-q(\mathbf{x}</em>{t-1}|\mathbf{x}<em>0)&amp;=\mathcal{N} (\mathbf{x}</em>{t-1};\sqrt{\bar{\alpha}</em>{t-1}}\mathbf{x}<em>0,(1-\bar{\alpha}</em>{t-1})\mathbf{I})\<br>
-\end{aligned}<br>
-$$</p>
-<p>等式右边全部已知，代入可得给定$\mathbf x_0$时的去噪分布。</p>
-<p>经过化简可得分布均值与方差：<br>
-$$<br>
-\begin{aligned}<br>
-\tilde{\mu}<em>t&amp;=\frac1{\sqrt{\alpha_t}}\left(\mathbf{x}<em>t-\frac{1-\alpha_t}{\sqrt{1-\bar{\alpha}<em>t}}\epsilon</em>{t}\right)\<br>
-\tilde{\beta}<em>t&amp;=\frac{1-\bar{\alpha}</em>{t-1}}{1-\bar{\alpha}<em>t}\cdot\beta_t<br>
-\end{aligned}<br>
-$$<br>
-其中$\epsilon</em>{t}$来自式(3)。观察上式可知，方差$\tilde{\beta}<em>t$是一个常量，与输入$\mathbf x_0$无关，训练去噪网络时仅需要拟合均值即可。再次观察目标均值公式，式中唯一不确定的值只有$\epsilon</em>{t}$。因此，**直接让神经网络预测一个噪声$\epsilon</em>\theta(\mathbf x_t,t)$让它和生成$\mathbf x_t$的噪声$\epsilon_t$的均方误差最小即可**。对于一轮训练，误差函数可写成<br>
-$$<br>
-L=||\epsilon_t-\epsilon</em>\theta(\mathbf{x}_t,t)||^2<br>
-$$</p>
+<p>该过程我们希望能倒过来取消每一步的加噪操作，使一幅纯噪声图像<span
+class="math inline">\(\mathbf{x}_T\)</span>变回数据集中的图像<span
+class="math inline">\(\mathbf{x}_0\)</span>，利用这个过程，我们可以把任意一个从标准正态分布采样的噪声图像变成一幅和训练数据相近的图像，从而达到图像生成的目的。</p>
+<p>数学上有：当<span
+class="math inline">\(\beta_t\)</span>足够小时，每一步的加噪逆操作仍然满足正态分布
+<span class="math display">\[
+\mathbf{x}_{t-1}\sim\mathcal{N}(\tilde{\mu}_t,\tilde{\beta}_t\mathbf{I})
+\]</span></p>
+<p>为了描述去噪操作，神经网络的任务就是根据当前时刻<span
+class="math inline">\(t\)</span>、当前图像<span
+class="math inline">\(\mathbf{x}_t\)</span>拟合当前加噪逆操作的正态分布，即拟合当前的均值<span
+class="math inline">\(\tilde{\mu}_t\)</span>和方差<span
+class="math inline">\(\tilde{\beta}_t\)</span>。事实上，由于加噪的操作是固定的，因此理论上去噪的操作（即加噪的逆操作）也是固定的，但该操作极难从理论上求得，只能用神经网络去尽量拟合。</p>
+<p>虽然我们无法得到逆转过程的概率分布<span class="math inline">\(q\left(
+\mathbf{x}_{t-1}|\mathbf{x}_t \right)\)</span>，但如果知道<span
+class="math inline">\(\mathbf
+x_0\)</span>，则可以直接由贝叶斯公式计算出<span
+class="math inline">\(q\left( \mathbf{x}_{t-1}|\mathbf{x}_t ,\mathbf
+x_0\right)\)</span>： <span class="math display">\[
+q(\mathbf{x}_{t-1}|\mathbf{x}_t,\mathbf{x}_0)=q(\mathbf{x}_t|\mathbf{x}_{t-1},\mathbf{x}_0)\frac{q(\mathbf{x}_{t-1}|\mathbf{x}_0)}{q(\mathbf{x}_t|\mathbf{x}_0)}
+\]</span></p>
+<p>等式左边（其中均值和方差是待求项）： <span class="math display">\[
+q(\mathbf{x}_{t-1}|\mathbf{x}_t,\mathbf{x}_0)=\mathcal{N}(\mathbf{x}_{t-1};\tilde{\mu}_t,\tilde{\beta}_t\mathbf{I})
+\]</span></p>
+<p>等式右边： <span class="math display">\[
+\begin{aligned}
+    q(\mathbf{x}_t|\mathbf{x}_{t-1},\mathbf{x}_0)&amp;=\mathcal{N}
+(\mathbf{x}_t;\sqrt{1-\beta _t}\mathbf{x}_{t-1},\beta _t\mathbf{I})\\
+    q(\mathbf{x}_t|\mathbf{x}_0)&amp;=\mathcal{N}
+(\mathbf{x}_t;\sqrt{\bar{\alpha}_t}\mathbf{x}_0,(1-\bar{\alpha}_t)\mathbf{I})\\
+    q(\mathbf{x}_{t-1}|\mathbf{x}_0)&amp;=\mathcal{N}
+(\mathbf{x}_{t-1};\sqrt{\bar{\alpha}_{t-1}}\mathbf{x}_0,(1-\bar{\alpha}_{t-1})\mathbf{I})\\
+\end{aligned}
+\]</span></p>
+<p>等式右边全部已知，代入可得给定<span class="math inline">\(\mathbf
+x_0\)</span>时的去噪分布。</p>
+<p>经过化简可得分布均值与方差： <span class="math display">\[
+\begin{aligned}
+\tilde{\mu}_t&amp;=\frac1{\sqrt{\alpha_t}}\left(\mathbf{x}_t-\frac{1-\alpha_t}{\sqrt{1-\bar{\alpha}_t}}\epsilon_{t}\right)\\
+\tilde{\beta}_t&amp;=\frac{1-\bar{\alpha}_{t-1}}{1-\bar{\alpha}_t}\cdot\beta_t
+\end{aligned}
+\]</span> 其中<span
+class="math inline">\(\epsilon_{t}\)</span>来自式(3)。观察上式可知，方差<span
+class="math inline">\(\tilde{\beta}_t\)</span>是一个常量，与输入<span
+class="math inline">\(\mathbf
+x_0\)</span>无关，训练去噪网络时仅需要拟合均值即可。再次观察目标均值公式，式中唯一不确定的值只有<span
+class="math inline">\(\epsilon_{t}\)</span>。因此，<strong>直接让神经网络预测一个噪声<span
+class="math inline">\(\epsilon_\theta(\mathbf
+x_t,t)\)</span>让它和生成<span class="math inline">\(\mathbf
+x_t\)</span>的噪声<span
+class="math inline">\(\epsilon_t\)</span>的均方误差最小即可</strong>。对于一轮训练，误差函数可写成
+<span class="math display">\[
+L=||\epsilon_t-\epsilon_\theta(\mathbf{x}_t,t)||^2
+\]</span></p>
 <h2 id="训练算法与采样算法">训练算法与采样算法</h2>
 <h3 id="训练算法">训练算法</h3>
-<p><figure class="image-caption"><img  
+<figure>
+<figure class="image-caption"><img  
                      lazyload
                      src="/images/loading.svg"
                      data-src="/images/posts/ddpm/training_pcd.png"
-                      alt="训练算法伪代码"
-                ><figcaption>训练算法伪代码</figcaption></figure></p>
-<p>逐行分析算法含义：<br>
-2. 从训练集中取出一个数据$\mathbf x_0$<br>
-3. 随机从$1,2,\dots,T$中取出一个时刻训练（虽然要求神经网络拟合$T$个正态分布，但实际训练时，不用一轮预测$T$个结果，只需要随机预测$T$个时刻中某一个时刻的结果就行）<br>
-4. 随机生成一个噪声$\epsilon$<br>
-5. 将$\mathbf x_t,t$传给神经网络，通过梯度下降预测随机噪声$\epsilon_\theta(\mathbf{x}_t,t)$<br>
-6. 训练到收敛位置（时间较长，通常设$T=1000$）</p>
-<h3 id="采样（测试）算法">采样（测试）算法</h3>
-<p><figure class="image-caption"><img  
+                      alt="训练算法伪代码" 
+                ><figcaption>训练算法伪代码</figcaption></figure>
+<figcaption aria-hidden="true">训练算法伪代码</figcaption>
+</figure>
+<p>逐行分析算法含义： 2. 从训练集中取出一个数据<span
+class="math inline">\(\mathbf x_0\)</span> 3. 随机从<span
+class="math inline">\(1,2,\dots,T\)</span>中取出一个时刻训练（虽然要求神经网络拟合<span
+class="math inline">\(T\)</span>个正态分布，但实际训练时，不用一轮预测<span
+class="math inline">\(T\)</span>个结果，只需要随机预测<span
+class="math inline">\(T\)</span>个时刻中某一个时刻的结果就行） 4.
+随机生成一个噪声<span class="math inline">\(\epsilon\)</span> 5. 将<span
+class="math inline">\(\mathbf
+x_t,t\)</span>传给神经网络，通过梯度下降预测随机噪声<span
+class="math inline">\(\epsilon_\theta(\mathbf{x}_t,t)\)</span> 6.
+训练到收敛位置（时间较长，通常设<span
+class="math inline">\(T=1000\)</span>）</p>
+<h3 id="采样测试算法">采样（测试）算法</h3>
+<figure>
+<figure class="image-caption"><img  
                      lazyload
                      src="/images/loading.svg"
                      data-src="/images/posts/ddpm/sampling_pcd.png"
-                      alt="采样算法伪代码"
-                ><figcaption>采样算法伪代码</figcaption></figure></p>
-<ol>
+                      alt="采样算法伪代码" 
+                ><figcaption>采样算法伪代码</figcaption></figure>
+<figcaption aria-hidden="true">采样算法伪代码</figcaption>
+</figure>
+<ol type="1">
 <li>从标准高斯分布采样一个噪声图像</li>
 <li>循环迭代</li>
-<li>如果时间步不为1，从高斯分布采样一个噪声$z$，否则$z=0$</li>
-<li>计算每个时间步$t$的噪声图（$\epsilon_\theta(\mathbf x_t,t)$由训练步骤获得）</li>
+<li>如果时间步不为1，从高斯分布采样一个噪声<span
+class="math inline">\(z\)</span>，否则<span
+class="math inline">\(z=0\)</span></li>
+<li>计算每个时间步<span class="math inline">\(t\)</span>的噪声图（<span
+class="math inline">\(\epsilon_\theta(\mathbf
+x_t,t)\)</span>由训练步骤获得）</li>
 </ol>
 <p>以上是关于扩散模型的粗略解读。部分推导未在本文列出，除非研究目标是改进扩散模型本身，学习时了解该模型整体思想和主要原理即可。</p>
 
@@ -813,8 +891,11 @@ $$</p>
 
     </div>
     <div class="notel-content">
-      <p><a class="link"   target="_blank" rel="noopener" href="https://segmentfault.com/a/1190000043744225" >人工智能 - 扩散模型(Diffusion Model)详解：直观理解、数学原理、PyTorch 实现 - 个人文章 - SegmentFault 思否<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a><br>
-<a class="link"   target="_blank" rel="noopener" href="https://blog.csdn.net/tobefans/article/details/129728036" >【深度学习模型】扩散模型(Diffusion Model)基本原理及代码讲解-CSDN博客<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a></p>
+      <p><a class="link"   target="_blank" rel="noopener" href="https://segmentfault.com/a/1190000043744225" >人工智能 -
+扩散模型(Diffusion Model)详解：直观理解、数学原理、PyTorch 实现 -
+个人文章 - SegmentFault 思否<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a> <a class="link" 
+ target="_blank" rel="noopener" href="https://blog.csdn.net/tobefans/article/details/129728036" >【深度学习模型】扩散模型(Diffusion
+Model)基本原理及代码讲解-CSDN博客<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a></p>
 
     </div>
   </div>
@@ -961,7 +1042,7 @@ $$</p>
 	<div class="post-toc">
 		<div class="toc-title">On this page</div>
 		<div class="page-title">学习笔记：扩散模型算法介绍</div>
-		<ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8E%9F%E7%90%86"><span class="nav-number">1.</span> <span class="nav-text">原理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%89%8D%E5%90%91%E4%B8%8E%E5%8F%8D%E5%90%91%E8%BF%87%E7%A8%8B"><span class="nav-number">2.</span> <span class="nav-text">前向与反向过程</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%89%8D%E5%90%91%E8%BF%87%E7%A8%8B"><span class="nav-number">2.1.</span> <span class="nav-text">前向过程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%8D%E5%90%91%E8%BF%87%E7%A8%8B"><span class="nav-number">2.2.</span> <span class="nav-text">反向过程</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%AE%AD%E7%BB%83%E7%AE%97%E6%B3%95%E4%B8%8E%E9%87%87%E6%A0%B7%E7%AE%97%E6%B3%95"><span class="nav-number">3.</span> <span class="nav-text">训练算法与采样算法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AE%AD%E7%BB%83%E7%AE%97%E6%B3%95"><span class="nav-number">3.1.</span> <span class="nav-text">训练算法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%87%87%E6%A0%B7%EF%BC%88%E6%B5%8B%E8%AF%95%EF%BC%89%E7%AE%97%E6%B3%95"><span class="nav-number">3.2.</span> <span class="nav-text">采样（测试）算法</span></a></li></ol></li></ol>
+		<ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8E%9F%E7%90%86"><span class="nav-number">1.</span> <span class="nav-text">原理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%89%8D%E5%90%91%E4%B8%8E%E5%8F%8D%E5%90%91%E8%BF%87%E7%A8%8B"><span class="nav-number">2.</span> <span class="nav-text">前向与反向过程</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%89%8D%E5%90%91%E8%BF%87%E7%A8%8B"><span class="nav-number">2.1.</span> <span class="nav-text">前向过程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%8D%E5%90%91%E8%BF%87%E7%A8%8B"><span class="nav-number">2.2.</span> <span class="nav-text">反向过程</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%AE%AD%E7%BB%83%E7%AE%97%E6%B3%95%E4%B8%8E%E9%87%87%E6%A0%B7%E7%AE%97%E6%B3%95"><span class="nav-number">3.</span> <span class="nav-text">训练算法与采样算法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AE%AD%E7%BB%83%E7%AE%97%E6%B3%95"><span class="nav-number">3.1.</span> <span class="nav-text">训练算法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%87%87%E6%A0%B7%E6%B5%8B%E8%AF%95%E7%AE%97%E6%B3%95"><span class="nav-number">3.2.</span> <span class="nav-text">采样（测试）算法</span></a></li></ol></li></ol>
 
 	</div>
 </div>

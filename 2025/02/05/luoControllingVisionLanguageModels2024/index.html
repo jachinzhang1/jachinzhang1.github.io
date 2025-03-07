@@ -574,7 +574,7 @@
         <div class="label text-third-text-color text-sm">Categories</div>
     </a>
     <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/archives">
-        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">14</div>
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">15</div>
         <div class="label text-third-text-color text-sm">Posts</div>
     </a>
 </div>
@@ -670,12 +670,12 @@
     
     
         <span class="article-wordcount article-meta-item">
-            <i class="fa-regular fa-typewriter"></i>&nbsp;<span>3.6k Words</span>
+            <i class="fa-regular fa-typewriter"></i>&nbsp;<span>3.7k Words</span>
         </span>
     
     
         <span class="article-min2read article-meta-item">
-            <i class="fa-regular fa-clock"></i>&nbsp;<span>12 Mins</span>
+            <i class="fa-regular fa-clock"></i>&nbsp;<span>13 Mins</span>
         </span>
     
     
@@ -696,8 +696,8 @@
 		<div class="article-content markdown-body px-2 sm:px-6 md:px-8 pb-8">
 			
   <div class="note p-4 mb-4 rounded-small blue">
-    <p><a class="link"   target="_blank" rel="noopener" href="https://arxiv.org/abs/2310.01018" >Paper<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a><br>
-<a class="link"   target="_blank" rel="noopener" href="https://github.com/Algolzw/daclip-uir" >Repo<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a></p>
+    <p><a class="link"   target="_blank" rel="noopener" href="https://arxiv.org/abs/2310.01018" >Paper<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a> <a class="link" 
+ target="_blank" rel="noopener" href="https://github.com/Algolzw/daclip-uir" >Repo<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a></p>
 
   </div>
 <h2 id="摘要">摘要</h2>
@@ -705,37 +705,38 @@
 <h2 id="引言">引言</h2>
 <h3 id="研究背景和问题">研究背景和问题</h3>
 <p>现有大规模视觉语言模型（VLM）在图像恢复（IR）等底层视觉任务中表现有限，主要原因在于：</p>
-<ol>
+<ol type="1">
 <li>特征对齐不足：VLM未有效区分退化类型（如模糊、噪声）的细粒度差异，导致图像特征与退化文本描述不匹配。</li>
 <li>数据局限性：VLM通常基于网络规模数据集训练，而IR模型依赖小规模、任务特定的数据集，缺乏图像-文本对支持。</li>
 </ol>
 <p>传统IR方法仅关注逐像素生成，需针对不同退化类型重复训练模型；最近的工作集中在统一图像恢复上，在混合退化数据集上训练单个模型，并隐式地对恢复过程中的退化类型进行分类，但它们仍然局限于少数退化类型和与之相关的特定数据集。特别是，它们没有充分利用VLM的丰富知识。</p>
 <h3 id="解决方法">解决方法</h3>
-<p>作者提出了退化感知CLIP（DA-CLIP），将CLIP模型与IR网络结合，形成多任务框架，适用于退化特定与统一IR任务：</p>
-<ol>
-<li>图像控制器（Image Controller）：
-<ul>
-<li>调整CLIP图像编码器，输出与纯净文本描述对齐的高质量（HQ）内容嵌入。</li>
-<li>同时预测退化嵌入以匹配真实退化类型，解决退化输入与干净文本间的特征不匹配问题。</li>
-</ul>
-</li>
-<li>知识融合：通过嵌入VLM的人类级知识，提升图像恢复性能并实现跨退化类型的统一恢复。</li>
-</ol>
+<p>作者提出了退化感知CLIP（DA-CLIP），将CLIP模型与IR网络结合，形成多任务框架，适用于退化特定与统一IR任务：
+1. 图像控制器（Image Controller）： -
+调整CLIP图像编码器，输出与纯净文本描述对齐的高质量（HQ）内容嵌入。 -
+同时预测退化嵌入以匹配真实退化类型，解决退化输入与干净文本间的特征不匹配问题。
+2.
+知识融合：通过嵌入VLM的人类级知识，提升图像恢复性能并实现跨退化类型的统一恢复。</p>
 <h3 id="数据构建和训练">数据构建和训练</h3>
-<p>为了训练DA-CLIP从低质量（LQ）输入中学习高质量特征和退化类型，作者为十个不同的图像恢复任务构建了一个大型混合退化数据集。具体来说：</p>
-<ul>
-<li>使用BLIP为所有HQ图像生成合成字幕，然后将LQ图像与字幕和相应的退化类型匹配为<b>图像-文本-退化</b>的三元组数据。</li>
-<li>DA-CLIP可以准确地对十种不同的退化类型进行分类，并可以很容易地集成到现有的恢复模型中（即同时学习HQ特征和退化类型特征）</li>
-</ul>
-<p><figure class="image-caption"><img  
+<p>为了训练DA-CLIP从低质量（LQ）输入中学习高质量特征和退化类型，作者为十个不同的图像恢复任务构建了一个大型混合退化数据集。具体来说：
+-
+使用BLIP为所有HQ图像生成合成字幕，然后将LQ图像与字幕和相应的退化类型匹配为<b>图像-文本-退化</b>的三元组数据。
+-
+DA-CLIP可以准确地对十种不同的退化类型进行分类，并可以很容易地集成到现有的恢复模型中（即同时学习HQ特征和退化类型特征）</p>
+<figure>
+<figure class="image-caption"><img  
                      lazyload
                      src="/images/loading.svg"
                      data-src="/images/posts/daclip/fig1.png"
-                      alt="本文利用大规模预训练的视觉语言模型进行多任务图像复原。与CLIP相比，该方法方法精确地预测了损坏输入的退化嵌入，并且还输出了高质量的特征以获得更好的图像恢复性能。对于以上所有例子，该单一统一模型都得到了正确的结果。"
-                ><figcaption>本文利用大规模预训练的视觉语言模型进行多任务图像复原。与CLIP相比，该方法方法精确地预测了损坏输入的退化嵌入，并且还输出了高质量的特征以获得更好的图像恢复性能。对于以上所有例子，该单一统一模型都得到了正确的结果。</figcaption></figure></p>
+                     
+alt="本文利用大规模预训练的视觉语言模型进行多任务图像复原。与CLIP相比，该方法方法精确地预测了损坏输入的退化嵌入，并且还输出了高质量的特征以获得更好的图像恢复性能。对于以上所有例子，该单一统一模型都得到了正确的结果。" 
+                ><figcaption>本文利用大规模预训练的视觉语言模型进行多任务图像复原。与CLIP相比，该方法方法精确地预测了损坏输入的退化嵌入，并且还输出了高质量的特征以获得更好的图像恢复性能。对于以上所有例子，该单一统一模型都得到了正确的结果。</figcaption></figure>
+<figcaption
+aria-hidden="true">本文利用大规模预训练的视觉语言模型进行多任务图像复原。与CLIP相比，该方法方法精确地预测了损坏输入的退化嵌入，并且还输出了高质量的特征以获得更好的图像恢复性能。对于以上所有例子，该单一统一模型都得到了正确的结果。</figcaption>
+</figure>
 <h3 id="主要贡献">主要贡献</h3>
 <p>我们的主要贡献总结如下：</p>
-<ol>
+<ol type="1">
 <li>提出了DA-CLIP来利用大规模预训练的视觉语言模型作为图像恢复的通用框架。关键组件是图像控制器，它<u>预测退化</u>并适配<u>冻结的CLIP图像编码器</u>，以从损坏的输入中输出高质量的内容嵌入。</li>
 <li>利用交叉注意力将内容嵌入融入复原网络，提高复原网络的性能。此外，我们引入了提示学习模块，以更好地<u>利用退化上下文进行统一的图像复原</u>。</li>
 <li><u>构建了一个包含10种不同退化类型的高质量合成字幕的混合退化数据集。</u>该数据集既可以用来训练DA-CLIP，也可以用来训练统一的图像复原模型。</li>
@@ -752,38 +753,59 @@
 
     </div>
   </div>
-<h2 id="DA-CLIP">DA-CLIP</h2>
-<p><b>论文方法的核心是控制预训练的CLIP模型，以从损坏的图像中输出高质量的图像特征，同时预测退化类型。</b>如图2所示，图像内容嵌入$e_c^I$​与干净的标题嵌入​$e_c^T$相匹配。此外，由控制器预测的图像退化嵌入$e_d^I$指定输入的损坏类型，即来自文本编码器的相应退化嵌入$e_d^T$。然后可以将这些特征集成到其他图像恢复模型中，以提高它们的性能。</p>
-<p>原本的CLIP是清晰图像匹配本文，但是现在输入的是损坏图像，这就会导致<u>潜在图像内容无法正确匹配GT文本</u>，这里用Image Controller对CLIP的图像编码器微调，使之适应损坏图像。此外，CLIP的额外输入还有一个降质类型，这个是Image Controller来额外预测的。</p>
-<p><figure class="image-caption"><img  
+<h2 id="da-clip">DA-CLIP</h2>
+<p><b>论文方法的核心是控制预训练的CLIP模型，以从损坏的图像中输出高质量的图像特征，同时预测退化类型。</b>如图2所示，图像内容嵌入<span
+class="math inline">\(e_c^I\)</span>​与干净的标题嵌入​<span
+class="math inline">\(e_c^T\)</span>相匹配。此外，由控制器预测的图像退化嵌入<span
+class="math inline">\(e_d^I\)</span>指定输入的损坏类型，即来自文本编码器的相应退化嵌入<span
+class="math inline">\(e_d^T\)</span>。然后可以将这些特征集成到其他图像恢复模型中，以提高它们的性能。</p>
+<p>原本的CLIP是清晰图像匹配本文，但是现在输入的是损坏图像，这就会导致<u>潜在图像内容无法正确匹配GT文本</u>，这里用Image
+Controller对CLIP的图像编码器微调，使之适应损坏图像。此外，CLIP的额外输入还有一个降质类型，这个是Image
+Controller来额外预测的。</p>
+<figure>
+<figure class="image-caption"><img  
                      lazyload
                      src="/images/loading.svg"
                      data-src="/images/posts/daclip/fig2.png"
-                      alt="方法概述"
-                ><figcaption>方法概述</figcaption></figure></p>
-<h3 id="Image-Controller">Image Controller</h3>
+                      alt="方法概述" 
+                ><figcaption>方法概述</figcaption></figure>
+<figcaption aria-hidden="true">方法概述</figcaption>
+</figure>
+<h3 id="image-controller">Image Controller</h3>
 <p>图像控制器是CLIP图像编码器的副本，但使用一些零初始化连接进行包装，以向编码器添加控制。它操纵所有编码器块的输出以控制图像编码器的预测。在本文中，使用ViT作为编码器和控制器的默认主干。</p>
-<p>图3(a)说明了控制过程，其中控制器的输出由两部分组成：</p>
-<ol>
-<li>图像退化嵌入$e_d^I$</li>
-<li>隐藏控件$h_c$（包含来自transformer块的所有输出，这些输出随后被添加到相应的编码器块以控制它们的预测）</li>
-</ol>
+<p>图3(a)说明了控制过程，其中控制器的输出由两部分组成： 1.
+图像退化嵌入<span class="math inline">\(e_d^I\)</span> 2. 隐藏控件<span
+class="math inline">\(h_c\)</span>（包含来自transformer块的所有输出，这些输出随后被添加到相应的编码器块以控制它们的预测）</p>
 <p>transformer块之间的连接是简单的密集神经网络，所有参数都初始化为零，这在训练过程中逐渐影响图像编码器。由于与VLM中使用的网络规模数据集相比，训练数据集很小，因此这种控制策略在保持原始图像编码器能力的同时减轻了过拟合。</p>
-<p><figure class="image-caption"><img  
+<figure>
+<figure class="image-caption"><img  
                      lazyload
                      src="/images/loading.svg"
                      data-src="/images/posts/daclip/fig3.png"
-                      alt="模型结构"
-                ><figcaption>模型结构</figcaption></figure></p>
-<p><strong>冻结预训练的CLIP模型的所有权重，只微调图像控制器。</strong> 为了使退化嵌入空间具有判别性和良好的分离性，使用对比目标来学习嵌入匹配过程。设$N$表示训练批中成对嵌入（来自文本编码器和图像编码器/控制器）的数量。对比损失定义为：</p>
-<p>$$<br>
-\mathcal{L} <em>{\mathrm{con}}\left( x,y \right) =-\frac{1}{N}\sum</em>{i=1}^N{\log \left( \frac{\exp \left( x_{i}^{T}y_i/\tau \right)}{\sum_{j=1}^N{\exp \left( x_{i}^{T}y_j/\tau \right)}} \right)},<br>
-$$</p>
-<p>然后为了优化内容和降质嵌入，使用以下共同目标：<br>
-$$<br>
-\mathcal{L} <em>c\left( \omega \right) =\mathcal{L} <em>{\mathrm{con}}\left( e</em>{c}^{I},e</em>{c}^{T};\omega \right) +\mathcal{L} <em>{\mathrm{con}}\left( e</em>{d}^{I},e_{d}^{T};\omega \right) ,<br>
-$$</p>
-<p>这个损失函数的意思就是，先让CLIP的文本编码器对GT描述和降质类型编码得到$e_c^T$和$e_d^T$，然后图2中的输入LQ得到输出$e_c^I$和$e_d^I$。他们做对比学习进行对齐，就可以实验LQ输入匹配HQ的captions和types的编码。</p>
+                      alt="模型结构" 
+                ><figcaption>模型结构</figcaption></figure>
+<figcaption aria-hidden="true">模型结构</figcaption>
+</figure>
+<p><strong>冻结预训练的CLIP模型的所有权重，只微调图像控制器。</strong>
+为了使退化嵌入空间具有判别性和良好的分离性，使用对比目标来学习嵌入匹配过程。设<span
+class="math inline">\(N\)</span>表示训练批中成对嵌入（来自文本编码器和图像编码器/控制器）的数量。对比损失定义为：</p>
+<p><span class="math display">\[
+\mathcal{L} _{\mathrm{con}}\left( x,y \right)
+=-\frac{1}{N}\sum_{i=1}^N{\log \left( \frac{\exp \left(
+x_{i}^{T}y_i/\tau \right)}{\sum_{j=1}^N{\exp \left( x_{i}^{T}y_j/\tau
+\right)}} \right)},
+\]</span></p>
+<p>然后为了优化内容和降质嵌入，使用以下共同目标： <span
+class="math display">\[
+\mathcal{L} _c\left( \omega \right) =\mathcal{L} _{\mathrm{con}}\left(
+e_{c}^{I},e_{c}^{T};\omega \right) +\mathcal{L} _{\mathrm{con}}\left(
+e_{d}^{I},e_{d}^{T};\omega \right) ,
+\]</span></p>
+<p>这个损失函数的意思就是，先让CLIP的文本编码器对GT描述和降质类型编码得到<span
+class="math inline">\(e_c^T\)</span>和<span
+class="math inline">\(e_d^T\)</span>，然后图2中的输入LQ得到输出<span
+class="math inline">\(e_c^I\)</span>和<span
+class="math inline">\(e_d^I\)</span>。他们做对比学习进行对齐，就可以实验LQ输入匹配HQ的captions和types的编码。</p>
 <h3 id="图像复原">图像复原</h3>
 <p>使用IR-SDE作为图像恢复的基本框架。它采用了类似于DDPM的U-Net架构，但删除了所有自注意层。为了将纯净的内容嵌入注入扩散过程，作者引入了一种交叉注意力机制，从预先训练的VLM中学习语义指导。考虑到图像恢复任务中输入大小的变化以及将注意力应用于高分辨率特征的成本的增加，为了提高样本效率，只在U-Net的底部块中使用交叉注意力。</p>
 <blockquote>
@@ -791,58 +813,77 @@ $$</p>
                      lazyload
                      src="/images/loading.svg"
                      data-src="/images/posts/ir-sde/fig1.png"
-                      alt="IR-SDE工作概述"
-                ><figcaption>IR-SDE工作概述</figcaption></figure><br>
-简单介绍下IR-SDE，它是与该博客介绍的文章相同的作者提出的一个专用于复原的扩散模型，对于不同任务都需要从头训练一个特定的模型。主要思想和这篇文章一模一样，但是IR-SDE更早点。<br>
-这篇论文的介绍博客<a href="/2025/02/06/luoImageRestorationMeanReverting2023">在这里</a></p>
+                      alt="IR-SDE工作概述" 
+                ><figcaption>IR-SDE工作概述</figcaption></figure>
+简单介绍下IR-SDE，它是与该博客介绍的文章相同的作者提出的一个专用于复原的扩散模型，对于不同任务都需要从头训练一个特定的模型。主要思想和这篇文章一模一样，但是IR-SDE更早点。
+这篇论文的介绍博客<a
+href="/2025/02/06/luoImageRestorationMeanReverting2023">在这里</a></p>
 </blockquote>
-<p>另一方面，预测的退化嵌入对于统一图像恢复是有用的，其中目标是用单个模型处理多种退化类型的低质量图像。如图1所示，DA-CLIP准确地对不同数据集和各种退化类型的退化进行了分类，这对于统一的图像恢复至关重要。此外，为了利用这些退化嵌入，作者将它们与即时学习模块相结合，以进一步改进结果，如图3(b)所示。这里的prompt应该就是content embedding。</p>
+<p>另一方面，预测的退化嵌入对于统一图像恢复是有用的，其中目标是用单个模型处理多种退化类型的低质量图像。如图1所示，DA-CLIP准确地对不同数据集和各种退化类型的退化进行了分类，这对于统一的图像恢复至关重要。此外，为了利用这些退化嵌入，作者将它们与即时学习模块相结合，以进一步改进结果，如图3(b)所示。这里的prompt应该就是content
+embedding。</p>
 <p>通常，可以使用交叉注意力将内容嵌入集成到网络中，以提高它们在图像恢复任务上的性能。相比之下，结合退化嵌入的提示模块则专门针对统一图像复原背景下的退化类型分类进行改进。</p>
 <h2 id="数据构成">数据构成</h2>
 <p>使用BLIP通过高质量的图像，生成准确的、干净的文本，并与对应的退化图像、退化类型进行组合。</p>
-<p><figure class="image-caption"><img  
+<figure>
+<figure class="image-caption"><img  
                      lazyload
                      src="/images/loading.svg"
                      data-src="/images/posts/daclip/fig4.png"
-                      alt="利用BLIP生成图像-文本-退化的三元组数据的例子"
-                ><figcaption>利用BLIP生成图像-文本-退化的三元组数据的例子</figcaption></figure></p>
-<p><figure class="image-caption"><img  
+                     
+alt="利用BLIP生成图像-文本-退化的三元组数据的例子" 
+                ><figcaption>利用BLIP生成图像-文本-退化的三元组数据的例子</figcaption></figure>
+<figcaption
+aria-hidden="true">利用BLIP生成图像-文本-退化的三元组数据的例子</figcaption>
+</figure>
+<figure>
+<figure class="image-caption"><img  
                      lazyload
                      src="/images/loading.svg"
                      data-src="/images/posts/daclip/tab1.png"
-                      alt="数据构成"
-                ><figcaption>数据构成</figcaption></figure></p>
+                      alt="数据构成" 
+                ><figcaption>数据构成</figcaption></figure>
+<figcaption aria-hidden="true">数据构成</figcaption>
+</figure>
 <h2 id="实验">实验</h2>
 <p>本文提出的方法与现有方法在四个特定退化类型的数据集上进行图像修复的的定量比较与可视化呈现：</p>
-<p><figure class="image-caption"><img  
+<figure>
+<figure class="image-caption"><img  
                      lazyload
                      src="/images/loading.svg"
                      data-src="/images/posts/daclip/tab2.png"
-                      alt="定量比较"
-                ><figcaption>定量比较</figcaption></figure></p>
-<p><figure class="image-caption"><img  
+                      alt="定量比较" 
+                ><figcaption>定量比较</figcaption></figure>
+<figcaption aria-hidden="true">定量比较</figcaption>
+</figure>
+<figure>
+<figure class="image-caption"><img  
                      lazyload
                      src="/images/loading.svg"
                      data-src="/images/posts/daclip/fig5.png"
-                      alt="可视化呈现"
-                ><figcaption>可视化呈现</figcaption></figure></p>
+                      alt="可视化呈现" 
+                ><figcaption>可视化呈现</figcaption></figure>
+<figcaption aria-hidden="true">可视化呈现</figcaption>
+</figure>
 <p>本文方法与现有方法进行统一的图像复原任务在若干指标上的对比。每个雷达图报告了一个特定指标的十种不同退化类型的结果。</p>
 <p><img  
                      lazyload
                      src="/images/loading.svg"
                      data-src="/images/posts/daclip/fig6.png"
-                      alt=""
+                      
                 ></p>
 <p>训练曲线证明DA-CLIP的有效性：</p>
-<p><figure class="image-caption"><img  
+<figure>
+<figure class="image-caption"><img  
                      lazyload
                      src="/images/loading.svg"
                      data-src="/images/posts/daclip/fig9.png"
-                      alt="训练曲线"
-                ><figcaption>训练曲线</figcaption></figure></p>
+                      alt="训练曲线" 
+                ><figcaption>训练曲线</figcaption></figure>
+<figcaption aria-hidden="true">训练曲线</figcaption>
+</figure>
 <details class="blue" data-header-exclude><summary><i class="fa-solid fa-chevron-right"></i>指标介绍 </summary>
               <div class='content'>
-              <div class="tabs" id="tab-指标介绍"><ul class="nav-tabs"><li class="tab active"><a class="#指标介绍-1">PSNR</a></li><li class="tab"><a class="#指标介绍-2">SSIM</a></li><li class="tab"><a class="#指标介绍-3">LPIPS</a></li><li class="tab"><a class="#指标介绍-4">FID</a></li></ul><div class="tab-content"><div class="tab-pane active" id="指标介绍-1"><p>峰值信噪比(dB)。其中$L$表示图像数据类型最大动态范围$[0,255]$，$MSE$表示预测数据和原始数据的均方误差。PSNR越大说明评估结果越好。</p><p>$$<br>\begin{aligned}<br>PSNR&amp;=\displaystyle{10\log _{10}\frac{L^2}{MSE}}<br>\<br>MSE&amp;=\displaystyle{\frac{1}{mn}\sum_0^{m-1}{\sum_0^{n-1}{\left( f\left(i,j \right) -g\left( i,j \right) \right) ^2}}}<br>\end{aligned}<br>$$</p></div><div class="tab-pane" id="指标介绍-2"><p>PSNR在计算每个位置上的像素差异时，其结果仅与当前位置的两个像素值有关，与其它任何位置上的像素无关，忽略了图像内容所包含的一些视觉特征，特别是图像的局部结构信息。</p><p>SSIM计算两张图像在每个位置上的差异时，不是在该位置上从两张图中各取一个像素，而是各取了一个区域的像素。SSIM综合考虑了图像的亮度、对比度和结构，取值在$[0,1]$之间，越大说明结果越好。</p><p>$$<br>SSIM\left( x,y \right) =\frac{\left( 2\mu _x\mu _y+C_1 \right) \left(2\sigma _{xy}+C_2 \right)}{\left( \mu _{x}^{2}+\mu _{y}^{2}+C_1 \right)\left( \sigma _{x}^{2}+\sigma _{y}^{2}+C_2 \right)}<br>$$</p><p>$\mu_x,\mu_y$分别是图像$x,y$的均值，$\sigma_x^2,\sigma_y^2$是方差，$\sigma_{xy}$是协方差。$C_1=(k_1L)^2,C_2=(k_2L)^2$是稳定除法运算的小常数，$L$是像素值动态范围。默认取$k_1=0.01,l_2=0.03$。</p></div><div class="tab-pane" id="指标介绍-3"><p>通过训练一个神经网络学习图像块之间的差异，通常使用预训练的CNN作为特征提取器，然后训练一个额外的层预测图像对的相似性。取值范围$[0,1]$，取值越小越好。</p></div><div class="tab-pane" id="指标介绍-4"><p>用于评估生成图像和真实图像在特征空间中的分布差异，量化二者的距离。取值越小表示生成图像与真实图像越相似。</p><p>首先用Inception网络将图像映射到高维特征向量，计算这两个特征向量的均值向量和协方差矩阵，最后综合计算距离：</p><p>$$<br>d^2=\left| \mu _1-\mu _2 \right| _{2}^{2}+\mathrm{Tr}\left( \sigma _1+\sigma _2-2\left( \sigma _1\sigma _2 \right) ^{\frac{1}{2}} \right)<br>$$</p></div></div></div>
+              <div id="tab-指标介绍" class="tabs"><ul class="nav-tabs"><li class="tab active"><a class="#指标介绍-1">PSNR</a></li><li class="tab"><a class="#指标介绍-2">SSIM</a></li><li class="tab"><a class="#指标介绍-3">LPIPS</a></li><li class="tab"><a class="#指标介绍-4">FID</a></li></ul><div class="tab-content"><div id="指标介绍-1" class="tab-pane active"><p>峰值信噪比(dB)。其中<spanclass="math inline">(L)</span>表示图像数据类型最大动态范围<spanclass="math inline">([0,255])</span>，<spanclass="math inline">(MSE)</span>表示预测数据和原始数据的均方误差。PSNR越大说明评估结果越好。</p><p><span class="math display">[<span class="math display">\[\begin{aligned}    PSNR&amp;amp;=\displaystyle{10\log _{10}\frac{L^2}{MSE}}    \\    MSE&amp;amp;=\displaystyle{\frac{1}{mn}\sum_0^{m-1}{\sum_0^{n-1}{\left(f\left(i,j \right) -g\left( i,j \right) \right) ^2}}}\end{aligned}\]</span>]</span></p></div><div id="指标介绍-2" class="tab-pane"><p>PSNR在计算每个位置上的像素差异时，其结果仅与当前位置的两个像素值有关，与其它任何位置上的像素无关，忽略了图像内容所包含的一些视觉特征，特别是图像的局部结构信息。</p><p>SSIM计算两张图像在每个位置上的差异时，不是在该位置上从两张图中各取一个像素，而是各取了一个区域的像素。SSIM综合考虑了图像的亮度、对比度和结构，取值在<spanclass="math inline">([0,1])</span>之间，越大说明结果越好。</p><p><span class="math display">[ SSIM( x,y ) = ]</span></p><p><span class="math inline">(_x,_y)</span>分别是图像<spanclass="math inline">(x,y)</span>的均值，<spanclass="math inline">(_x^2,<em>y^2)</span>是方差，<spanclass="math inline">(</em>{xy})</span>是协方差。<spanclass="math inline">(C_1=(k_1L)<sup>2,C_2=(k_2L)</sup>2)</span>是稳定除法运算的小常数，<spanclass="math inline">(L)</span>是像素值动态范围。默认取<spanclass="math inline">(k_1=0.01,l_2=0.03)</span>。</p></div><div id="指标介绍-3" class="tab-pane"><p>通过训练一个神经网络学习图像块之间的差异，通常使用预训练的CNN作为特征提取器，然后训练一个额外的层预测图像对的相似性。取值范围<spanclass="math inline">([0,1])</span>，取值越小越好。</p></div><div id="指标介绍-4" class="tab-pane"><p>用于评估生成图像和真实图像在特征空间中的分布差异，量化二者的距离。取值越小表示生成图像与真实图像越相似。</p><p>首先用Inception网络将图像映射到高维特征向量，计算这两个特征向量的均值向量和协方差矩阵，最后综合计算距离：</p><p><span class="math display">[ d^2=| _1-<em>2 | </em>{2}^{2}+( _1+_2-2(_1_2 ) ^{} ) ]</span></p></div></div></div>
               </div>
             </details>
 <h2 id="总结">总结</h2>
@@ -852,8 +893,7 @@ $$</p>
 <ul>
 <li>退化嵌入预测：通过控制器从低质（LQ）图像中精准提取退化特征。</li>
 <li>内容嵌入对齐：控制CLIP图像编码器输出与干净内容对齐的高质量（HQ）特征。</li>
-</ul>
-</li>
+</ul></li>
 <li>训练数据：基于高质量图像生成合成文本描述，构建混合退化数据集。</li>
 <li>下游应用：通过提示学习模块和交叉注意力机制，将DA-CLIP嵌入现有恢复模型。</li>
 </ul>
@@ -1009,7 +1049,7 @@ $$</p>
 	<div class="post-toc">
 		<div class="toc-title">On this page</div>
 		<div class="page-title">论文阅读笔记：Controlling Vision-Language Models for Multi-Task Image Restoration</div>
-		<ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%91%98%E8%A6%81"><span class="nav-number">1.</span> <span class="nav-text">摘要</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BC%95%E8%A8%80"><span class="nav-number">2.</span> <span class="nav-text">引言</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%A0%94%E7%A9%B6%E8%83%8C%E6%99%AF%E5%92%8C%E9%97%AE%E9%A2%98"><span class="nav-number">2.1.</span> <span class="nav-text">研究背景和问题</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%A7%A3%E5%86%B3%E6%96%B9%E6%B3%95"><span class="nav-number">2.2.</span> <span class="nav-text">解决方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E6%9E%84%E5%BB%BA%E5%92%8C%E8%AE%AD%E7%BB%83"><span class="nav-number">2.3.</span> <span class="nav-text">数据构建和训练</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%BB%E8%A6%81%E8%B4%A1%E7%8C%AE"><span class="nav-number">2.4.</span> <span class="nav-text">主要贡献</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#DA-CLIP"><span class="nav-number">3.</span> <span class="nav-text">DA-CLIP</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Image-Controller"><span class="nav-number">3.1.</span> <span class="nav-text">Image Controller</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9B%BE%E5%83%8F%E5%A4%8D%E5%8E%9F"><span class="nav-number">3.2.</span> <span class="nav-text">图像复原</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E6%9E%84%E6%88%90"><span class="nav-number">4.</span> <span class="nav-text">数据构成</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%9E%E9%AA%8C"><span class="nav-number">5.</span> <span class="nav-text">实验</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">6.</span> <span class="nav-text">总结</span></a></li></ol>
+		<ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%91%98%E8%A6%81"><span class="nav-number">1.</span> <span class="nav-text">摘要</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BC%95%E8%A8%80"><span class="nav-number">2.</span> <span class="nav-text">引言</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%A0%94%E7%A9%B6%E8%83%8C%E6%99%AF%E5%92%8C%E9%97%AE%E9%A2%98"><span class="nav-number">2.1.</span> <span class="nav-text">研究背景和问题</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%A7%A3%E5%86%B3%E6%96%B9%E6%B3%95"><span class="nav-number">2.2.</span> <span class="nav-text">解决方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E6%9E%84%E5%BB%BA%E5%92%8C%E8%AE%AD%E7%BB%83"><span class="nav-number">2.3.</span> <span class="nav-text">数据构建和训练</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%BB%E8%A6%81%E8%B4%A1%E7%8C%AE"><span class="nav-number">2.4.</span> <span class="nav-text">主要贡献</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#da-clip"><span class="nav-number">3.</span> <span class="nav-text">DA-CLIP</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#image-controller"><span class="nav-number">3.1.</span> <span class="nav-text">Image Controller</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9B%BE%E5%83%8F%E5%A4%8D%E5%8E%9F"><span class="nav-number">3.2.</span> <span class="nav-text">图像复原</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E6%9E%84%E6%88%90"><span class="nav-number">4.</span> <span class="nav-text">数据构成</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%9E%E9%AA%8C"><span class="nav-number">5.</span> <span class="nav-text">实验</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">6.</span> <span class="nav-text">总结</span></a></li></ol>
 
 	</div>
 </div>

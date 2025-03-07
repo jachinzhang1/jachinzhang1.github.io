@@ -572,7 +572,7 @@
         <div class="label text-third-text-color text-sm">Categories</div>
     </a>
     <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/archives">
-        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">14</div>
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">15</div>
         <div class="label text-third-text-color text-sm">Posts</div>
     </a>
 </div>
@@ -685,46 +685,50 @@
 
 		<div class="article-content markdown-body px-2 sm:px-6 md:px-8 pb-8">
 			<h2 id="引言">引言</h2>
-<p>UNet实际上是一种比较老的架构，最初于2015年的论文<a class="link"   target="_blank" rel="noopener" href="https://arxiv.org/abs/1505.04597" >U-Net: Convolutional Networks for Biomedical Image Segmentation<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a>中提出，主要用于医学图像分割。但近年来随着AIGC的兴起，UNet也逐渐被用于其他领域，如图像生成、图像修复等。Unet的结构并不复杂，但效果不错。对于扩散模型来说，UNet结构几乎是标配，仅使用残差网络的效果远不及它。</p>
+<p>UNet实际上是一种比较老的架构，最初于2015年的论文<a class="link" 
+ target="_blank" rel="noopener" href="https://arxiv.org/abs/1505.04597" >U-Net: Convolutional Networks
+for Biomedical Image
+Segmentation<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a>中提出，主要用于医学图像分割。但近年来随着AIGC的兴起，UNet也逐渐被用于其他领域，如图像生成、图像修复等。Unet的结构并不复杂，但效果不错。对于扩散模型来说，UNet结构几乎是标配，仅使用残差网络的效果远不及它。</p>
 <p>下面对这个网络结构作简要介绍，并在后面给出Pytorch实现。</p>
-<h2 id="UNet结构">UNet结构</h2>
-<p><figure class="image-caption"><img  
+<h2 id="unet结构">UNet结构</h2>
+<figure>
+<figure class="image-caption"><img  
                      lazyload
                      src="/images/loading.svg"
                      data-src="/images/posts/unet/architecture.png"
-                      alt="网络结构示意图"
-                ><figcaption>网络结构示意图</figcaption></figure></p>
-<p>UNet结构如上图所示，它的主体是一个Encoder-Decoder的结构。其中，编码器由多个下采样层组成，解码器由多个上采样层组成。编码器和解码器之间通过跳跃连接连接，以保留更多的特征信息。因其结构类似于字母U，故得名UNet。除此之外，它的最大的特点来自于其跳层连接（copy and crop）。</p>
+                      alt="网络结构示意图" 
+                ><figcaption>网络结构示意图</figcaption></figure>
+<figcaption aria-hidden="true">网络结构示意图</figcaption>
+</figure>
+<p>UNet结构如上图所示，它的主体是一个Encoder-Decoder的结构。其中，编码器由多个下采样层组成，解码器由多个上采样层组成。编码器和解码器之间通过跳跃连接连接，以保留更多的特征信息。因其结构类似于字母U，故得名UNet。除此之外，它的最大的特点来自于其跳层连接（copy
+and crop）。</p>
 <ul>
-<li><code>conv 3x3, ReLU</code><br>
+<li><code>conv 3x3, ReLU</code>
 卷积层，卷积核大小为3x3，激活函数为ReLU。</li>
-<li><code>max pool 2x2</code><br>
-最大池化层，池化核大小为2x2。</li>
-<li><code>up-conv 2x2</code><br>
+<li><code>max pool 2x2</code> 最大池化层，池化核大小为2x2。</li>
+<li><code>up-conv 2x2</code>
 这里是用于图像<b>上采样</b>的反卷积层，卷积核大小为2x2。</li>
-<li><code>conv 1x1</code><br>
+<li><code>conv 1x1</code>
 1*1的卷积层，可以调整通道数而不改变图像尺寸。</li>
 </ul>
-<h2 id="Pytorch实现">Pytorch实现</h2>
+<h2 id="pytorch实现">Pytorch实现</h2>
 <p>本文对UNet结构进行简要的代码实现。（叠甲：写的比较简陋，图像尺寸设的不好可能还会出现报错。此外，该网络可以结合时间步编码和注意力机制等，这里暂未体现。）</p>
 <p>首先导入必要的库：</p>
 <div class="code-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> torch</span><br><span class="line"><span class="keyword">import</span> torch.nn <span class="keyword">as</span> nn</span><br></pre></td></tr></table></figure></div>
 <p>UNet类的初始化：</p>
 <div class="code-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">UNet</span>(nn.Module):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, in_channels, out_channels, device, layers=<span class="number">4</span></span>):</span><br><span class="line">        <span class="built_in">super</span>(UNet, <span class="variable language_">self</span>).__init__()</span><br><span class="line">        <span class="variable language_">self</span>.layers = layers</span><br><span class="line">        <span class="variable language_">self</span>.device = device</span><br><span class="line">        <span class="variable language_">self</span>.to_be_cropped_list = []</span><br><span class="line"></span><br><span class="line">        <span class="variable language_">self</span>.input_encoder = nn.Conv2d(in_channels, <span class="number">64</span>, kernel_size=<span class="number">3</span>, stride=<span class="number">1</span>, padding=<span class="number">1</span>)</span><br><span class="line">        <span class="variable language_">self</span>.output_decoder = nn.Conv2d(<span class="number">64</span>, out_channels, kernel_size=<span class="number">3</span>, stride=<span class="number">1</span>, padding=<span class="number">1</span>)</span><br><span class="line"></span><br><span class="line">        <span class="variable language_">self</span>.downs = nn.ModuleList([])</span><br><span class="line">        <span class="variable language_">self</span>.ups = nn.ModuleList([])</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(layers):</span><br><span class="line">            <span class="variable language_">self</span>.downs.append(nn.Sequential(</span><br><span class="line">                nn.Conv2d(<span class="number">64</span> * (<span class="number">2</span> ** i), <span class="number">64</span> * (<span class="number">2</span> ** (i + <span class="number">1</span>)), kernel_size=<span class="number">3</span>, stride=<span class="number">1</span>, padding=<span class="number">1</span>),</span><br><span class="line">                nn.ReLU(inplace=<span class="literal">True</span>),</span><br><span class="line">                nn.Conv2d(<span class="number">64</span> * (<span class="number">2</span> ** (i + <span class="number">1</span>)), <span class="number">64</span> * (<span class="number">2</span> ** (i + <span class="number">1</span>)), kernel_size=<span class="number">3</span>, stride=<span class="number">1</span>, padding=<span class="number">1</span>),</span><br><span class="line">                nn.ReLU(inplace=<span class="literal">True</span>),</span><br><span class="line">            ))</span><br><span class="line">            <span class="variable language_">self</span>.ups.insert(<span class="number">0</span>, nn.Sequential(</span><br><span class="line">                nn.Conv2d(<span class="number">64</span> * (<span class="number">2</span> ** (i + <span class="number">1</span>)), <span class="number">64</span> * (<span class="number">2</span> ** i), kernel_size=<span class="number">3</span>, stride=<span class="number">1</span>, padding=<span class="number">1</span>),</span><br><span class="line">                nn.ReLU(inplace=<span class="literal">True</span>),</span><br><span class="line">                nn.Conv2d(<span class="number">64</span> * (<span class="number">2</span> ** i), <span class="number">64</span> * (<span class="number">2</span> ** i), kernel_size=<span class="number">3</span>, stride=<span class="number">1</span>, padding=<span class="number">1</span>),</span><br><span class="line">                nn.ReLU(inplace=<span class="literal">True</span>),</span><br><span class="line">            ))</span><br></pre></td></tr></table></figure></div>
-<p>参数：</p>
-<ul>
-<li><code>in_channels</code>：输入通道数</li>
-<li><code>out_channels</code>：输出通道数</li>
-<li><code>device</code>：设备（cpu或cuda）</li>
-<li><code>layers</code>：UNet的层数</li>
-</ul>
+<p>参数： - <code>in_channels</code>：输入通道数 -
+<code>out_channels</code>：输出通道数 -
+<code>device</code>：设备（cpu或cuda） -
+<code>layers</code>：UNet的层数</p>
 <p><code>input_encoder</code>和<code>output_decoder</code>用于改变图像的通道数，而<code>downs</code>和<code>ups</code>分别对应模型主体的编码器和解码器。这里为了方便，使用循环将编码器和解码器的采样层使用<code>ModuleList</code>存储，并且每轮循环（每层）对称地加入采样层。</p>
 <p>注意到在这段代码中，我们并没有将池化和反卷积（即<b>改变图像尺寸大小</b>）的操作加入到<code>downs</code>和<code>ups</code>中，而是只有卷积的<b>改变图像通道数</b>的操作。这是因为该网络还需要实现“跳层连接”，即需要将最大池化之前的张量经过裁剪之后和上采样之后的张量进行拼接。如果将池化和反卷积的操作放在<code>Sequential</code>里面，拼接操作所需要的张量无法提取出来。</p>
 <p>（事实上代码的写法可以改进，比如将上采样层和下采样层分别封装成类<code>UpBlock</code>和<code>DownBlock</code>，这样可以将反卷积和池化操作包含其中，并提取出跳层连接所需的张量。但是我懒得改了QAQ）</p>
 <p>还有一个小细节是，原论文中的卷积操作是将<code>padding</code>设为0了的，这样每次卷积会使得图像尺寸发生改变。我个人更倾向于设置<code>padding</code>使得图像尺寸不发生改变，这样在拼接操作时不会出现尺寸不匹配的问题。<del class="mask">（其实是因为<code>padding</code>设为0会在拼接时发生报错，两个张量的通道数会相差1。这个问题暂时还没有修正，充分体现出作者的代码能力亟待提高。哭……）</del></p>
 <p>将在图像编码过程中提取的张量经过裁剪操作后与解码过程中对应的张量拼接，其中的裁剪操作实现如下：</p>
 <div class="code-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">crop_tensor</span>(<span class="params">self, x: torch.Tensor, target: torch.Tensor</span>) -&gt; torch.Tensor:</span><br><span class="line">    target_size = target.shape[<span class="number">2</span>]</span><br><span class="line">    x_size = x.shape[<span class="number">2</span>]</span><br><span class="line">    delta = (x_size - target_size) // <span class="number">2</span></span><br><span class="line">    <span class="keyword">return</span> x[:, :, delta:x_size - delta, delta:x_size - delta]</span><br></pre></td></tr></table></figure></div>
-<p>注意：这个函数输入的两个张量的通道数最好为偶数，否则后续的张量拼接可能会因为通道数不匹配出现报错。因此输入的图像尺寸（张量[Batch_size, Channels, Height, Width]中的后两个）最好为2的整数次幂。</p>
+<p>注意：这个函数输入的两个张量的通道数最好为偶数，否则后续的张量拼接可能会因为通道数不匹配出现报错。因此输入的图像尺寸（张量[Batch_size,
+Channels, Height, Width]中的后两个）最好为2的整数次幂。</p>
 <p>图像编码和解码操作的实现如下：</p>
 <div class="code-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">encode</span>(<span class="params">self, x: torch.Tensor</span>) -&gt; torch.Tensor:</span><br><span class="line">    <span class="keyword">for</span> idx, down <span class="keyword">in</span> <span class="built_in">enumerate</span>(<span class="variable language_">self</span>.downs):</span><br><span class="line">        <span class="comment"># print(f&#x27;Down &#123;idx + 1&#125;.1\t&#x27;, x.shape)</span></span><br><span class="line">        x = down(x)  <span class="comment"># conv</span></span><br><span class="line">        <span class="comment"># print(f&#x27;Down &#123;idx + 1&#125;.2\t&#x27;, x.shape)</span></span><br><span class="line">        <span class="variable language_">self</span>.to_be_cropped_list.insert(<span class="number">0</span>, x) <span class="keyword">if</span> idx &lt; <span class="variable language_">self</span>.layers - <span class="number">1</span> <span class="keyword">else</span> <span class="literal">None</span></span><br><span class="line">        x = nn.MaxPool2d(kernel_size=<span class="number">2</span>, stride=<span class="number">2</span>)(x)</span><br><span class="line">        <span class="comment"># print(f&#x27;Down &#123;idx + 1&#125;.3\t&#x27;, x.shape) if not idx &lt; self.layers - 1 else None</span></span><br><span class="line">    <span class="keyword">return</span> x</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">decode</span>(<span class="params">self, x: torch.Tensor</span>) -&gt; torch.Tensor:</span><br><span class="line">    <span class="keyword">for</span> idx, up <span class="keyword">in</span> <span class="built_in">enumerate</span>(<span class="variable language_">self</span>.ups):</span><br><span class="line">        <span class="comment"># print(f&#x27;Up &#123;idx + 1&#125;.1\t\t&#x27;, x.shape)</span></span><br><span class="line">        conv_trans = nn.ConvTranspose2d(</span><br><span class="line">            <span class="number">64</span> * (<span class="number">2</span> ** (<span class="variable language_">self</span>.layers - idx)), </span><br><span class="line">            <span class="number">64</span> * (<span class="number">2</span> ** (<span class="variable language_">self</span>.layers - idx - <span class="number">1</span>)), </span><br><span class="line">            kernel_size=<span class="number">2</span>, </span><br><span class="line">            stride=<span class="number">2</span>, </span><br><span class="line">            padding=<span class="number">0</span></span><br><span class="line">        ).to(<span class="variable language_">self</span>.device)</span><br><span class="line">        x = conv_trans(x)</span><br><span class="line">        <span class="comment"># print(f&#x27;Up &#123;idx + 1&#125;.2\t\t&#x27;, x.shape)</span></span><br><span class="line">        cropped = <span class="variable language_">self</span>.crop_tensor(<span class="variable language_">self</span>.to_be_cropped_list[idx], x)</span><br><span class="line">        x = torch.cat([x, cropped], dim=<span class="number">1</span>)</span><br><span class="line">        <span class="comment"># print(f&#x27;Up &#123;idx + 1&#125;.3\t\t&#x27;, x.shape)</span></span><br><span class="line">        x = up(x)  <span class="comment"># conv</span></span><br><span class="line">        <span class="comment"># print(f&#x27;Up &#123;idx + 1&#125;.4\t\t&#x27;, x.shape) if not idx &lt; self.layers - 1 else None</span></span><br><span class="line">    <span class="keyword">return</span> x</span><br></pre></td></tr></table></figure></div>
 <p>前向传播函数的实现如下：</p>
@@ -742,8 +746,11 @@
     </div>
     <div class="notel-content">
       <ul>
-<li><a class="link"   target="_blank" rel="noopener" href="https://blog.csdn.net/knighthood2001/article/details/138075554" >Unet网络架构讲解（从零到一，逐行编写并重点讲解数据维度变化） - CSDN<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a></li>
-<li><a class="link"   target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/313283141" >图像分割必备知识点 | Unet详解 理论+ 代码 - 知乎<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a></li>
+<li><a class="link" 
+ target="_blank" rel="noopener" href="https://blog.csdn.net/knighthood2001/article/details/138075554" >Unet网络架构讲解（从零到一，逐行编写并重点讲解数据维度变化）
+- CSDN<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a></li>
+<li><a class="link"   target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/313283141" >图像分割必备知识点
+| Unet详解 理论+ 代码 - 知乎<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a></li>
 </ul>
 
     </div>
@@ -891,7 +898,7 @@
 	<div class="post-toc">
 		<div class="toc-title">On this page</div>
 		<div class="page-title">UNet结构介绍</div>
-		<ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BC%95%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text">引言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#UNet%E7%BB%93%E6%9E%84"><span class="nav-number">2.</span> <span class="nav-text">UNet结构</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Pytorch%E5%AE%9E%E7%8E%B0"><span class="nav-number">3.</span> <span class="nav-text">Pytorch实现</span></a></li></ol>
+		<ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BC%95%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text">引言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#unet%E7%BB%93%E6%9E%84"><span class="nav-number">2.</span> <span class="nav-text">UNet结构</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#pytorch%E5%AE%9E%E7%8E%B0"><span class="nav-number">3.</span> <span class="nav-text">Pytorch实现</span></a></li></ol>
 
 	</div>
 </div>
